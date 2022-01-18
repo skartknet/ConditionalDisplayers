@@ -32,10 +32,6 @@
         <Compile Include="umbraco/models/**" Exclude="**/*.flag" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="App_Plugins\" />
-    </ItemGroup>
-
     <PropertyGroup>
         <CopyRazorGenerateFilesToPublishDirectory>true</CopyRazorGenerateFilesToPublishDirectory>
     </PropertyGroup>
