@@ -265,3 +265,5 @@ src/TestWeb/
 /src/TestClient713
 /WebTest/
 /WebTestV9
+/UmbracoV8/**
+/UmbracoV9/App_Plugins/**
