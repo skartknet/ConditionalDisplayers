@@ -43,6 +43,10 @@
         </None>
 		<None Include="build\**\*.*">
 			<Pack>True</Pack>
+			<PackagePath>buildTransitive</PackagePath>
+		</None>
+		<None Include="build\**\*.*">
+			<Pack>True</Pack>
 			<PackagePath>build</PackagePath>
 		</None>
     </ItemGroup>
