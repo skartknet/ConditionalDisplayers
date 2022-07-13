@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net5.0;net472</TargetFrameworks>
+        <TargetFrameworks>net5.0;net472;net6.0</TargetFrameworks>
         <ContentTargetFolders>.</ContentTargetFolders>
         <PackageId>Our.Umbraco.ConditionalDisplayers</PackageId>
         <Title>ConditionalDisplayers</Title>
@@ -9,7 +9,7 @@
         <PackageTags>umbraco property editor backoffice condition display</PackageTags>
         <AssemblyName>Our.Umbraco.ConditionalDisplayers</AssemblyName>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-		<Version>3.0.2</Version>
+		<Version>3.0.3</Version>
 		<Authors>Mario Lopez</Authors>
 		<PackageIcon>koben_logo.png</PackageIcon>
 		<PackageReleaseNotes>Compatible with Umbraco 9</PackageReleaseNotes>
@@ -32,7 +32,13 @@
 		</PackageReference>
 	</ItemGroup>
 
-    <ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+		<PackageReference Include="Umbraco.Cms.Web.BackOffice">
+			<Version>10.0.1</Version>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
         <None Include="..\README.nuget.md">
           <Pack>True</Pack>
           <PackagePath>\README.md</PackagePath>
