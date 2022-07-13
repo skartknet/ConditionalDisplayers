@@ -263,4 +263,4 @@ build/*.zip
 umbracoClient/
 
 
-/UmbracoV9/App_Plugins/**
+**/App_Plugins/**
