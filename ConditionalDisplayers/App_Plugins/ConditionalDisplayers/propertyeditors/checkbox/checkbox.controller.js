@@ -9,12 +9,6 @@ function cdCheckboxController($scope, editorState, cdSharedLogic) {
         var parentPropertyAlias = $scope.model.alias.slice(0, -$scope.model.propertyAlias.length);
     }
 
-    $scope.$watch("renderModel.value", function (newVal) {
-        $scope.model.value = newVal === true ? "1" : "0";
-
-        $scope.runDisplayLogic();
-    });
-
     $scope.clicked = function () {
         $scope.renderModel.value = !$scope.renderModel.value;
     };
@@ -29,6 +23,17 @@ function cdCheckboxController($scope, editorState, cdSharedLogic) {
             }
         }
     };
+
+    var renderModelWatchUnsubscribe = $scope.$watch("renderModel.value", function (newVal) {
+        $scope.model.value = newVal === true ? "1" : "0";
+
+        $scope.runDisplayLogic();
+    });
+
+    // update the visible fields on changes from NestedContent
+    var formSubmittingUnsubscribe = $scope.$on("formSubmitting", $scope.runDisplayLogic);
+    var ncSyncValUnsubscribe = $scope.$on("ncSyncVal", $scope.runDisplayLogic);
+    $(document).on("click", ".umb-nested-content__header-bar", $scope.runDisplayLogic)
 
     function setupViewModel() {
         $scope.renderModel = {
@@ -57,4 +62,10 @@ function cdCheckboxController($scope, editorState, cdSharedLogic) {
 
     setupViewModel();
 
+    $scope.$on("$destroy", function () {
+        renderModelWatchUnsubscribe();
+        formSubmittingUnsubscribe();
+        ncSyncValUnsubscribe();
+        $(document).off("click", ".umb-nested-content__header-bar", $scope.runDisplayLogic);
+    });
 }
