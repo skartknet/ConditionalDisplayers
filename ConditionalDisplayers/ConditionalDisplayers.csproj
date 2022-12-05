@@ -6,10 +6,10 @@
         <Title>ConditionalDisplayers</Title>
         <Description>Umbraco property editors that allow the conditional display of other properties.</Description>
         <Product>Conditional Displayers</Product>
-        <PackageTags>umbraco property editor backoffice condition display</PackageTags>
+        <PackageTags>umbraco property editor backoffice condition display umbraco-marketplace</PackageTags>
         <AssemblyName>Our.Umbraco.ConditionalDisplayers</AssemblyName>
 	<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-	<Version>3.2.0</Version>
+	<Version>3.2.1</Version>
 	<Authors>Mario Lopez</Authors>
 	<PackageIcon>koben_logo.png</PackageIcon>
 	<PackageReleaseNotes>Compatible with Umbraco 9</PackageReleaseNotes>
