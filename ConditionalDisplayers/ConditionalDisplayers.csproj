@@ -8,15 +8,16 @@
         <Product>Conditional Displayers</Product>
         <PackageTags>umbraco property editor backoffice condition display umbraco-marketplace</PackageTags>
         <AssemblyName>Our.Umbraco.ConditionalDisplayers</AssemblyName>
-	<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-	<Version>3.2.1</Version>
-	<Authors>Mario Lopez</Authors>
-	<PackageIcon>koben_logo.png</PackageIcon>
-	<PackageReleaseNotes>Compatible with Umbraco 9</PackageReleaseNotes>
-	<RepositoryUrl>https://github.com/skartknet/ConditionalDisplayers</RepositoryUrl>
-	<PackageLicenseExpression>MIT</PackageLicenseExpression>
-	<IsPackable>true</IsPackable>
-	<PackageReadmeFile>README.md</PackageReadmeFile>
+        <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+        <Version>3.2.1</Version>
+        <Authors>Mario Lopez</Authors>
+        <PackageIcon>koben_logo.png</PackageIcon>
+        <PackageReleaseNotes>Compatible with Umbraco 9</PackageReleaseNotes>
+        <PackageProjectUrl>https://github.com/skartknet/ConditionalDisplayers</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/skartknet/ConditionalDisplayers</RepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <IsPackable>true</IsPackable>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
 
