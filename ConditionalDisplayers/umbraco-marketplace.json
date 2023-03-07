@@ -1,5 +1,38 @@
 {
-    "Category": "Editor Tools",
-    "LicenseTypes": [ "Free" ],
-    "PackageType": "Package"
+  "Category": "Editor Tools",
+  "LicenseTypes": [
+    "Free"
+  ],
+  "PackageType": "Package",
+  "Title": "Conditional Displayers",
+  "PackagesByAuthor": [
+    "Our.Iconic"
+  ],
+  "Tags": [
+    "ponditional",
+    "property"
+  ],
+  "Description": "Iconic is a highly configurable package that allows you to easily add icon libraries to your Umbraco content.",
+  "AuthorDetails": {
+    "Name": "Mario Lopez",
+    "ImageUrl": "https://github.com/skartknet.png",
+    "Contributors": [
+      {
+        "Name": "Robert Foster",
+        "Url": "https://github.com/robertjf"
+      },
+      {
+        "Name": "Chris Brown",
+        "Url": "https://github.com/osigas"
+      },
+      {
+        "Name": "Jez Reel R. Maghuyop",
+        "Url": "https://github.com/jezmaghuyop"
+      },
+      {
+        "Name": "Richard van der Meer",
+        "Url": "https://github.com/RichardVanDerMeer"
+      }
+    ]
   }
+}
