@@ -12,7 +12,7 @@
     "ponditional",
     "property"
   ],
-  "Description": "Iconic is a highly configurable package that allows you to easily add icon libraries to your Umbraco content.",
+  "Description": " It implements a checkbox and dropdown datatype editors that allows to hide or display other properties in the same Document Type depending on the selected value.",
   "AuthorDetails": {
     "Name": "Mario Lopez",
     "ImageUrl": "https://github.com/skartknet.png",
