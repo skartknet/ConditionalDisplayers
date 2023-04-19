@@ -26,6 +26,24 @@
             "description": "Enter the aliases of the properties to show if the checkbox if unchecked (comma separated)",
             "key": "showIfUnchecked",
             "view": "textstring"
+          },
+          {
+            "label": "Show toggle labels",
+            "description": "Show labels next to toggle button.",
+            "key": "showLabels",
+            "view": "boolean"
+          },
+          {
+            "label": "Label On",
+            "description": "Label text when enabled.",
+            "key": "labelOn",
+            "view": "textstring"
+          },
+          {
+            "label": "Label Off",
+            "description": "Label text when disabled.",
+            "key": "labelOff",
+            "view": "textstring"
           }
         ]
       }
