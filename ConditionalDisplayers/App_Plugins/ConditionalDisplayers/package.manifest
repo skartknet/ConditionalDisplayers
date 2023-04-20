@@ -2,8 +2,8 @@
   "propertyEditors": [
     {
       "alias": "Our.Umbraco.CdCheckbox",
-      "name": "[Skartknet] Conditional Checkbox",
-      "icon": "icon-circle-dotted-active",
+      "name": "[Conditional Displayers] Conditional Checkbox",
+      "icon": "icon-checkbox-dotted-active",
       "group": "Conditional Displayers",
       "editor": {
         "view": "~/App_Plugins/ConditionalDisplayers/propertyeditors/checkbox/checkbox.html"
@@ -51,7 +51,7 @@
     },
     {
       "alias": "Our.Umbraco.CdDropdownFlexible",
-      "name": "[Skartknet] Conditional Dropdown",
+      "name": "[Conditional Displayers] Conditional Dropdown",
       "icon": "icon-filter-arrows",
       "group": "Conditional Displayers",
       "editor": {
@@ -76,8 +76,8 @@
     },
     {
       "alias": "Our.Umbraco.CdRadio",
-      "name": "Radio List Conditional Displayer",
-      "icon": "icon-code",
+      "name": "[Conditional Displayers] Radio List",
+      "icon": "icon-circle-dotted-active",
       "group": "Conditional Displayers",
       "editor": {
         "view": "~/App_Plugins/ConditionalDisplayers/propertyeditors/radio/radio.html"
