@@ -1,4 +1,4 @@
-<div class="umb-property-editor umb-prevalues-multivalues" ng-controller="Our.Umbraco.ConditionalDisplayers.cdMultiValuesController">
+<div class="umb-property-editor umb-prevalues-multivalues cd-prevalues-editor" ng-controller="Our.Umbraco.ConditionalDisplayers.cdMultiValuesController">
 
     <div class="control-group cd-prevalues-multivalues">
         <div>
@@ -6,11 +6,11 @@
             <input overlay-submit-on-enter="false" name="newItem" focus-when="{{focusOnNew}}" ng-keydown="createNew($event)" type="text" ng-model="newItem.value" val-highlight="{{hasError}}" />
         </div>
         <div>
-            <strong>Show if selected <br /><small>(separate by comma)</small></strong>
+            <strong>Show when selected</strong>
             <input type="text" ng-model="newItem.show" val-server="item_{{$index}}" placeholder="Properties' aliases" />
         </div>
         <div>
-            <strong>Hide if selected <br /><small>(separate by comma)</small></strong>
+            <strong>Hide when selected</strong>
             <input type="text" ng-model="newItem.hide" val-server="item_{{$index}}" placeholder="Properties' aliases" />
         </div>
         <div class="align-bottom">
