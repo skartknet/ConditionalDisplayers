@@ -9,8 +9,18 @@ function cdCheckboxController($scope, editorState, cdSharedLogic) {
         var parentPropertyAlias = $scope.model.alias.slice(0, -$scope.model.propertyAlias.length);
     }
 
+    // Define prevalues for labelOff and labelOn
+    $scope.labelOff = $scope.model.config.labelOff;
+    $scope.labelOn = $scope.model.config.labelOn;
+
+    // Set initial toggle label and visibility based on the showLabels config option
+    $scope.toggleLabel = $scope.model.config.showLabels ? $scope.labelOff : "";
+    $scope.showLabels = $scope.model.config.showLabels;
+
     $scope.clicked = function () {
         $scope.renderModel.value = !$scope.renderModel.value;
+        // Update the toggle label based on the new value
+        $scope.toggleLabel = $scope.showLabels ? ($scope.renderModel.value ? $scope.labelOn : $scope.labelOff) : "";
     };
 
     $scope.runDisplayLogic = function () {
