@@ -2,7 +2,7 @@ name: Our.Umbraco.ConditionalDisplayers - Release
 
 on:
   push:
-    branches: [ master ]
+    branches: [ 'release/**' ]
 
 env:
   SOLUTION: ConditionalDisplayers.sln

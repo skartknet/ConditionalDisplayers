@@ -53,6 +53,30 @@
           }
         ]
       }
+    },
+    {
+      "alias": "Our.Umbraco.CdRadio",
+      "name": "Radio List Conditional Displayer",
+      "icon": "icon-code",
+      "group": "Conditional Displayers",
+      "editor": {
+        "view": "~/App_Plugins/ConditionalDisplayers/propertyeditors/radio/radio.html"
+      },
+      "prevalues": {
+        "fields": [
+          {
+            "label": "Add prevalue",
+            "description": "Add, remove or sort values for the list.",
+            "key": "items",
+            "view": "/App_Plugins/ConditionalDisplayers/prevalueeditors/cdMultivalues.html"
+          },
+          {
+            "label": "Default value",
+            "key": "default",
+            "view": "textstring"
+          }
+        ]
+      }
     }
   ],
 
@@ -60,6 +84,7 @@
     "~/App_Plugins/ConditionalDisplayers/propertyeditors/cdSharedLogic.js",
     "~/App_Plugins/ConditionalDisplayers/propertyeditors/dropdownFlexible/dropdownFlexible.controller.js",
     "~/App_Plugins/ConditionalDisplayers/propertyeditors/checkbox/checkbox.controller.js",
+    "~/App_Plugins/ConditionalDisplayers/propertyeditors/radio/radio.controller.js",
     "~/App_Plugins/ConditionalDisplayers/prevalueeditors/cdMultivalues.controller.js"
   ],
 
