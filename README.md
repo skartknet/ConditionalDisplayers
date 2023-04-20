@@ -49,6 +49,13 @@ You'll have to create a list of options that the dropdown will display. In addit
 
 The Conditional Displayers are normal property editors so you can access their values as with any other property (strongly typed model, GetPropertyValue,...)
 
+
+# Upgrading
+## Version 3.3.0
+This version uses the new UUI Library included by default in Umbraco 10.4 + and 11.1 + based on this post: https://umbraco.com/blog/umbraco-product-update-january-2023/
+
+For previous versions of Umbraco that still support the uui, you will need to include or reference the library's css and js files manually.
+
 # Donate
 This package is maintaned by Mario Lopez. If you want to say thank you:
 
