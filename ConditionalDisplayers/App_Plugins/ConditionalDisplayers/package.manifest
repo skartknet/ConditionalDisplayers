@@ -94,6 +94,44 @@
             "label": "Default value",
             "key": "default",
             "view": "textstring"
+          },
+          {
+            "label": "Align Horizontally",
+            "description": "Radio button are stacked vertically by default. Toggle this to align them horizontally",
+            "key": "alignHrz",
+            "view": "boolean"
+          },
+          {
+            "label": "Labels Position",
+            "description": "Works with horizontally aligned list only and not with standard buttons. Default is 'Right'",
+            "key": "labelsPos",
+            "view": "radiobuttonlist",
+            "config": {
+              "prevalues": [
+                {
+                  "label": "Top",
+                  "value": "top"
+                },
+                {
+                  "label": "Bottom",
+                  "value": "bottom"
+                },
+                {
+                  "label": "Left",
+                  "value": "left"
+                },
+                {
+                  "label": "Right",
+                  "value": "right"
+                }
+              ]
+            }
+          },
+          {
+            "label": "As Standard Buttons",
+            "description": "To display as standard buttons instead of radio buttons. Horizontally aligned by default.",
+            "key": "asBtn",
+            "view": "boolean"
           }
         ]
       }
