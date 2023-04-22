@@ -46,7 +46,8 @@ function cdCheckboxController($scope, $element, editorState, cdSharedLogic) {
 
     var renderModelWatchUnsubscribe = $scope.$watch("renderModel.value", function (newVal) {
         $scope.model.value = newVal === true ? "1" : "0";
-
+        // Set Correct Label on first load
+        $scope.toggleLabel = $scope.showLabels ? ($scope.model.value === "1" ? $scope.labelOn : $scope.labelOff) : "";
         $scope.runDisplayLogic();
     });
 
