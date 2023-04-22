@@ -62,11 +62,18 @@ function cdSharedLogic() {
                         h += ",";
                     }
 
-                    if (parentPropertyAlias) {
-                        prop = "[data-element='property-" + parentPropertyAlias + els[i].trim() + "']";
-                    }
-                    else {
-                        prop = "[data-element='property-" + els[i].trim() + "']";
+                    if (els[i].trim().startsWith("tab-content-")) {
+                        prop = ".umb-box-content[data-element='" + els[i].trim() + "']";
+                    } else if (els[i].trim().startsWith("tab-")) {
+                        prop = ".umb-tab[data-element='" + els[i].trim() + "']";
+                    } else if (els[i].trim().startsWith("group-")) {
+                        prop = "[data-element='" + els[i].trim() + "']";
+                    } else {
+                        if (parentPropertyAlias) {
+                            prop = "[data-element='property-" + parentPropertyAlias + els[i].trim() + "']";
+                        } else {
+                            prop = "[data-element='property-" + els[i].trim() + "']";
+                        }
                     }
 
                     h += prop;
