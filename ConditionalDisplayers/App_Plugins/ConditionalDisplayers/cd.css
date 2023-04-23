@@ -118,10 +118,6 @@
     }
 
 /* ** Display as Standard Button ** */
-.cd-btn-radio {
-    display: flex;
-}
-
     .cd-btn-radio li,
     .cd-btn-radio li label,
     .cd-btn-radio li label .umb-form-check__symbol {
@@ -129,7 +125,7 @@
     }
 
     .cd-btn-radio li {
-        margin-right: 0;
+        margin: 0 0 10px 0;
     }
 
         .cd-btn-radio li label {
