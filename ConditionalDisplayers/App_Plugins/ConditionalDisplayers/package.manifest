@@ -18,13 +18,13 @@
           },
           {
             "label": "Show if checked",
-            "description": "Enter the aliases of the properties to show when the checkbox is checked<br />*(multiple aliases must be comma separated without space)*",
+            "description": "Aliases of the properties to show when the checkbox is checked.<br />*Multiple aliases must be comma separated.*",
             "key": "showIfChecked",
             "view": "textstring"
           },
           {
             "label": "Show if unchecked",
-            "description": "Enter the aliases of the properties to show when the checkbox is unchecked<br />*(multiple aliases must be comma separated without space)*",
+            "description": "Aliases of the properties to show when the checkbox is unchecked.<br />*Multiple aliases must be comma separated.*",
             "key": "showIfUnchecked",
             "view": "textstring"
           },
@@ -61,7 +61,7 @@
         "fields": [
           {
             "label": "Add prevalue",
-            "description": "Add, remove or sort values for the conditional list.<br />*(multiple aliases must be comma separated without space)*",
+            "description": "Add, remove or sort values for the conditional list.<br />*Multiple aliases must be comma separated.*",
             "key": "items",
             "view": "/App_Plugins/ConditionalDisplayers/prevalueeditors/cdMultivalues.html"
           },
@@ -86,7 +86,7 @@
         "fields": [
           {
             "label": "Add prevalue",
-            "description": "Add, remove or sort values for the conditional list.<br />*(multiple aliases must be comma separated without space)*",
+            "description": "Add, remove or sort values for the conditional list.<br />*Multiple aliases must be comma separated.*",
             "key": "items",
             "view": "/App_Plugins/ConditionalDisplayers/prevalueeditors/cdMultivalues.html"
           },
