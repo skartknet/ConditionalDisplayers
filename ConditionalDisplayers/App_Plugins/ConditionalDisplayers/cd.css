@@ -1,29 +1,126 @@
-﻿
-.cd-prevalues-multivalues {
-    display: flex;
-    align-items: stretch;
+﻿.cd-prevalues-editor {
+    max-width: 800px;
+    width: 100%;
 }
 
-    .cd-prevalues-multivalues > div {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        margin-right: 0.8rem;
+    /* Need to declare parent to not affect other native properties */
+    .cd-prevalues-editor .cd-prevalues-multivalues__first {
+        width:180px;
     }
 
-
-    .cd-prevalues-multivalues input[type='text'] {
-        width: auto;
+    .cd-prevalues-editor .umb-prevalues-multivalues__left label {
+        font-size: 14px;
+        font-weight: 700;
+        /* 
+            * For smaller screens or if the the Tree is resized 
+            * Keeping things aligned nicely
+        */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
+        
+        .cd-prevalues-multivalues.umb-prevalues-multivalues__add {
+            margin-bottom: 10px;
+        }
 
-        .cd-prevalues-multivalues > div:last-child {
-            margin-right: 0;
+        .cd-prevalues-multivalues > .umb-prevalues-multivalues__left {
+            flex-direction: column;
+            margin-right: .8rem;
+        }
+
+        .cd-prevalues-multivalues > .umb-prevalues-multivalues__left input {
+            width: 100%;
         }
 
         .cd-prevalues-multivalues > div.align-bottom {
             align-self: flex-end;
         }
 
+        /* Calculated manually to match the same space used for Umbraco's native dropdown */
+        .cd-prevalues-multivalues.umb-prevalues-multivalues__add .umb-prevalues-multivalues__right {
+            margin-left: calc(45px - .8rem);
+        }
+
+        /* There is just a 1px difference but it is visible in high density screens */
+        .cd-prevalues-sortable .umb-prevalues-multivalues__right {
+            margin-left: calc(44px - .8rem);
+        }
+
+    .cd-prevalues-sortable i.icon {
+        cursor: move;
+    }
+
+    .cd-prevalues-sortable .cd-prevalues-multivalues__first {
+        width: 154px;
+    }
+
+/* *** Breakpoints selected visually when the prevalues look ok *** */
+
+/* 
+    * 'Remove' button doesn't fit
+    * Target 'Add' as well to keep things consistent
+*/
+
+/* First, we drop them under the fields until they fit */
+@media only screen and (max-width: 528px) {
+
+    .cd-prevalue-wrap__first,
+    .cd-prevalue-wrap__last {
+        width: calc(50% - .4rem)
+    }
+
+    .cd-prevalue-wrap__first {
+        margin-right: .4rem !important;
+    }
+
+    .cd-prevalue-wrap__last {
+        margin-left: .4rem;
+        margin-right: 0 !important;
+    }
+
+    .cd-prevalues-editor .umb-prevalues-multivalues__right {
+        margin-top: .8rem;
+    }
+
+}
+
+/* Then, we remove the wide left margin to utilise the screen realestate */
+@media only screen and (max-width: 559px) {
+
+    /* Declare both to avoid over-using !important */
+    .cd-prevalues-multivalues.umb-prevalues-multivalues__add .umb-prevalues-multivalues__right,
+    .cd-prevalues-sortable .umb-prevalues-multivalues__right {
+        margin-left: 0;
+    }
+
+}
+
+/* Realign inputs up to this breakpoint */
+@media only screen and (max-width: 719px) {
+
+    .cd-prevalues-multivalues.umb-prevalues-multivalues__add,
+    .cd-prevalues-multivalues.umb-prevalues-multivalues__listitem {
+        flex-wrap: wrap;
+    }
+
+    /* Declare both to avoid over-using !important */
+    .cd-prevalues-editor .cd-prevalues-multivalues__first,
+    .cd-prevalues-sortable .cd-prevalues-multivalues__first {
+        margin: 0 0 .8rem;
+        width: 100%;
+    }
+
+    /* Align 'Add' button nicely to the right */
+    .cd-prevalues-multivalues.umb-prevalues-multivalues__add button {
+        margin-right: 0;
+    }
+
+    .cd-prevalues-multivalues i.icon {
+        margin-bottom: 5px;
+    }
+    
+}
 
     .cd-prevalues-multivalues .umb-node-preview__action{
         cursor: pointer;
