@@ -9,7 +9,7 @@
     "Our.Iconic"
   ],
   "Tags": [
-    "ponditional",
+    "conditional",
     "property"
   ],
   "Description": " It implements a checkbox and dropdown datatype editors that allows to hide or display other properties in the same Document Type depending on the selected value.",

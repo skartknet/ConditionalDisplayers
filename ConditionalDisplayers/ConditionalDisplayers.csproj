@@ -9,9 +9,9 @@
         <PackageTags>umbraco property editor backoffice condition display umbraco-marketplace</PackageTags>
         <AssemblyName>Our.Umbraco.ConditionalDisplayers</AssemblyName>
         <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-        <Version>3.2.4</Version>
+        <Version>3.3.0-beta2</Version>
         <Authors>Mario Lopez</Authors>
-        <PackageIcon>koben_logo.png</PackageIcon>
+        <PackageIcon>images\icon.png</PackageIcon>
         <PackageReleaseNotes></PackageReleaseNotes>
         <PackageProjectUrl>https://github.com/skartknet/ConditionalDisplayers</PackageProjectUrl>
         <RepositoryUrl>https://github.com/skartknet/ConditionalDisplayers</RepositoryUrl>

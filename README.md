@@ -56,6 +56,9 @@ This version uses the new UUI Library included by default in Umbraco 10.4 + and 
 
 For previous versions of Umbraco that still support the uui, you will need to include or reference the library's css and js files manually.
 
+# Icon
+<a target="_blank" href="https://icons8.com/icon/63snXzoESd3s/fire-hydrant">Fire Hydrant</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+
 # Donate
 This package is maintaned by Mario Lopez. If you want to say thank you:
 
