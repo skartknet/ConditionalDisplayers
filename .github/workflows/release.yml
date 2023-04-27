@@ -26,11 +26,11 @@ jobs:
       id: check_prerelease
       run: |
         if ('${{ steps.package_version.outputs.version }}' -match '^[0-9]+\.[0-9]+\.[0-9]+-.+$') {
-            echo "Pre-Release detected"
-            echo "::set-output name=prerelease::true"
+          echo "Pre-Release detected"            
+          echo "prerelease=true" >> $GITHUB_OUTPUT
         } else {
-            "echo Pre-Release NOT detected"
-            echo "::set-output name=prerelease::false"
+          echo "Pre-Release NOT detected"            
+          echo "prerelease=false" >> $GITHUB_OUTPUT
         }
     
     - name: Setup MSBuild
