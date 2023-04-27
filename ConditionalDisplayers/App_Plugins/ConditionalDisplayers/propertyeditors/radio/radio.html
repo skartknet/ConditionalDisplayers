@@ -1,7 +1,7 @@
-﻿<div class="umb-property-editor umb-radiobuttons" ng-controller="Our.Umbraco.ConditionalDisplayers.RadioController">
+﻿<div class="umb-property-editor umb-radiobuttons cd-radio-list" ng-controller="Our.Umbraco.ConditionalDisplayers.RadioController">
     <ng-form name="radioButtonsFieldForm">
 
-        <ul class="unstyled">
+        <ul class="unstyled {{labelsPos}}" ng-class="{'cd-hrz-radio': model.config.alignHrz === '1', 'cd-btn-radio': model.config.asBtn === '1'}">
             <li ng-repeat="item in viewItems track by item.key">
                 <umb-radiobutton name="{{model.alias}}_{{uniqueId}}"
                                  value="{{item.value}}"

@@ -3,13 +3,16 @@ angular.module("umbraco").controller("Our.Umbraco.ConditionalDisplayers.RadioCon
 
         $scope.viewItems = [];
 
+        // Get Labels Position with a default fallback of 'right'
+        $scope.labelsPos = $scope.model.config.labelsPos !== undefined && $scope.model.config.alignHrz === '1' && $scope.model.config.asBtn !== '1' ? "cd-labels-" + $scope.model.config.labelsPos : 'cd-labels-right';
+
         // propertyAlias is used in NestedContent properties. If we find we are in NC we
         // extract the parent alias to find later on only the property belonging to the same item where CD is included.
         if ($scope.model.propertyAlias) {
             var parentPropertyAlias = $scope.model.alias.slice(0, -$scope.model.propertyAlias.length);
         }
 
-        if(!$scope.model.value && $scope.model.config.default) {
+        if (!$scope.model.value && $scope.model.config.default) {
             $scope.model.value = $scope.model.config.default;
         }
 

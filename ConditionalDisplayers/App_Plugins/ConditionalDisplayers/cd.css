@@ -119,5 +119,153 @@
     .cd-prevalues-multivalues i.icon {
         margin-bottom: 5px;
     }
-
+    
 }
+
+    .cd-prevalues-multivalues .umb-node-preview__action{
+        cursor: pointer;
+    }
+
+
+/* *** Radio List Alignment (Prevalues) *** */
+.umb-radiobuttons-preval ul {
+    display: flex;
+}
+
+    .umb-radiobuttons-preval ul li {
+        margin-right: 25px;
+    }
+
+        .umb-radiobuttons-preval ul li label {
+            display: flex;
+        }
+
+            .umb-radiobuttons-preval ul li label .umb-form-check__info {
+                margin-left: 0;
+                margin-top: 2px;
+            }
+
+        .umb-radiobuttons-preval ul li > [value='bottom'] label {
+            flex-direction: column;
+        }
+
+        .umb-radiobuttons-preval ul li > [value='top'] label {
+            flex-direction: column-reverse;
+        }
+
+        .umb-radiobuttons-preval ul li label .umb-form-check__symbol {
+            height: 20px;
+            margin: 5px;
+            width: 20px;
+        }
+
+        .umb-radiobuttons-preval ul li label .umb-form-check__state {
+            position: relative;
+        }
+
+        .umb-radiobuttons-preval ul li > [value='left'] label {
+            flex-direction: row-reverse;
+        }
+
+/* *** Radio List (Property Editor) *** */
+/* Some fixes to help with flexbox and alignement */
+.cd-radio-list li {
+    margin-right: 25px;
+}
+
+    .cd-radio-list li label {
+        margin-top: 0;
+    }
+
+        .cd-radio-list li label .umb-form-check__state {
+            position: relative;
+        }
+
+.cd-radio-list ul:not(.cd-btn-radio) li label .umb-form-check__symbol {
+    height: 20px;
+    margin: 5px;
+    width: 20px;
+}
+
+.cd-radio-list li label .umb-form-check__info {
+    margin-left: 0;
+    margin-top: 2px;
+}
+
+/* Align Horizontally */
+.cd-hrz-radio {
+    display: flex;
+}
+
+    /* Label Top */
+    .cd-hrz-radio.cd-labels-top li label {
+        flex-direction: column-reverse;
+        text-align: center;
+    }
+
+    /* Label bottom */
+    .cd-hrz-radio.cd-labels-bottom li label {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    /* Label Left */
+    .cd-hrz-radio.cd-labels-left li label {
+        flex-direction: row-reverse;
+    }
+
+/* ** Display as Standard Button ** */
+    .cd-btn-radio li,
+    .cd-btn-radio li label,
+    .cd-btn-radio li label .umb-form-check__symbol {
+        height: 32px;
+    }
+
+    .cd-btn-radio li {
+        margin: 0 0 10px 0;
+    }
+
+        .cd-btn-radio li label {
+            display: inline-block;
+            margin: 0 10px 10px 0;
+        }
+
+            .cd-btn-radio li label .umb-form-check__symbol {
+                display: block;
+            }
+
+            .cd-btn-radio li label .umb-form-check__state {
+                height: 100%;
+                width: 100%;
+            }
+
+            .cd-btn-radio li label .umb-form-check__check {
+                background: #e9e9eb;
+                border: none;
+                border-radius: 3px;
+                height: 100%;
+                overflow: hidden;
+                width: 100%;
+            }
+
+                .cd-btn-radio li label .umb-form-check__check:before {
+                    border-radius: 0;
+                    height: 100%;
+                    width: 100%;
+                }
+
+                .cd-btn-radio li label .umb-form-check__check:before,
+                .cd-btn-radio li label .umb-form-check__input:checked:hover ~ .umb-form-check__state .umb-form-check__check:before {
+                    background: #f5c1bc;
+                }
+
+            .cd-btn-radio li label:hover .umb-form-check__check {
+                background: #f3f3f5;
+            }
+
+            .cd-btn-radio li label .umb-form-check__info {
+                display: block;
+                margin-top: 0;
+                padding: 6px 14px;
+                transform: translateY(-32px);
+            }
