@@ -9,7 +9,7 @@
         <PackageTags>umbraco property editor backoffice condition display umbraco-marketplace</PackageTags>
         <AssemblyName>Our.Umbraco.ConditionalDisplayers</AssemblyName>
         <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-        <Version>3.3.0-beta3</Version>
+        <Version>3.3.0-beta4</Version>
         <Authors>Mario Lopez</Authors>
         <PackageIcon>icon.png</PackageIcon>
         <PackageReleaseNotes></PackageReleaseNotes>
