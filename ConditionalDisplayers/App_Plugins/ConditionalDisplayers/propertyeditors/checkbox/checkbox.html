@@ -1,11 +1,12 @@
 ﻿<div class="umb-property-editor umb-boolean" ng-controller="Our.Umbraco.ConditionalDisplayers.CheckboxController">
     
-        <ng-form  name="cdToggleEditor">
+        <ng-form  name="modelValueForm">
             <uui-toggle ng-model="toggleValue"
                 label="{{toggleLabel}}"
                 labelPosition="right"
                 ng-checked="renderModel.value===true"
                 ng-on-change="clicked()"></uui-toggle>
+        
         </ng-form>
     
 </div>

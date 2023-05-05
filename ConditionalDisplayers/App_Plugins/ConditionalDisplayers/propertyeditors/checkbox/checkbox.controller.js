@@ -31,7 +31,10 @@ function cdCheckboxController($scope, $element, editorState, cdSharedLogic) {
         $scope.renderModel.value = !$scope.renderModel.value;
         // Update the toggle label based on the new value
         $scope.toggleLabel = $scope.showLabels ? ($scope.renderModel.value ? $scope.labelOn : $scope.labelOff) : "";
-        $scope.cdToggleEditor.dirty = true;
+        
+        if ($scope.modelValueForm) {
+            $scope.modelValueForm.$setDirty();
+        }
     };
 
     $scope.runDisplayLogic = function () {
