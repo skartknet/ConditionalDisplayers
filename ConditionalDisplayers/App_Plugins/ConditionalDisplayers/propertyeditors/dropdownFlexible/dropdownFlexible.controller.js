@@ -1,5 +1,16 @@
 angular.module("umbraco").controller("Our.Umbraco.ConditionalDisplayers.DropdownController",
-    function ($scope, editorState, cdSharedLogic) {
+    function ($scope, $element, editorState, cdSharedLogic) {
+
+        // Getting the parent umbraco element.
+        let parentBlockListBlock = $element[0].closest('umb-block-list-block');
+        let parentBlockListItemId = undefined;
+
+        // Setting data-cd-ancestor-id if dropdown placed into blockListItem
+        // to hide or show only child elements of it.
+        if (parentBlockListBlock) {
+            parentBlockListItemId = `dropdown-cd-ancestor-id-${$scope.$id}`;
+            parentBlockListBlock.setAttribute('data-cd-ancestor-id', parentBlockListItemId);
+        }
 
         // propertyAlias is used in NestedContent properties. If we find we are in NC we
         // extract the parent alias to find later on only the property belonging to the same item where CD is included.
@@ -25,7 +36,7 @@ angular.module("umbraco").controller("Our.Umbraco.ConditionalDisplayers.Dropdown
                 //init visible fields
                 var item = _.findWhere(config.items, { value: $scope.model.value });
                 if (item) {
-                    cdSharedLogic.displayProps(item.show, item.hide, parentPropertyAlias);
+                    cdSharedLogic.displayProps(item.show, item.hide, parentPropertyAlias, parentBlockListItemId);
                 }
             }
         };
