@@ -20,3 +20,8 @@ For previous versions of Umbraco that still support the uui, you will need to in
 
 ## Icon
 <a target="_blank" href="https://icons8.com/icon/63snXzoESd3s/fire-hydrant">Fire Hydrant</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+
+## Changelog
+### 3.5.0
+- Fix bug when dropdown is used in a block list property
+
