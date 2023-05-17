@@ -4,4 +4,4 @@ This is an Umbraco package. It implements a checkbox and dropdown datatype edito
 
 ### Umbraco Package
 
-https://our.umbraco.com/packages/backoffice-extensions/conditional-displayers/
+https://marketplace.umbraco.com/package/our.umbraco.conditionaldisplayers
