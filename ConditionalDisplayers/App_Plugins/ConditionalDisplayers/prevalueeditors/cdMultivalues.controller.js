@@ -1,12 +1,11 @@
 angular.module("umbraco").controller("Our.Umbraco.ConditionalDisplayers.cdMultiValuesController",
     function ($scope, $timeout) {
-
         //NOTE: We need to make each item an object, not just a string because you cannot 2-way bind to a primitive.
 
         $scope.newItem = {
             value: "",
             show: "",
-            hide:""
+            hide: ""
         };
         $scope.hasError = false;
         $scope.focusOnNew = false;
@@ -18,6 +17,7 @@ angular.module("umbraco").controller("Our.Umbraco.ConditionalDisplayers.cdMultiV
             for (var i in $scope.model.value) {
                 items.push({
                     value: $scope.model.value[i].value,
+                    key: $scope.model.value[i].key,
                     show: $scope.model.value[i].show,
                     hide: $scope.model.value[i].hide,
                     sortOrder: $scope.model.value[i].sortOrder,

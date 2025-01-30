@@ -34,7 +34,11 @@ angular.module("umbraco").controller("Our.Umbraco.ConditionalDisplayers.Dropdown
         $scope.runDisplayLogic = function () {
             if (editorState.current.ModelState) {
                 //init visible fields
-                var item = _.findWhere(config.items, { value: $scope.model.value });
+                //legacy
+                var itemByValue = _.findWhere(config.items, { value: $scope.model.value })
+                var itemBykey = _.findWhere(config.items, { key: $scope.model.value });
+                var item = itemByValue || itemBykey;
+
                 if (item) {
                     cdSharedLogic.displayProps(item.show, item.hide, parentPropertyAlias, parentBlockListItemId);
                 }
