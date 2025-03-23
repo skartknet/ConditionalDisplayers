@@ -2,9 +2,9 @@
     <ng-form name="radioButtonsFieldForm">
 
         <ul class="unstyled {{labelsPos}}" ng-class="{'cd-hrz-radio': model.config.alignHrz === '1', 'cd-btn-radio': model.config.asBtn === '1'}">
-            <li ng-repeat="item in viewItems track by item.key">
+            <li ng-repeat="item in viewItems track by item.id">
                 <umb-radiobutton name="{{model.alias}}_{{uniqueId}}"
-                                 value="{{item.value}}"
+                                 value="{{item.key}}"
                                  model="model.value"
                                  text="{{item.value}}"
                                  required="model.validation.mandatory && model.value == ''"
