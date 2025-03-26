@@ -1,4 +1,5 @@
 {
+  "$schema": "https://marketplace.umbraco.com/umbraco-marketplace-schema.json",
   "Category": "Editor Tools",
   "LicenseTypes": [
     "Free"
@@ -16,31 +17,7 @@
   "AuthorDetails": {
     "Name": "Mario Lopez",
     "ImageUrl": "https://github.com/skartknet.png",
-    "Contributors": [
-      {
-        "Name": "Robert Foster",
-        "Url": "https://github.com/robertjf"
-      },
-      {
-        "Name": "Chris Brown",
-        "Url": "https://github.com/osigas"
-      },
-      {
-        "Name": "Jez Reel R. Maghuyop",
-        "Url": "https://github.com/jezmaghuyop"
-      },
-      {
-        "Name": "Richard van der Meer",
-        "Url": "https://github.com/RichardVanDerMeer"
-      },
-      {
-        "Name": "Tarik Essadki",
-        "Url": "https://github.com/TRexStark"
-      },
-      {
-        "Name": "KudAndrii",
-        "Url": "https://github.com/KudAndrii"
-      }
-    ]
-  }
+    "SyncContributorsFromRepository": true
+  },
+  "DocumentationUrl": "https://github.com/skartknet/ConditionalDisplayers/blob/2b3ba08a08bd30c7c7bbfcbb967369b960af6a6c/Documentation/README.md"
 }
