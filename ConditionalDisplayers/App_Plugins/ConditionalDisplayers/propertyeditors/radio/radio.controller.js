@@ -27,6 +27,11 @@ angular.module("umbraco").controller("Our.Umbraco.ConditionalDisplayers.RadioCon
         $scope.model.value = $scope.model.config.default;
     }
 
+     // update the visible fields on changes from NestedContent     
+     $(document).on("click", ".umb-nested-content__header-bar", $scope.runDisplayLogic);
+ 
+     $(document).on("click", "umb-tabs-nav", $scope.runDisplayLogic);
+
     $scope.runDisplayLogic = function () {
         if (editorState.current.ModelState) {
             //init visible fields
