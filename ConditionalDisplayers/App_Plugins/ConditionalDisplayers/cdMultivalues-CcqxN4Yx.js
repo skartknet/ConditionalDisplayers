@@ -1,6 +1,6 @@
 import { repeat as I, html as m, property as f, state as d, customElement as y } from "@umbraco-cms/backoffice/external/lit";
 import { UmbPropertyValueChangeEvent as _ } from "@umbraco-cms/backoffice/property-editor";
-import { t as g } from "./backoffice-entrypoint-DPEzlx7j.js";
+import { t as g } from "./backoffice-entrypoint-DsMPxxPY.js";
 import { UmbLitElement as E } from "@umbraco-cms/backoffice/lit-element";
 var $ = Object.defineProperty, V = Object.getOwnPropertyDescriptor, c = (e) => {
   throw TypeError(e);
@@ -142,4 +142,4 @@ export {
   M as default,
   C as elementName
 };
-//# sourceMappingURL=cdMultivalues-CqWElAeG.js.map
+//# sourceMappingURL=cdMultivalues-CcqxN4Yx.js.map

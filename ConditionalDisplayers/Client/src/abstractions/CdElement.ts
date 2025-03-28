@@ -1,8 +1,8 @@
-import { UMB_CONTENT_PROPERTY_DATASET_CONTEXT } from "@umbraco-cms/backoffice/content";
 import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
 import { LitElement } from "lit";
 import { toggleElements } from "../sharedLogic";
 import style from '../cd.css';
+import { UMB_PROPERTY_DATASET_CONTEXT } from "@umbraco-cms/backoffice/property";
 
 export abstract class CdElement extends UmbElementMixin(LitElement) {
     protected datasetHostElement?: HTMLElement;
@@ -10,12 +10,13 @@ export abstract class CdElement extends UmbElementMixin(LitElement) {
     constructor() {
         super();
 
-        this.consumeContext(UMB_CONTENT_PROPERTY_DATASET_CONTEXT, (instance) => {
+        this.consumeContext(UMB_PROPERTY_DATASET_CONTEXT, (instance) => {
+            // @ts-ignore - 'getHostElement' not in TS definition yet
             this.datasetHostElement = instance.getHostElement() as HTMLElement;
         });
     }
 
-    static styles = style;
+    static override styles = style;
 
     override connectedCallback(): void {
         super.connectedCallback();

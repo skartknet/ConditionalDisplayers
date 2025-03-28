@@ -6,8 +6,8 @@ var be = (i, e, t) => e.has(i) ? ve("Cannot add the same private member more tha
 var Ae = (i, e, t) => (Ye(i, e, "access private method"), t);
 import { nothing as Ee, html as $, property as T, state as p, customElement as le, repeat as we } from "@umbraco-cms/backoffice/external/lit";
 import { UmbPropertyValueChangeEvent as ne } from "@umbraco-cms/backoffice/property-editor";
-import { UMB_CONTENT_PROPERTY_DATASET_CONTEXT as et } from "@umbraco-cms/backoffice/content";
-import { UmbElementMixin as tt } from "@umbraco-cms/backoffice/element-api";
+import { UmbElementMixin as et } from "@umbraco-cms/backoffice/element-api";
+import { UMB_PROPERTY_DATASET_CONTEXT as tt } from "@umbraco-cms/backoffice/property";
 const he = "our-conditionaldisplayers";
 /**
  * @license
@@ -15,7 +15,7 @@ const he = "our-conditionaldisplayers";
  * SPDX-License-Identifier: BSD-3-Clause
  */
 const j = globalThis, ce = j.ShadowRoot && (j.ShadyCSS === void 0 || j.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype, de = Symbol(), Se = /* @__PURE__ */ new WeakMap();
-let Be = class {
+let Ne = class {
   constructor(e, t, s) {
     if (this._$cssResult$ = !0, s !== de) throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");
     this.cssText = e, this.t = t;
@@ -33,13 +33,13 @@ let Be = class {
     return this.cssText;
   }
 };
-const it = (i) => new Be(typeof i == "string" ? i : i + "", void 0, de), st = (i, ...e) => {
+const it = (i) => new Ne(typeof i == "string" ? i : i + "", void 0, de), st = (i, ...e) => {
   const t = i.length === 1 ? i[0] : e.reduce((s, o, a) => s + ((r) => {
     if (r._$cssResult$ === !0) return r.cssText;
     if (typeof r == "number") return r;
     throw Error("Value passed to 'css' function must be a 'css' function result: " + r + ". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.");
   })(o) + i[a + 1], i[0]);
-  return new Be(t, i, de);
+  return new Ne(t, i, de);
 }, ot = (i, e) => {
   if (ce) i.adoptedStyleSheets = e.map((t) => t instanceof CSSStyleSheet ? t : t.styleSheet);
   else for (const t of e) {
@@ -309,13 +309,13 @@ const ft = (i, e) => {
   }
   return [Ge(i, a + (i[t] || "<?>") + (e === 2 ? "</svg>" : e === 3 ? "</math>" : "")), s];
 };
-class N {
+class B {
   constructor({ strings: e, _$litType$: t }, s) {
     let o;
     this.parts = [];
     let a = 0, r = 0;
     const h = e.length - 1, l = this.parts, [c, u] = ft(e, t);
-    if (this.el = N.createElement(c, s), P.currentNode = this.el.content, t === 2 || t === 3) {
+    if (this.el = B.createElement(c, s), P.currentNode = this.el.content, t === 2 || t === 3) {
       const n = this.el.content.firstChild;
       n.replaceWith(...n.childNodes);
     }
@@ -414,7 +414,7 @@ class z {
   }
   $(e) {
     var a;
-    const { values: t, _$litType$: s } = e, o = typeof s == "number" ? this._$AC(e) : (s.el === void 0 && (s.el = N.createElement(Ge(s.h, s.h[0]), this.options)), s);
+    const { values: t, _$litType$: s } = e, o = typeof s == "number" ? this._$AC(e) : (s.el === void 0 && (s.el = B.createElement(Ge(s.h, s.h[0]), this.options)), s);
     if (((a = this._$AH) == null ? void 0 : a._$AD) === o) this._$AH.p(t);
     else {
       const r = new gt(o, this), h = r.u(this.options);
@@ -423,7 +423,7 @@ class z {
   }
   _$AC(e) {
     let t = ke.get(e.strings);
-    return t === void 0 && ke.set(e.strings, t = new N(e)), t;
+    return t === void 0 && ke.set(e.strings, t = new B(e)), t;
   }
   k(e) {
     pe(this._$AH) || (this._$AH = [], this._$AR());
@@ -511,7 +511,7 @@ class $t {
   }
 }
 const te = R.litHtmlPolyfillSupport;
-te == null || te(N, z), (R.litHtmlVersions ?? (R.litHtmlVersions = [])).push("3.2.1");
+te == null || te(B, z), (R.litHtmlVersions ?? (R.litHtmlVersions = [])).push("3.2.1");
 const vt = (i, e, t) => {
   const s = (t == null ? void 0 : t.renderBefore) ?? e;
   let o = s._$litPart$;
@@ -551,8 +551,8 @@ class H extends O {
     return V;
   }
 }
-var Ne;
-H._$litElement$ = !0, H.finalized = !0, (Ne = globalThis.litElementHydrateSupport) == null || Ne.call(globalThis, { LitElement: H });
+var Be;
+H._$litElement$ = !0, H.finalized = !0, (Be = globalThis.litElementHydrateSupport) == null || Be.call(globalThis, { LitElement: H });
 const ie = globalThis.litElementPolyfillSupport;
 ie == null || ie({ LitElement: H });
 (globalThis.litElementVersions ?? (globalThis.litElementVersions = [])).push("4.1.1");
@@ -637,11 +637,11 @@ const Me = (i, e, t) => {
 }
 `;
 var Q, qe;
-const $e = class $e extends tt(H) {
+const $e = class $e extends et(H) {
   constructor() {
     super();
     be(this, Q);
-    this.consumeContext(et, (t) => {
+    this.consumeContext(tt, (t) => {
       this.datasetHostElement = t.getHostElement();
     });
   }
@@ -657,7 +657,7 @@ const $e = class $e extends tt(H) {
 Q = new WeakSet(), qe = function() {
   this.initDefaults(), this.bootstrap();
 }, $e.styles = Et;
-let B = $e;
+let N = $e;
 var wt = Object.defineProperty, St = Object.getOwnPropertyDescriptor, Je = (i) => {
   throw TypeError(i);
 }, y = (i, e, t, s) => {
@@ -666,7 +666,7 @@ var wt = Object.defineProperty, St = Object.getOwnPropertyDescriptor, Je = (i) =
   return s && o && wt(e, t, o), o;
 }, ue = (i, e, t) => e.has(i) || Je("Cannot " + t), Ct = (i, e, t) => (ue(i, e, "read from private field"), t ? t.call(i) : e.get(i)), Re = (i, e, t) => e.has(i) ? Je("Cannot add the same private member more than once") : e instanceof WeakSet ? e.add(i) : e.set(i, t), Pt = (i, e, t, s) => (ue(i, e, "write to private field"), e.set(i, t), t), Ut = (i, e, t) => (ue(i, e, "access private method"), t), F, oe, Ke;
 const fe = `${he}-checkbox`;
-let f = class extends B {
+let f = class extends N {
   constructor() {
     super(...arguments), Re(this, oe), Re(this, F, !1);
   }
@@ -749,7 +749,7 @@ var Vt = Object.defineProperty, Dt = Object.getOwnPropertyDescriptor, Ze = (i) =
   return s && o && Vt(e, t, o), o;
 }, ge = (i, e, t) => e.has(i) || Ze("Cannot " + t), Tt = (i, e, t) => (ge(i, e, "read from private field"), t ? t.call(i) : e.get(i)), He = (i, e, t) => e.has(i) ? Ze("Cannot add the same private member more than once") : e instanceof WeakSet ? e.add(i) : e.set(i, t), kt = (i, e, t, s) => (ge(i, e, "write to private field"), e.set(i, t), t), Ie = (i, e, t) => (ge(i, e, "access private method"), t), G, q, re;
 const me = `${he}-radio`;
-let g = class extends B {
+let g = class extends N {
   constructor() {
     super(...arguments), He(this, q), this.availableValues = [], He(this, G, "");
   }
@@ -852,9 +852,9 @@ var Ht = Object.defineProperty, It = Object.getOwnPropertyDescriptor, Qe = (i) =
   for (var o = s > 1 ? void 0 : s ? It(e, t) : e, a = i.length - 1, r; a >= 0; a--)
     (r = i[a]) && (o = (s ? r(e, t, o) : r(o)) || o);
   return s && o && Ht(e, t, o), o;
-}, ye = (i, e, t) => e.has(i) || Qe("Cannot " + t), Lt = (i, e, t) => (ye(i, e, "read from private field"), t ? t.call(i) : e.get(i)), Le = (i, e, t) => e.has(i) ? Qe("Cannot add the same private member more than once") : e instanceof WeakSet ? e.add(i) : e.set(i, t), Nt = (i, e, t, s) => (ye(i, e, "write to private field"), e.set(i, t), t), Bt = (i, e, t) => (ye(i, e, "access private method"), t), J, ae, Xe;
+}, ye = (i, e, t) => e.has(i) || Qe("Cannot " + t), Lt = (i, e, t) => (ye(i, e, "read from private field"), t ? t.call(i) : e.get(i)), Le = (i, e, t) => e.has(i) ? Qe("Cannot add the same private member more than once") : e instanceof WeakSet ? e.add(i) : e.set(i, t), Bt = (i, e, t, s) => (ye(i, e, "write to private field"), e.set(i, t), t), Nt = (i, e, t) => (ye(i, e, "access private method"), t), J, ae, Xe;
 const _e = `${he}-dropdown`;
-let m = class extends B {
+let m = class extends N {
   constructor() {
     super(...arguments), Le(this, ae), this.availableValues = [], this.viewModelSelectOptions = [], Le(this, J, "");
   }
@@ -867,7 +867,7 @@ let m = class extends B {
   set selectedValue(i) {
     if (!i)
       throw new Error("value not set");
-    Nt(this, J, i);
+    Bt(this, J, i);
     const e = this.availableValues.find((t) => t.value === i);
     e && (this.selectedItem = e), this.value = i, this.dispatchEvent(new ne());
   }
@@ -892,7 +892,7 @@ let m = class extends B {
   }
   render() {
     return this.availableValues.length === 0 ? $`<p>No conditional items configured</p>` : $`
-        <uui-select @change=${Bt(this, ae, Xe)} required .options=${this.viewModelSelectOptions} placeholder="Pick One"></uui-select>
+        <uui-select @change=${Nt(this, ae, Xe)} required .options=${this.viewModelSelectOptions} placeholder="Pick One"></uui-select>
         `;
   }
 };
@@ -1024,7 +1024,7 @@ const zt = m, Wt = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePr
     type: "propertyEditorUi",
     alias: "Our.Umbraco.CdMultivalues",
     name: "[Conditional] Multivalues Displayer",
-    element: () => import("./cdMultivalues-CqWElAeG.js"),
+    element: () => import("./cdMultivalues-CcqxN4Yx.js"),
     meta: {
       label: "[Conditional] Multivalues Displayer",
       icon: "icon-autofill",
@@ -1101,4 +1101,4 @@ export {
   ii as b,
   he as t
 };
-//# sourceMappingURL=backoffice-entrypoint-DPEzlx7j.js.map
+//# sourceMappingURL=backoffice-entrypoint-DsMPxxPY.js.map
