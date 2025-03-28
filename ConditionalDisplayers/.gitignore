@@ -1,0 +1,3 @@
+# allow App_Plugins in this project
+!/App_Plugins/**
+
