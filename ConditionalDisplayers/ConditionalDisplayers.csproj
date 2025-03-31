@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net5.0;net472;net6.0;net7.0</TargetFrameworks>
+        <TargetFrameworks>net5.0;net472;net6.0;net7.0;net9.0</TargetFrameworks>
         <ContentTargetFolders>.</ContentTargetFolders>
         <PackageId>Our.Umbraco.ConditionalDisplayers</PackageId>
         <Title>ConditionalDisplayers</Title>
@@ -45,6 +45,12 @@
 		</PackageReference>
 	</ItemGroup>
 
+	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+		<PackageReference Include="Umbraco.Cms.Core">
+			<Version>15.2.2</Version>
+		</PackageReference>
+	</ItemGroup>
+
 	<ItemGroup>
         <None Include="..\README.nuget.md">
           <Pack>True</Pack>
@@ -62,6 +68,9 @@
 			<Pack>True</Pack>
 			<PackagePath>build</PackagePath>
 		</None>
+
+		<!-- exclude node_modules -->
+		<None Remove="Client\node_modules\**\*" />
     </ItemGroup>
 
 

@@ -1,24 +1,32 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-    <PropertyGroup>
-        <ConditionalDisplayersContentFilesPath>$(MSBuildThisFileDirectory)..\App_Plugins\ConditionalDisplayers\**\*.*</ConditionalDisplayersContentFilesPath>
+	<PropertyGroup>
+		<IsUmbracoPostV15>$([MSBuild]::VersionGreaterThanOrEquals('$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)'))','9.0'))</IsUmbracoPostV15>
+	</PropertyGroup>
+    <PropertyGroup Condition="$(IsUmbracoPostV15) == 'true'">
+		<ConditionalDisplayersContentFilesPath>$(MSBuildThisFileDirectory)..\App_Plugins\ConditionalDisplayers\**\*.*</ConditionalDisplayersContentFilesPath>
+        <AppPluginPath>wwwroot\App_Plugins</AppPluginPath>
     </PropertyGroup>
+	<PropertyGroup Condition="$(IsUmbracoPostV15) == 'false'">
+		<ConditionalDisplayersContentFilesPath>$(MSBuildThisFileDirectory)..\App_Plugins\ConditionalDisplayers_pre-v15\**\*.*</ConditionalDisplayersContentFilesPath>
+		<AppPluginPath>App_Plugins</AppPluginPath>
+	</PropertyGroup>
 
     <Target Name="CopyConditionalDisplayersAssets" BeforeTargets="Build">
         <ItemGroup>
             <ConditionalDisplayersContentFiles Include="$(ConditionalDisplayersContentFilesPath)" />
         </ItemGroup>
-        <Message Text="Copying ConditionalDisplayers files: $(ConditionalDisplayersContentFilesPath) - #@(ConditionalDisplayersContentFiles->Count()) files"  Importance="high" />
+        <Message Text="Copying ConditionalDisplayers files: $(ConditionalDisplayersContentFilesPath) - #@(ConditionalDisplayersContentFiles->Count()) files" Importance="high" />
         <Copy
             SourceFiles="@(ConditionalDisplayersContentFiles)"
-            DestinationFiles="@(ConditionalDisplayersContentFiles->'$(MSBuildProjectDirectory)\App_Plugins\ConditionalDisplayers\%(RecursiveDir)%(Filename)%(Extension)')"
+            DestinationFiles="@(ConditionalDisplayersContentFiles->'$(MSBuildProjectDirectory)\$(AppPluginPath)\ConditionalDisplayers\%(RecursiveDir)%(Filename)%(Extension)')"
             SkipUnchangedFiles="true" />
 
     </Target>
 
     <Target Name="ClearConditionalDisplayersAssets" BeforeTargets="Clean">
         <ItemGroup>
-            <ConditionalDisplayersDir Include="$(MSBuildProjectDirectory)\App_Plugins\ConditionalDisplayers\" />
+            <ConditionalDisplayersDir Include="$(MSBuildProjectDirectory)\$(AppPluginPath)\ConditionalDisplayers\" />
         </ItemGroup>
         <Message Text="Clear old ConditionalDisplayers data"  Importance="high" />
         <RemoveDir Directories="@(ConditionalDisplayersDir)"  />
