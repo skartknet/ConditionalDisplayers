@@ -48,7 +48,7 @@ jobs:
       run: msbuild ${{ env.SOLUTION }} -p:Configuration=Release -p:GeneratePackageOnBuild=true -p:PackageOutputPath=${{ env.OUTPUT_PATH }}
 
     - name: Upload NuGet artifacts
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: nuget
         path: ${{ env.OUTPUT_PATH }}

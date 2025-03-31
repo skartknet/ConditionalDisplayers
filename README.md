@@ -1,13 +1,17 @@
 # Conditional Displayers
 
-This is an Umbraco package. It implements a checkbox, a dropdown and a radio list datatype editors that work like the core ones (in fact they are based in the same code), but allows to hide or display other properties in the same Document Type.
+Umbraco package that offers a collection of editors that allow to hide or display other properties in the same Document Type.
 
 ## Installation
 
 ### Nuget
-[![NuGet](https://buildstats.info/nuget/Our.Umbraco.ConditionalDisplayers)](https://www.nuget.org/packages/Our.Umbraco.ConditionalDisplayers/)
+![NuGet Downloads](https://img.shields.io/nuget/dt/Our.Umbraco.ConditionalDisplayers?label=Our.Umbraco.ConditionalDisplayers)
 
-Run this form your Package Manager Console in Visual Studio:
+
+https://www.nuget.org/packages/Our.Umbraco.ConditionalDisplayers
+
+
+Run this from your Package Manager Console in Visual Studio:
 
     PM> Install-Package Our.Umbraco.ConditionalDisplayers
 
@@ -24,4 +28,5 @@ For previous versions of Umbraco that still support the uui, you will need to in
 ## Changelog
 ### 3.5.0
 - Fix bug when dropdown is used in a block list property
+- Add support for multilanguage #31
 

@@ -27,11 +27,17 @@ angular.module("umbraco").controller("Our.Umbraco.ConditionalDisplayers.RadioCon
         $scope.model.value = $scope.model.config.default;
     }
 
+     // update the visible fields on changes from NestedContent     
+     $(document).on("click", ".umb-nested-content__header-bar", $scope.runDisplayLogic);
+ 
+     $(document).on("click", "umb-tabs-nav", $scope.runDisplayLogic);
 
     $scope.runDisplayLogic = function () {
         if (editorState.current.ModelState) {
             //init visible fields
-            var item = _.findWhere($scope.model.config.items, { value: $scope.model.value });
+            var itemByValue = _.findWhere($scope.model.config.items, { value: $scope.model.value })
+            var itemBykey = _.findWhere($scope.model.config.items, { key: $scope.model.value });
+            var item = itemByValue || itemBykey;
             if (item) {
                 cdSharedLogic.displayProps(item.show, item.hide, parentPropertyAlias, parentBlockListItemId);
             }
@@ -50,9 +56,8 @@ angular.module("umbraco").controller("Our.Umbraco.ConditionalDisplayers.RadioCon
             var vals = _.values($scope.model.config.items);
             var keys = _.keys($scope.model.config.items);
             for (var i = 0; i < vals.length; i++) {
-                $scope.viewItems.push({ key: keys[i], value: vals[i].value });
+                $scope.viewItems.push({ id: keys[i], value: vals[i].value, key: vals[i].key || vals[i].value });
             }
-
         }
 
         // Set the message to use for when a mandatory field isn't completed.

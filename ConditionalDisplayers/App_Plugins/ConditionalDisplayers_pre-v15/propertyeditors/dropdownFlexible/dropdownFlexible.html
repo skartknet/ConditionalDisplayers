@@ -4,7 +4,7 @@
             class="umb-property-editor umb-dropdown"
             ng-change="runDisplayLogic()"
             ng-model="model.value"
-            ng-options="item.value as item.value for item in model.config.items">
+            ng-options="(item.key || item.value) as item.value for item in model.config.items">
     </select>
 
 </div>

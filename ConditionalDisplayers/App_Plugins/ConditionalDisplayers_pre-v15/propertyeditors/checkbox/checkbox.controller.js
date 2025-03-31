@@ -58,8 +58,10 @@ function cdCheckboxController($scope, $element, editorState, cdSharedLogic) {
     // update the visible fields on changes from NestedContent
     var formSubmittingUnsubscribe = $scope.$on("formSubmitting", $scope.runDisplayLogic);
     var ncSyncValUnsubscribe = $scope.$on("ncSyncVal", $scope.runDisplayLogic);
-    $(document).on("click", ".umb-nested-content__header-bar", $scope.runDisplayLogic)
+    $(document).on("click", ".umb-nested-content__header-bar", $scope.runDisplayLogic);
 
+    $(document).on("click", "umb-tabs-nav", $scope.runDisplayLogic);
+    
     function setupViewModel() {
         $scope.renderModel = {
             value: false

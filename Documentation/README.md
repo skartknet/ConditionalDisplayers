@@ -1,4 +1,7 @@
+
 # Configuration
+
+>⚠️ **VALIDATION:** Hiding properties with Conditional Displayers won't bypass their validation rules. i.e if you make a property required, this will still be required even if it's hidden.
 
 ## Editors
 ### Checkbox
