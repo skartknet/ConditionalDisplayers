@@ -1,4 +1,4 @@
-import { customElement, html, property, repeat, state } from "@umbraco-cms/backoffice/external/lit";
+import { customElement, html, nothing, property, repeat, state } from "@umbraco-cms/backoffice/external/lit";
 import { UmbPropertyEditorUiElement, UmbPropertyValueChangeEvent } from "@umbraco-cms/backoffice/property-editor";
 import { tagPrefix } from "../constants";
 import { UmbLitElement } from "@umbraco-cms/backoffice/lit-element";
@@ -125,7 +125,7 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
 
     render() {
         if (!this.liveItem) {
-            return;
+            return nothing;
         }
 
         return html`

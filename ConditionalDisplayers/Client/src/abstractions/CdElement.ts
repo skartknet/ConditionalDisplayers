@@ -1,5 +1,5 @@
 import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
-import { LitElement } from "lit";
+import { LitElement, PropertyValues } from "lit";
 import { toggleElements } from "../sharedLogic";
 import style from '../cd.css';
 import { UMB_PROPERTY_DATASET_CONTEXT } from "@umbraco-cms/backoffice/property";
@@ -18,12 +18,10 @@ export abstract class CdElement extends UmbElementMixin(LitElement) {
 
     static override styles = style;
 
-    override connectedCallback(): void {
-        super.connectedCallback();
+    protected override firstUpdated(_changedProperties: PropertyValues): void {
         setTimeout(() => {
-            // setTimeout allows 'value' to be assigned (not perfect)
             this.#bootstrap();
-        }, 50);    // TODO: this needs better solution (from 50)(fails at '0')
+        }, 50);     // TODO: create better solution. This should run after other properties have been  (from 50)(fails at '0')
     }
 
     #bootstrap() {
