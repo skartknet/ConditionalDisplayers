@@ -34,7 +34,11 @@ angular.module("umbraco").controller("Our.Umbraco.ConditionalDisplayers.Dropdown
         $scope.runDisplayLogic = function () {
             if (editorState.current.ModelState) {
                 //init visible fields
-                var item = _.findWhere(config.items, { value: $scope.model.value });
+                //legacy
+                var itemByValue = _.findWhere(config.items, { value: $scope.model.value })
+                var itemBykey = _.findWhere(config.items, { key: $scope.model.value });
+                var item = itemByValue || itemBykey;
+
                 if (item) {
                     cdSharedLogic.displayProps(item.show, item.hide, parentPropertyAlias, parentBlockListItemId);
                 }
@@ -44,7 +48,9 @@ angular.module("umbraco").controller("Our.Umbraco.ConditionalDisplayers.Dropdown
         // update the visible fields on changes from NestedContent
         var formSubmittingUnsubscribe = $scope.$on("formSubmitting", $scope.runDisplayLogic);
         var ncSyncValUnsubscribe = $scope.$on("ncSyncVal", $scope.runDisplayLogic);
-        $(document).on("click", ".umb-nested-content__header-bar", $scope.runDisplayLogic)
+        $(document).on("click", ".umb-nested-content__header-bar", $scope.runDisplayLogic);
+
+        $(document).on("click", "umb-tabs-nav", $scope.runDisplayLogic);
 
         function convertArrayToDictionaryArray(model) {
             //now we need to format the items in the dictionary because we always want to have an array
