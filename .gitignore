@@ -264,3 +264,4 @@ umbracoClient/
 
 
 **/App_Plugins/**
+**/umbraco/Data/TEMP
