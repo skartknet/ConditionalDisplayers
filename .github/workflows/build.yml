@@ -13,39 +13,32 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-
-    - name: Fetch all history for all tags and branches
-      run: git fetch --prune --unshallow
+      with:
+        fetch-depth: 0 # Fetch all history for all tags and branches            
       
-    - name: Setup .NET Core SDK 6.x
-      uses: actions/setup-dotnet@v3
+        
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
 
       with:
-        dotnet-version: '6.x'
+        dotnet-version: '9.x'
         
-    - name: Setup .NET Core SDK 7.x
-      uses: actions/setup-dotnet@v3
-
-      with:
-        dotnet-version: '7.x'
-        
-    - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v1.1
 
     - name: Restore NuGet packages
-      run: msbuild ${{ env.SOLUTION }} -t:restore
+      run: dotnet restore ${{ env.SOLUTION }} --no-cache
 
-    - name: Copy lucene analyser
-      run: |
-        $src = "C:\Users\runneradmin\.nuget\packages\lucene.net\4.8.0-beta00014\analyzers\dotnet\cs"
-        $dest = "C:\Users\runneradmin\.nuget\packages\lucene.net\3.0.3\analyzers\dotnet\cs"
-        if (!(Test-Path -Path $dest)) {
-            New-Item -ItemType directory -Path $dest
-        }
-        Copy-Item -Path $src\*.dll -Destination $dest
 
     - name: Build solution
-      run: msbuild ${{ env.SOLUTION }} -p:Configuration=Release -p:GeneratePackageOnBuild=true -p:PackageOutputPath=${{ env.OUTPUT_PATH }}
+      run: dotnet publish ${{ env.SOLUTION }} --configuration Release --output ${{ env.OUTPUT_PATH }}
+
+    - name: Cache NuGet packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
 
     - name: Upload NuGet artifacts
       uses: actions/upload-artifact@v4

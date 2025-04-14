@@ -2,70 +2,79 @@ name: Our.Umbraco.ConditionalDisplayers - Release
 
 on:
   push:
-    branches: [ 'release/**' ]
+    branches:
+      - 'release/**'
 
 env:
   SOLUTION: ConditionalDisplayers.sln
   PLUGIN_PROJECT: ConditionalDisplayers\ConditionalDisplayers.csproj  
   OUTPUT_PATH: ${{ github.workspace }}\.output
-  
+
 jobs:
   publish-nuget:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v4.0.0
+
+    - name: Cache NuGet packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4.1.0
+      with:
+        dotnet-version: '9.x'
 
     - name: Get Release Version
       id: package_version
-      uses: KageKirin/get-csproj-version@v0.0.1
+      uses: KageKirin/get-csproj-version@v0.1.0
       with:
         file: ${{ env.PLUGIN_PROJECT }}
         regex: ^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?:-(?<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$
-        
-    - name: Check Version v${{ steps.package_version.outputs.version }} Pre-Release state
+
+    - name: Check Pre-Release State
       id: check_prerelease
       run: |
-        if ('${{ steps.package_version.outputs.version }}' -match '^[0-9]+\.[0-9]+\.[0-9]+-.+$') {
-          echo "Pre-Release detected"            
+        if [[ "${{ steps.package_version.outputs.version }}" == *-* ]]; then
+          echo "Pre-Release detected"
           echo "prerelease=true" >> $GITHUB_OUTPUT
-        } else {
-          echo "Pre-Release NOT detected"            
+        else
+          echo "Pre-Release NOT detected"
           echo "prerelease=false" >> $GITHUB_OUTPUT
-        }
-    
-    - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v1.1
+        fi
 
     - name: Restore NuGet packages
-      run: msbuild ${{ env.SOLUTION }} -t:restore
+      run: dotnet restore ${{ env.SOLUTION }} --no-cache
 
-    - name: Copy lucene analyser
-      run: |
-        $src = "C:\Users\runneradmin\.nuget\packages\lucene.net\4.8.0-beta00014\analyzers\dotnet\cs"
-        $dest = "C:\Users\runneradmin\.nuget\packages\lucene.net\3.0.3\analyzers\dotnet\cs"
-        if (!(Test-Path -Path $dest)) {
-            New-Item -ItemType directory -Path $dest
-        }
-        Copy-Item -Path $src\*.dll -Destination $dest
 
-    - name: Create Nuget Packages
-      run: msbuild ${{ env.SOLUTION }} -p:Configuration=Release -p:GeneratePackageOnBuild=true -p:PackageOutputPath=${{ env.OUTPUT_PATH }}
-      
+    - name: Pack NuGet Package
+      run: dotnet pack ${{ env.PLUGIN_PROJECT }} --configuration Release --output ${{ env.OUTPUT_PATH }}
+
     - name: Publish to NuGet
-      run: dotnet nuget push "${{ env.OUTPUT_PATH }}\*.nupkg" --skip-duplicate --api-key "$env:apiKey" -s https://api.nuget.org/v3/index.json
+      run: |
+        dotnet nuget push "${{ env.OUTPUT_PATH }}\*.nupkg" --skip-duplicate --api-key "$env:apiKey" -s https://api.nuget.org/v3/index.json
+        if [ $? -ne 0 ]; then
+          echo "NuGet push failed. Exiting."
+          exit 1
+        fi
       env:
         apiKey: ${{ secrets.NUGET_API_KEY }}
 
-    - uses: avakar/tag-and-release@v1
-      name: Create Release Tag v${{ steps.package_version.outputs.version }}
+    - name: Create Release Tag
+      uses: avakar/tag-and-release@v1.0.0
       id: release
       with:
         tag_name: v${{ steps.package_version.outputs.version }}
         prerelease: ${{ steps.check_prerelease.outputs.prerelease }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
-    - name: Release information for v${{ steps.package_version.outputs.version }}
+
+    - name: Release Information
       run: |
         echo Release Id: ${{ steps.release.outputs.id }}
         echo Upload URL: "${{ steps.release.outputs.upload_url }}"
