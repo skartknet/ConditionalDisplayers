@@ -30,3 +30,6 @@ For previous versions of Umbraco that still support the uui, you will need to in
 - Fix bug when dropdown is used in a block list property
 - Add support for multilanguage #31
 
+### 3.6.0
+- Fix default value not being applied when properties are in a non-visible tab
+
