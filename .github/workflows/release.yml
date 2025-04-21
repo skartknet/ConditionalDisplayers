@@ -44,8 +44,6 @@ jobs:
           echo "Pre-Release detected"                    
           echo "prerelease=true" >> $GITHUB_OUTPUT
         } else {
-          echo "Pre-Release NOT detected"            
-        else
           echo "Pre-Release NOT detected"
           echo "prerelease=false" >> $GITHUB_OUTPUT
         }
