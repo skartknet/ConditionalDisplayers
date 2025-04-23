@@ -7,7 +7,8 @@
   "PackageType": "Package",
   "Title": "Conditional Displayers",
   "PackagesByAuthor": [
-    "Our.Iconic"
+    "Our.Iconic",
+    "umbraco.community.utours"
   ],
   "Tags": [
     "conditional",
