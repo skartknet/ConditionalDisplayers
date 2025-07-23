@@ -1,58 +1,49 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFrameworks>net9.0</TargetFrameworks>
-        <ContentTargetFolders>.</ContentTargetFolders>
-        <PackageId>Our.Umbraco.ConditionalDisplayers</PackageId>
-        <Title>ConditionalDisplayers</Title>
-        <Description>Collection of property editors that allow the conditional display of other properties in the same document type.</Description>
-        <Product>Conditional Displayers</Product>
-        <PackageTags>umbraco property editor backoffice condition display umbraco-marketplace</PackageTags>
-        <AssemblyName>Our.Umbraco.ConditionalDisplayers</AssemblyName>
-        <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-        <Version>15.0.0</Version>
-        <Authors>Mario Lopez</Authors>
-        <PackageIcon>icon.png</PackageIcon>
-        <PackageReleaseNotes></PackageReleaseNotes>
-        <PackageProjectUrl>https://github.com/skartknet/ConditionalDisplayers</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/skartknet/ConditionalDisplayers</RepositoryUrl>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <IsPackable>true</IsPackable>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
-    </PropertyGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>true</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<PackageId>Our.Umbraco.ConditionalDisplayers</PackageId>
+		<Title>ConditionalDisplayers</Title>
+		<Description>Collection of property editors that allow the conditional display of other properties in the same document type.</Description>
+		<Product>Conditional Displayers</Product>
+		<PackageTags>umbraco property editor backoffice condition display umbraco-marketplace</PackageTags>
+		<AssemblyName>Our.Umbraco.ConditionalDisplayers</AssemblyName>
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+		<Version>15.0.0</Version>
+		<Authors>Mario Lopez</Authors>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageReleaseNotes></PackageReleaseNotes>
+		<PackageProjectUrl>https://github.com/skartknet/ConditionalDisplayers</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/skartknet/ConditionalDisplayers</RepositoryUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<IsPackable>true</IsPackable>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+	</PropertyGroup>
+
 
 	<ItemGroup>
-        <None Include="..\README.nuget.md">
-          <Pack>True</Pack>
-          <PackagePath>\README.md</PackagePath>
-        </None>
-        <None Include="images\icon.png">
-          <Pack>True</Pack>
-          <PackagePath></PackagePath>
-        </None>
-		<None Include="build\**\*.*">
-			<Pack>True</Pack>
-			<PackagePath>buildTransitive</PackagePath>
-		</None>
-		<None Include="build\**\*.*">
-			<Pack>True</Pack>
-			<PackagePath>build</PackagePath>
-		</None>
-		<Compile Remove="App_Plugins\ConditionalDisplayers\prevalueeditors\**" />
-		<Compile Remove="App_Plugins\ConditionalDisplayers\propertyeditors\**" />
-		<EmbeddedResource Remove="App_Plugins\ConditionalDisplayers\prevalueeditors\**" />
-		<EmbeddedResource Remove="App_Plugins\ConditionalDisplayers\propertyeditors\**" />
-		<None Remove="App_Plugins\ConditionalDisplayers\prevalueeditors\**" />
-		<None Remove="App_Plugins\ConditionalDisplayers\propertyeditors\**" />
+		<SupportedPlatform Include="browser" />
+	</ItemGroup>
 
-		<!-- exclude node_modules -->
-		<None Remove="Client\node_modules\**\*" />
-    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="wwwroot\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ConditionalDisplayers.Client\ConditionalDisplayers.Client.esproj">
+			<ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+		</ProjectReference>
+	</ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Umbraco.Cms" Version="15.2.2" />
 	</ItemGroup>
-
-    <ItemGroup>
-      <None Remove="App_Plugins\ConditionalDisplayers\cd.css" />
-      <None Remove="App_Plugins\ConditionalDisplayers\package.manifest" />
-    </ItemGroup>
 </Project>
