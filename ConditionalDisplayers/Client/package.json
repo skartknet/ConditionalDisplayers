@@ -14,8 +14,9 @@
 		"typescript": "^5.8.2"
 	},
 	"devDependencies": {
-		"@umbraco-cms/backoffice": "^15.2.2",
-		"vite": "^6.2.2",
-		"@umbraco-ui/uui": "^1.12.2"
+		"@types/node": "^24.1.0",
+		"@umbraco-cms/backoffice": "^16.1.0",
+		"@umbraco-ui/uui": "^1.12.2",
+		"vite": "^6.3.5"
 	}
 }
