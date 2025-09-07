@@ -1,5 +1,6 @@
 import { customElement, html, nothing, property, state } from "@umbraco-cms/backoffice/external/lit";
-import { UmbPropertyEditorConfigCollection, UmbPropertyValueChangeEvent } from "@umbraco-cms/backoffice/property-editor";
+import { UmbPropertyEditorConfigCollection } from "@umbraco-cms/backoffice/property-editor";
+import { UmbChangeEvent } from "@umbraco-cms/backoffice/event";
 import { cdCheckboxPropertyInfo } from "../manifest";
 import { tagPrefix } from "../../constants";
 import { UUIBooleanInputEvent } from "@umbraco-cms/backoffice/external/uui";
@@ -49,7 +50,7 @@ export class CdCheckboxElement extends CdElement {
         newValue = newValue || false;
         this.#__toggleValue = newValue;
         this.value = newValue ? "1" : "0";
-        this.dispatchEvent(new UmbPropertyValueChangeEvent());
+        this.dispatchEvent(new UmbChangeEvent());
     }
 
     protected override bootstrap() {

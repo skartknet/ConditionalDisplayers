@@ -4,15 +4,16 @@ on:
   pull_request:
 
 env:
+  CLIENT_PROJECT: ConditionalDisplayers\Client
   SOLUTION: ConditionalDisplayers.sln
-  OUTPUT_PATH: ${{ github.workspace }}\.output
+  OUTPUT_PATH: .\build-out\
 
 jobs:
   build:
     runs-on: windows-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0 # Fetch all history for all tags and branches            
       
@@ -22,11 +23,24 @@ jobs:
 
       with:
         dotnet-version: '9.x'
-        
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: '${{env.CLIENT_PROJECT}}/package.json'
+        cache: 'npm'
+        cache-dependency-path: '${{env.CLIENT_PROJECT}}/package-lock.json'       
 
     - name: Restore NuGet packages
       run: dotnet restore ${{ env.SOLUTION }} --no-cache
 
+    - name: Install Node dependencies
+      run: npm ci
+      working-directory: ${{env.CLIENT_PROJECT}}
+
+    - name: Build Client
+      run: npm run build
+      working-directory: ${{env.CLIENT_PROJECT}}
 
     - name: Build solution
       run: dotnet publish ${{ env.SOLUTION }} --configuration Release --output ${{ env.OUTPUT_PATH }}
