@@ -124,7 +124,7 @@ export const manifests: Array<UmbExtensionManifest> = [
             label: "[Conditional] Checkbox Displayer",
             icon: "icon-checkbox-dotted-active",
             group: "Conditional Displayers",
-            propertyEditorSchemaAlias: "Umbraco.Plain.String",
+            propertyEditorSchemaAlias: "Umbraco.TrueFalse",
             settings: {
                 properties: cdCheckboxProperties
             }

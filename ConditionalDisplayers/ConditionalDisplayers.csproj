@@ -1,43 +1,54 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
-    <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
-		<StaticWebAssetBasePath>/</StaticWebAssetBasePath>
-        <ContentTargetFolders>.</ContentTargetFolders>
-        <PackageId>Our.Umbraco.ConditionalDisplayers</PackageId>
-        <Title>ConditionalDisplayers</Title>
-        <Description>Collection of property editors that allow the conditional display of other properties in the same document type.</Description>
-        <Product>Conditional Displayers</Product>
-        <PackageTags>umbraco property editor backoffice condition display umbraco-marketplace</PackageTags>
-        <AssemblyName>Our.Umbraco.ConditionalDisplayers</AssemblyName>
-        <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-        <Version>15.1.0-alpha1</Version>
-        <Authors>Mario Lopez</Authors>
-        <PackageIcon>icon.png</PackageIcon>
-        <PackageReleaseNotes></PackageReleaseNotes>
-        <PackageProjectUrl>https://github.com/skartknet/ConditionalDisplayers</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/skartknet/ConditionalDisplayers</RepositoryUrl>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <IsPackable>true</IsPackable>
-        <PackageReadmeFile>README.md</PackageReadmeFile>        
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+    <EnableDefaultContentItems>true</EnableDefaultContentItems>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Product>Conditional Displayers</Product>
+    <PackageId>Our.Umbraco.ConditionalDisplayers</PackageId>
+    <Title>ConditionalDisplayers</Title>
+    <Description>Collection of property editors that allow the conditional display of other
+      properties in the same document type.</Description>
+    <PackageTags>umbraco property editor backoffice condition display umbraco-marketplace</PackageTags>
+    <AssemblyName>Our.Umbraco.ConditionalDisplayers</AssemblyName>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <Version>16.0.0-alpha1</Version>
+    <Authors>Mario Lopez</Authors>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/skartknet/ConditionalDisplayers</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/skartknet/ConditionalDisplayers</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IsPackable>true</IsPackable>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Umbraco.Cms.Infrastructure" Version="[16.0.0, 17.0.0)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\README.nuget.md">
+      <Pack>True</Pack>
+      <PackagePath>\README.md</PackagePath>
+    </None>
+    <None Include="images\icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 	<ItemGroup>
-        <None Include="..\README.nuget.md">
-          <Pack>True</Pack>
-          <PackagePath>\README.md</PackagePath>
-        </None>
-        <None Include="images\icon.png">
-          <Pack>True</Pack>
-          <PackagePath></PackagePath>
-        </None>
+		<!-- Don't include the Client folder as part of packaging nuget build -->
+		<Content Remove="Client\**" />
 
-		<!-- exclude node_modules -->
-		<None Remove="Client\node_modules\**\*" />
-    </ItemGroup>
-
-
-	<ItemGroup>
-		<PackageReference Include="Umbraco.Cms" Version="15.2.2" />
+		<!-- However make the Umbraco-package.json included for dotnet pack or nuget package and visible to the solution -->
+		<None Include="Client\public\umbraco-package.json" Pack="false" />
 	</ItemGroup>
 
 </Project>
