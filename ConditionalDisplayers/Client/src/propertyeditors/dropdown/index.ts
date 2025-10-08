@@ -1,5 +1,6 @@
 import { customElement, html, property, state } from "@umbraco-cms/backoffice/external/lit";
-import { UmbPropertyEditorConfigCollection, UmbPropertyValueChangeEvent } from "@umbraco-cms/backoffice/property-editor";
+import { UmbPropertyEditorConfigCollection } from "@umbraco-cms/backoffice/property-editor";
+import { UmbChangeEvent } from "@umbraco-cms/backoffice/event";
 import { cdDropdownFlexiblePropertyInfo } from "../manifest";
 import { tagPrefix } from "../../constants";
 import { UUISelectEvent } from "@umbraco-cms/backoffice/external/uui";
@@ -44,7 +45,7 @@ export class CdDropDownFlexibleElement extends CdElement {
             this.selectedItem = selectedItem;
         }
         this.value = newValue;
-        this.dispatchEvent(new UmbPropertyValueChangeEvent());
+        this.dispatchEvent(new UmbChangeEvent());
     }
 
     private selectedItem?: CdMultiValueModelDto;
@@ -105,7 +106,7 @@ export class CdDropDownFlexibleElement extends CdElement {
         }
 
         return html`
-        <uui-select @change=${this.#onChange} required .options=${this.viewModelSelectOptions} placeholder="Pick One"></uui-select>
+        <uui-select label="Display Selection" @change=${this.#onChange} required .options=${this.viewModelSelectOptions} placeholder="Pick One"></uui-select>
         `;
     }
 }

@@ -1,5 +1,6 @@
 import { customElement, html, property, repeat, state } from "@umbraco-cms/backoffice/external/lit";
-import { UmbPropertyEditorConfigCollection, UmbPropertyValueChangeEvent } from "@umbraco-cms/backoffice/property-editor";
+import { UmbPropertyEditorConfigCollection } from "@umbraco-cms/backoffice/property-editor";
+import { UmbChangeEvent } from "@umbraco-cms/backoffice/event";
 import { cdRadioPropertyInfo } from "../manifest";
 import { tagPrefix } from "../../constants";
 import { UUIBooleanInputEvent } from "@umbraco-cms/backoffice/external/uui";
@@ -49,7 +50,7 @@ export class CdRadioElement extends CdElement {
         this.#__selectedValue = newValue;
         this.selectedItem = this.availableValues.find(x => x.value === newValue);
         this.value = newValue;
-        this.dispatchEvent(new UmbPropertyValueChangeEvent());
+        this.dispatchEvent(new UmbChangeEvent());
     }
 
     private selectedItem?: CdMultiValueModelDto;

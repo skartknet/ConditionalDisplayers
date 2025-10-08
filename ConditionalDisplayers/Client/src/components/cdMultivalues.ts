@@ -1,5 +1,6 @@
 import { customElement, html, nothing, property, repeat, state } from "@umbraco-cms/backoffice/external/lit";
-import { UmbPropertyEditorUiElement, UmbPropertyValueChangeEvent } from "@umbraco-cms/backoffice/property-editor";
+import { UmbPropertyEditorUiElement } from "@umbraco-cms/backoffice/property-editor";
+import { UmbChangeEvent } from "@umbraco-cms/backoffice/event";
 import { tagPrefix } from "../constants";
 import { UmbLitElement } from "@umbraco-cms/backoffice/lit-element";
 
@@ -30,7 +31,7 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
 
         const dtoItems: Array<CdMultiValueModelDto> = this._items.map(x => ({ value: x.value, show: x.show, hide: x.hide }));
         this.value = dtoItems;
-        this.dispatchEvent(new UmbPropertyValueChangeEvent());
+        this.dispatchEvent(new UmbChangeEvent());
     }
 
     @state()
