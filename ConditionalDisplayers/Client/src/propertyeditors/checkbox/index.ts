@@ -58,12 +58,25 @@ export class CdCheckboxElement extends CdElement {
     }
 
     protected override initDefaults() {
-        if (!this.value) {
-            if (this.configDefaultValue) {
-                this.toggleValue = this.configDefaultValue;
+        // Only treat as "no saved value" when truly empty/undefined/null
+        const hasSaved = this.value !== undefined && this.value !== null && this.value !== "";
+
+        const toBool = (x: unknown): boolean => {
+            if (typeof x === "boolean") return x;
+            if (typeof x === "number") return x === 1;
+            if (typeof x === "string") {
+                const s = x.trim().toLowerCase();
+                return s === "1" || s === "true";
             }
-        } else {
-            this.toggleValue = this.value === "1";
+            return false;
+        };
+
+        if (hasSaved) {
+            // Respect the saved value
+            this.toggleValue = toBool(this.value as unknown);
+        } else if (this.configDefaultValue !== undefined && this.configDefaultValue !== null) {
+            // Apply Initial value only when there's no saved value yet
+            this.toggleValue = toBool(this.configDefaultValue as unknown);
         }
     }
 
