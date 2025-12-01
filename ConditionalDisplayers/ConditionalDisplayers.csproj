@@ -17,7 +17,7 @@
     <PackageTags>umbraco property editor backoffice condition display umbraco-marketplace</PackageTags>
     <AssemblyName>Our.Umbraco.ConditionalDisplayers</AssemblyName>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Version>16.2.0</Version>
+    <Version>16.3.0</Version>
     <Authors>Mario Lopez</Authors>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReleaseNotes></PackageReleaseNotes>
@@ -29,7 +29,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Umbraco.Cms.Infrastructure" Version="[16.0.0, 17.0.0)" />
+    <PackageReference Include="Umbraco.Cms.Infrastructure" Version="[16,)" />
   </ItemGroup>
 
   <ItemGroup>
