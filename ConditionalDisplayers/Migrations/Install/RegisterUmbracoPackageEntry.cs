@@ -20,14 +20,15 @@ internal sealed class RegisterUmbracoPackageEntry(
         packagingService, mediaService, mediaFileManager, mediaUrlGenerators, shortStringHelper,
         contentTypeBaseServiceProvider, context, packageMigrationsSettings)
 {
-    public const string State = "{conditionaldisplayers-reg-umb-pkg-entry}";
 
-    protected override Task MigrateAsync()
+    public const string State = "{conditionaldisplayers-reg-umb-pkg-entry}";    
+
+    protected override async Task MigrateAsync()
     {
         // NOTE: This migration does nothing.
         // By inheriting from `PackageMigrationBase`, the package will be included in the backoffice listing.
         // ref: https://dev.to/kevinjump/put-your-package-in-the-installed-package-list-in-umbraco-9-11cg
 
-        return Task.CompletedTask;
+        return;
     }
 }

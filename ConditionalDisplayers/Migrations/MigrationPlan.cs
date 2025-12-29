@@ -11,8 +11,8 @@ internal sealed class MigrationPlan() : PackageMigrationPlan("ConditionalDisplay
     protected override void DefinePlan()
     {
         From(InitialState)
-            .To<RegisterUmbracoPackageEntry>(RegisterUmbracoPackageEntry.State)
-            .To<MigrateSingleDataType>(MigrateSingleDataType.State)
-            ;
+            .To<RegisterUmbracoPackageEntry>(RegisterUmbracoPackageEntry.State)            
+            .To<MigrateSingleDataType>(MigrateSingleDataType.State)            
+            .To<MigrateDataTypes>(MigrateDataTypes.State);
     }
 }
