@@ -6,6 +6,7 @@ import { UmbLitElement } from "@umbraco-cms/backoffice/lit-element";
 
 export type CdMultiValueModelDto = {
     value: string,
+    key: string,
     show: string,
     hide: string,
 }
@@ -29,7 +30,7 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
     private set items(value: Array<CdMultiValueModel>) {
         this._items = value;
 
-        const dtoItems: Array<CdMultiValueModelDto> = this._items.map(x => ({ value: x.value, show: x.show, hide: x.hide }));
+        const dtoItems: Array<CdMultiValueModelDto> = this._items.map(x => ({ value: x.value, key: x.key, show: x.show, hide: x.hide }));
         this.value = dtoItems;
         this.dispatchEvent(new UmbChangeEvent());
     }
@@ -84,7 +85,7 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
     #onLiveItemInput(event: InputEvent) {
         const rowEl = (event.target as HTMLElement).closest('#liveItemRow') as HTMLElement;
         const itemValue = this.getItemValueFromRow(rowEl);
-        this.liveItem = { value: itemValue.value, show: itemValue.show, hide: itemValue.hide };
+        this.liveItem = { value: itemValue.value, key: itemValue.key, show: itemValue.show, hide: itemValue.hide };
     }
     #onAdd() {
         // TODO: validate
@@ -104,6 +105,7 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
     private getEmptyItem(): CdMultiValueModelDto {
         return {
             value: "",
+            key: "",
             show: "",
             hide: ""
         };
@@ -137,7 +139,8 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
                 <uui-table-column style="width: 30%;"></uui-table-column>
                 <uui-table-column style="width: 10%;"></uui-table-column>
                 <uui-table-head>
-                    <uui-table-head-cell>Value</uui-table-head-cell>
+                    <uui-table-head-cell>Text</uui-table-head-cell>
+                    <uui-table-head-cell>Key</uui-table-head-cell>
                     <uui-table-head-cell>Show when selected</uui-table-head-cell>
                     <uui-table-head-cell>Hide when selected</uui-table-head-cell>
                     <uui-table-head-cell></uui-table-head-cell>
@@ -145,6 +148,9 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
                 <uui-table-row id="liveItemRow" @input=${this.#onLiveItemInput}>
                     <uui-table-cell>
                         <uui-input name="value" type="text" .value=${this.liveItem.value}></uui-input>
+                    </uui-table-cell>
+                    <uui-table-cell>
+                        <uui-input name="value" type="text" .value=${this.liveItem.key}></uui-input>
                     </uui-table-cell>
                     <uui-table-cell>
                         <uui-input name="show" type="text" placeholder="Properties' aliases" .value=${this.liveItem.show}></uui-input>
@@ -160,6 +166,9 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
                 <uui-table-row data-id=${x.id} data-sort=${x.sortOrder} @input=${this.#onItemInput} style="background: #f3f3f5;">
                     <uui-table-cell>
                         <uui-input name="value" type="text" .value=${x.value} ></uui-input>
+                    </uui-table-cell>
+                      <uui-table-cell>
+                        <uui-input name="value" type="text" .value=${x.key} ></uui-input>
                     </uui-table-cell>
                     <uui-table-cell>
                         <uui-input name="show" type="text" placeholder="Properties' aliases" .value=${x.show}></uui-input>

@@ -40,7 +40,7 @@ export class CdDropDownFlexibleElement extends CdElement {
             throw new Error("value not set");
         }
         this.#__selectedValue = newValue;
-        const selectedItem = this.availableValues.find(x => x.value === newValue);
+        const selectedItem = this.availableValues.find(x => x.key === newValue);
         if(selectedItem) {
             this.selectedItem = selectedItem;
         }
@@ -71,8 +71,8 @@ export class CdDropDownFlexibleElement extends CdElement {
         this.viewModelSelectOptions = this.availableValues.map((item) => {
             return <Option>{
                 name: item.value,
-                value: item.value,
-                selected: item.value === this.selectedValue
+                value: item.key,
+                selected: item.key === this.selectedValue
             };
         });
 
@@ -90,7 +90,7 @@ export class CdDropDownFlexibleElement extends CdElement {
     }
 
     private isValidSelection(value: string): boolean {
-        return !!this.availableValues.find(x => x.value === value);
+        return !!this.availableValues.find(x => x.key === value);
     }
 
     #onChange(event: UUISelectEvent) {
