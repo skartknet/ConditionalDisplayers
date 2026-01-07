@@ -10,8 +10,8 @@ export const elementName = `${tagPrefix}-checkbox`;
 
 @customElement(elementName)
 export class CdCheckboxElement extends CdElement {
-    @property({ type: String, attribute: true })
-    public value?: string;
+    @property({ type: Boolean, attribute: true })
+    public value?: boolean;
 
     @property({ attribute: false })
     public set config(config: UmbPropertyEditorConfigCollection) {
@@ -49,7 +49,7 @@ export class CdCheckboxElement extends CdElement {
     private set toggleValue(newValue: boolean) {
         newValue = newValue || false;
         this.#__toggleValue = newValue;
-        this.value = newValue ? "1" : "0";
+        this.value = newValue;
         this.dispatchEvent(new UmbChangeEvent());
     }
 
@@ -59,7 +59,7 @@ export class CdCheckboxElement extends CdElement {
 
     protected override initDefaults() {
         // Only treat as "no saved value" when truly empty/undefined/null
-        const hasSaved = this.value !== undefined && this.value !== null && this.value !== "";
+        const hasSaved = this.value !== undefined && this.value !== null;
 
         const toBool = (x: unknown): boolean => {
             if (typeof x === "boolean") return x;
