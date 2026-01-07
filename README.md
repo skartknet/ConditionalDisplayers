@@ -16,10 +16,13 @@ Run this from your Package Manager Console in Visual Studio:
     PM> Install-Package Our.Umbraco.ConditionalDisplayers
 
 
+### Versions
+- **Umbraco 16 and 17**: Use Conditional Displayers version 16
+- **Less than Umbraco 16**: Use Conditional Displayers version 3
+
 ## Icon
 <a target="_blank" href="https://icons8.com/icon/63snXzoESd3s/fire-hydrant">Fire Hydrant</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
 
-## Changelog
-### 15.0.0-alpha1
+
 
 
