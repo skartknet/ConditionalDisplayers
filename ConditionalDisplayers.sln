@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWebV13", "TestWebV13\TestWebV13.csproj", "{D496EBFA-A866-48DB-4CF4-08624D3DD5EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWebV17", "TestWebV17\TestWebV17.csproj", "{A54A1AE1-C7CE-4BCE-3016-C426D70E63EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{D496EBFA-A866-48DB-4CF4-08624D3DD5EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D496EBFA-A866-48DB-4CF4-08624D3DD5EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D496EBFA-A866-48DB-4CF4-08624D3DD5EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A54A1AE1-C7CE-4BCE-3016-C426D70E63EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A54A1AE1-C7CE-4BCE-3016-C426D70E63EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A54A1AE1-C7CE-4BCE-3016-C426D70E63EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A54A1AE1-C7CE-4BCE-3016-C426D70E63EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

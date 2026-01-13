@@ -23,10 +23,12 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
     public value?: Array<CdMultiValueModelDto> | undefined;
 
     private _items: Array<CdMultiValueModel> = [];
+
     @state()
     private get items(): Array<CdMultiValueModel> {
         return this._items;
     }
+    
     private set items(value: Array<CdMultiValueModel>) {
         this._items = value;
 
@@ -81,6 +83,7 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
         const itemValue = this.getItemValueFromRow(rowEl);
         const index = this.items.findIndex(x => x.id === itemId);
         this.items[index] = { ...this.items[index], ...itemValue };
+        this.items = this.items;    // trigger set action
     }
     #onLiveItemInput(event: InputEvent) {
         const rowEl = (event.target as HTMLElement).closest('#liveItemRow') as HTMLElement;
@@ -150,7 +153,7 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
                         <uui-input name="value" type="text" .value=${this.liveItem.value}></uui-input>
                     </uui-table-cell>
                     <uui-table-cell>
-                        <uui-input name="value" type="text" .value=${this.liveItem.key}></uui-input>
+                        <uui-input name="key" type="text" .value=${this.liveItem.key}></uui-input>
                     </uui-table-cell>
                     <uui-table-cell>
                         <uui-input name="show" type="text" placeholder="Properties' aliases" .value=${this.liveItem.show}></uui-input>
@@ -168,7 +171,7 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
                         <uui-input name="value" type="text" .value=${x.value} ></uui-input>
                     </uui-table-cell>
                       <uui-table-cell>
-                        <uui-input name="value" type="text" .value=${x.key} ></uui-input>
+                        <uui-input name="key" type="text" .value=${x.key} ></uui-input>
                     </uui-table-cell>
                     <uui-table-cell>
                         <uui-input name="show" type="text" placeholder="Properties' aliases" .value=${x.show}></uui-input>

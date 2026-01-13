@@ -51,7 +51,7 @@ export const cdRadioPropertyInfo = {
     },
     default: {
         label: "Default value",
-        description: "Type the value name from the list created above to be the initial default selection.<br/>*(Optional)*",
+        description: "Type the key from the list created above to be the initial default selection.<br/>*(Optional)*",
         alias: "default",
         propertyEditorUiAlias: "Umb.PropertyEditorUi.TextBox"
     },
