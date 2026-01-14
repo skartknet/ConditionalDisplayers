@@ -136,11 +136,13 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
 
         return html`
         <uui-box style="--uui-box-default-padding: 0;">
-            <uui-table>
-                <uui-table-column style="width: 30%;"></uui-table-column>
-                <uui-table-column style="width: 30%;"></uui-table-column>
-                <uui-table-column style="width: 30%;"></uui-table-column>
+            <uui-table>                
+                <uui-table-column></uui-table-column>
+                <uui-table-column></uui-table-column>
+                <uui-table-column></uui-table-column>
+                <uui-table-column></uui-table-column>
                 <uui-table-column style="width: 10%;"></uui-table-column>
+
                 <uui-table-head>
                     <uui-table-head-cell>Text</uui-table-head-cell>
                     <uui-table-head-cell>Key</uui-table-head-cell>
@@ -150,37 +152,37 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
                 </uui-table-head>
                 <uui-table-row id="liveItemRow" @input=${this.#onLiveItemInput}>
                     <uui-table-cell>
-                        <uui-input name="value" type="text" .value=${this.liveItem.value}></uui-input>
+                        <uui-input name="value" type="text" style="width: 100%;" .value=${this.liveItem.value}></uui-input>
                     </uui-table-cell>
                     <uui-table-cell>
-                        <uui-input name="key" type="text" .value=${this.liveItem.key}></uui-input>
+                        <uui-input name="key" type="text" style="width: 100%;" .value=${this.liveItem.key}></uui-input>
                     </uui-table-cell>
                     <uui-table-cell>
-                        <uui-input name="show" type="text" placeholder="Properties' aliases" .value=${this.liveItem.show}></uui-input>
+                        <uui-input name="show" type="text"  style="width: 100%;" placeholder="Properties' aliases" .value=${this.liveItem.show}></uui-input>
                     </uui-table-cell>
                     <uui-table-cell>
-                        <uui-input name="hide" type="text" placeholder="Properties' aliases" .value=${this.liveItem.hide}></uui-input>
+                        <uui-input name="hide" type="text"  style="width: 100%;" placeholder="Properties' aliases" .value=${this.liveItem.hide}></uui-input>
                     </uui-table-cell>
                     <uui-table-cell>
-                        <uui-button label="Add" @click=${this.#onAdd}></uui-button>
+                        <uui-button label="Add" @click=${this.#onAdd} compact="compact" look="secondary" title="Add new item"><uui-icon name="icon-badge-add"></uui-icon> Add</uui-button>
                     </uui-table-cell>
                 </uui-table-row>
                 ${repeat(this.items, x => x.id, x => html`
                 <uui-table-row data-id=${x.id} data-sort=${x.sortOrder} @input=${this.#onItemInput} style="background: #f3f3f5;">
                     <uui-table-cell>
-                        <uui-input name="value" type="text" .value=${x.value} ></uui-input>
+                        <uui-input name="value" type="text" style="width: 100%;" .value=${x.value} ></uui-input>
                     </uui-table-cell>
                       <uui-table-cell>
-                        <uui-input name="key" type="text" .value=${x.key} ></uui-input>
+                        <uui-input name="key" type="text" style="width: 100%;" .value=${x.key} ></uui-input>
                     </uui-table-cell>
                     <uui-table-cell>
-                        <uui-input name="show" type="text" placeholder="Properties' aliases" .value=${x.show}></uui-input>
+                        <uui-input name="show" type="text" style="width: 100%;" placeholder="Properties' aliases" .value=${x.show}></uui-input>
                     </uui-table-cell>
                     <uui-table-cell>
-                        <uui-input name="hide" type="text" placeholder="Properties' aliases" .value=${x.hide}></uui-input>
+                        <uui-input name="hide" type="text" style="width: 100%;" placeholder="Properties' aliases" .value=${x.hide}></uui-input>
                     </uui-table-cell>
                     <uui-table-cell>
-                        <uui-button label="Remove" @click=${this.#onRemove}></uui-button>
+                        <uui-button label="Remove" @click=${this.#onRemove} compact="compact" look="secondary" color="danger" title="Remove item"><uui-icon name="icon-trash"></uui-icon> Remove</uui-button>
                     </uui-table-cell>
                 </uui-table-row>
                 `)}
