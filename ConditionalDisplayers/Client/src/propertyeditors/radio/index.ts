@@ -115,7 +115,7 @@ export class CdRadioElement extends CdElement {
         return html`
         <div class="cd-conditional-group ${this.configAlignHorizontal ? "horizontal" : ""} labelpos-${this.configLabelPosition}" @change=${this.#onChange}>
             ${repeat(this.availableValues, x => html`
-                <label><input type="radio" name="radioGroup" value="${x.value}" .checked=${this.selectedValue === x.value} /><span class="label">${x.value}</span></label>
+                <label><input type="radio" name="radioGroup" value="${x.key}" .checked=${this.selectedValue === x.value} /><span class="label">${x.value}</span></label>
             `)}
 
             </div>
@@ -125,7 +125,7 @@ export class CdRadioElement extends CdElement {
         return html`
         <div class="cd-conditional-group ${this.configAlignHorizontal ? "horizontal" : ""}" @click=${this.#onChange}>
             ${repeat(this.availableValues, x => html`
-            <uui-button label="${x.value}" value="${x.value}" look="${this.selectedValue === x.value ? 'primary' : 'secondary'}"></uui-button>
+            <uui-button label="${x.value}" value="${x.value}" look="${this.selectedValue === x.key ? 'primary' : 'secondary'}"></uui-button>
             `)}
         </div>
         `;
