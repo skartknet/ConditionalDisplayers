@@ -34,7 +34,6 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
 
         const dtoItems: Array<CdMultiValueModelDto> = this._items.map(x => ({ value: x.value, key: x.key, show: x.show, hide: x.hide }));
         this.value = dtoItems;
-        this.dispatchEvent(new UmbChangeEvent());
     }
 
     @state()
@@ -84,6 +83,7 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
         const index = this.items.findIndex(x => x.id === itemId);
         this.items[index] = { ...this.items[index], ...itemValue };
         this.items = this.items;    // trigger set action
+        this.dispatchEvent(new UmbChangeEvent());
     }
     #onLiveItemInput(event: InputEvent) {
         const rowEl = (event.target as HTMLElement).closest('#liveItemRow') as HTMLElement;
@@ -95,6 +95,7 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
         this.items.push({ id: 0, sortOrder: 0, ...this.liveItem });
         this.augmentItemValues();
         this.items = this.items;    // trigger set action
+        this.dispatchEvent(new UmbChangeEvent());
         this.liveItem = this.getEmptyItem();
     }
     #onRemove(event: Event) {
@@ -103,6 +104,7 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
         const index = this.items.findIndex(x => x.id === itemValue.id);
         this.items.splice(index, 1);
         this.items = this.items;    // trigger set action
+        this.dispatchEvent(new UmbChangeEvent());
     }
 
     private getEmptyItem(): CdMultiValueModelDto {

@@ -48,9 +48,8 @@ export class CdRadioElement extends CdElement {
             throw new Error("value not set");
         }
         this.#__selectedValue = newValue;
-        this.selectedItem = this.availableValues.find(x => x.value === newValue);
+        this.selectedItem = this.availableValues.find(x => x.key === newValue);
         this.value = newValue;
-        this.dispatchEvent(new UmbChangeEvent());
     }
 
     private selectedItem?: CdMultiValueModelDto;
@@ -67,8 +66,9 @@ export class CdRadioElement extends CdElement {
                 ? this.configDefaultValue
                 : (() => {
                     console.warn("configuration is missing a valid default value");
-                    return this.availableValues[0].value;
+                    return this.availableValues[0].key;
                 })();
+            this.dispatchEvent(new UmbChangeEvent());
         }
     }
 
@@ -97,7 +97,7 @@ export class CdRadioElement extends CdElement {
         event.stopPropagation();
         const value = event.target.value;
         this.selectedValue = value;
-
+        this.dispatchEvent(new UmbChangeEvent());
         this.runDisplayLogic();
     }
 
@@ -115,7 +115,7 @@ export class CdRadioElement extends CdElement {
         return html`
         <div class="cd-conditional-group ${this.configAlignHorizontal ? "horizontal" : ""} labelpos-${this.configLabelPosition}" @change=${this.#onChange}>
             ${repeat(this.availableValues, x => html`
-                <label><input type="radio" name="radioGroup" value="${x.key}" .checked=${this.selectedValue === x.value} /><span class="label">${x.value}</span></label>
+                <label><input type="radio" name="radioGroup" value="${x.key}" .checked=${this.selectedValue === x.key} /><span class="label">${x.value}</span></label>
             `)}
 
             </div>
@@ -125,7 +125,7 @@ export class CdRadioElement extends CdElement {
         return html`
         <div class="cd-conditional-group ${this.configAlignHorizontal ? "horizontal" : ""}" @click=${this.#onChange}>
             ${repeat(this.availableValues, x => html`
-            <uui-button label="${x.value}" value="${x.value}" look="${this.selectedValue === x.key ? 'primary' : 'secondary'}"></uui-button>
+            <uui-button label="${x.value}" value="${x.key}" look="${this.selectedValue === x.key ? 'primary' : 'secondary'}"></uui-button>
             `)}
         </div>
         `;

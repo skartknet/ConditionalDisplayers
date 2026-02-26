@@ -45,7 +45,6 @@ export class CdDropDownFlexibleElement extends CdElement {
             this.selectedItem = selectedItem;
         }
         this.value = newValue;
-        this.dispatchEvent(new UmbChangeEvent());
     }
 
     private selectedItem?: CdMultiValueModelDto;
@@ -64,6 +63,7 @@ export class CdDropDownFlexibleElement extends CdElement {
                     console.warn("configuration is missing a valid default value");
                     return this.availableValues[0].value;
                 })();
+            this.dispatchEvent(new UmbChangeEvent());
         }
     }
 
@@ -97,6 +97,7 @@ export class CdDropDownFlexibleElement extends CdElement {
         event.stopPropagation();
         const value = event.target.value as string;
         this.selectedValue = value;
+        this.dispatchEvent(new UmbChangeEvent());
         this.runDisplayLogic();
     }
 

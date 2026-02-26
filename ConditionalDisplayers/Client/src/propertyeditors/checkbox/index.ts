@@ -50,7 +50,6 @@ export class CdCheckboxElement extends CdElement {
         newValue = newValue || false;
         this.#__toggleValue = newValue;
         this.value = newValue;
-        this.dispatchEvent(new UmbChangeEvent());
     }
 
     protected override bootstrap() {
@@ -77,6 +76,7 @@ export class CdCheckboxElement extends CdElement {
         } else if (this.configDefaultValue !== undefined && this.configDefaultValue !== null) {
             // Apply Initial value only when there's no saved value yet
             this.toggleValue = toBool(this.configDefaultValue as unknown);
+            this.dispatchEvent(new UmbChangeEvent());
         }
     }
 
@@ -91,6 +91,7 @@ export class CdCheckboxElement extends CdElement {
     #onChange(event: UUIBooleanInputEvent) {
         event.stopPropagation();
         this.toggleValue = event.target.checked;
+        this.dispatchEvent(new UmbChangeEvent());
         this.runDisplayLogic();
     }
 
