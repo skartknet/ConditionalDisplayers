@@ -22,7 +22,7 @@ export default css`
         }
     }
 
-    .horizontal {
+    &.horizontal {
         flex-direction: row;
     }
 
