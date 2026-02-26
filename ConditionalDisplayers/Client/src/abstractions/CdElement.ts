@@ -7,25 +7,31 @@ import { UMB_PROPERTY_DATASET_CONTEXT } from "@umbraco-cms/backoffice/property";
 export abstract class CdElement extends UmbElementMixin(LitElement) {
     protected datasetHostElement?: HTMLElement;
 
+    #hasFirstUpdated = false;
+    #hasBootstrapped = false;
+
     constructor() {
         super();
 
         this.consumeContext(UMB_PROPERTY_DATASET_CONTEXT, (instance) => {            
             this.datasetHostElement = instance?.getHostElement() as HTMLElement | undefined;
+            this.#tryBootstrap();
         });
     }
 
     static override styles = style;
 
     protected override firstUpdated(_changedProperties: PropertyValues): void {
-        setTimeout(() => {
-            this.#bootstrap();
-        }, 50);     // TODO: create better solution. This should run after other properties have been  (from 50)(fails at '0')
+        this.#hasFirstUpdated = true;
+        this.#tryBootstrap();
     }
 
-    #bootstrap() {
-        this.initDefaults();
-        this.bootstrap();
+    #tryBootstrap() {
+        if (this.#hasFirstUpdated && this.datasetHostElement && !this.#hasBootstrapped) {
+            this.#hasBootstrapped = true;
+            this.initDefaults();
+            this.bootstrap();
+        }
     }
 
     protected abstract bootstrap(): void;
