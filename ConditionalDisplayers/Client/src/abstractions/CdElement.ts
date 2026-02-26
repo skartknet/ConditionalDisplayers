@@ -10,9 +10,8 @@ export abstract class CdElement extends UmbElementMixin(LitElement) {
     constructor() {
         super();
 
-        this.consumeContext(UMB_PROPERTY_DATASET_CONTEXT, (instance) => {
-            // @ts-ignore - 'getHostElement' not in TS definition yet
-            this.datasetHostElement = instance.getHostElement() as HTMLElement;
+        this.consumeContext(UMB_PROPERTY_DATASET_CONTEXT, (instance) => {            
+            this.datasetHostElement = instance?.getHostElement() as HTMLElement | undefined;
         });
     }
 
