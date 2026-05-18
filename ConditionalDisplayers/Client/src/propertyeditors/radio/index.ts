@@ -90,7 +90,7 @@ export class CdRadioElement extends CdElement {
     }
 
     private isValidSelection(value: string): boolean {
-        return !!this.availableValues.find(x => x.value === value);
+        return !!this.availableValues.find(x => x.key === value);
     }
 
     #onChange(event: UUIBooleanInputEvent) {
