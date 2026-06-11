@@ -14,7 +14,7 @@
     "conditional",
     "property"
   ],
-  "Description": " It implements a checkbox and dropdown datatype editors that allows to hide or display other properties in the same Document Type depending on the selected value.",
+  "Description": "Umbraco package that offers a collection of editors that allow to hide or display other properties in the same Document Type.",
   "AuthorDetails": {
     "Name": "Mario Lopez",
     "ImageUrl": "https://github.com/skartknet.png",
