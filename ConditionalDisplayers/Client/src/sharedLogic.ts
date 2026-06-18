@@ -10,10 +10,30 @@ export const toggleElements = (aliases: string, isShow: boolean, hostElement: HT
         const cssSelector = elSelectors(aliasList);
         const elements = deepQuerySelectAll(cssSelector, hostElement, false);
         elements.forEach((el) => {
+            const tagName = el.tagName.toLowerCase();
+
+            //hiding tabs - we hide the buttons that makes the tab
+            if (tagName === 'uui-tab') {
+                const button = el.shadowRoot?.querySelector('#button') as HTMLElement | null;
+                if (!button) {
+                    return;
+                }
+                if (isShow) {
+                    button.style.removeProperty('display');
+                } else {
+                    button.style.display = 'none';
+                }
+                return;
+            }
+            //Hiding property groups
+            const target = (tagName === 'umb-block-workspace-view-edit-properties'
+                ? (el.closest('uui-box') as HTMLElement | null)
+                : el) ?? el;
+
             if (isShow) {
-                el.style.removeProperty('display');
+                target.style.removeProperty('display');
             } else {
-                el.style.display = 'none';
+                target.style.display = 'none';
             }
             // TODO: update css to animate?
         });
@@ -28,9 +48,20 @@ const elSelectors = (aliasList: string[]): string => {
             cssSelector += ",";
         }
         const alias = aliasList[i].trim();
-        cssSelector += `umb-property[data-mark="property:${alias}"]`;;
+        //Alias starting with group for groups
+        if (alias.startsWith("group:")) {
+            const groupAlias = alias.substring(6);
+            cssSelector += `umb-block-workspace-view-edit-properties[data-mark="property-group:${groupAlias}"]`;
+        //Alias starting with tab for tabs
+        } else if (alias.startsWith("tab:")) {
+            const tabAlias = alias.substring(4);
+            cssSelector += `uui-tab[data-mark="content-tab:tab/${tabAlias}"]`;
+        //Default alias for other properties
+        } else {
+            const propAlias = alias.startsWith("property:") ? alias.substring(9) : alias;
+            cssSelector += `umb-property[data-mark="property:${propAlias}"]`;
+        }
     }
-
     return cssSelector;
 }
 
