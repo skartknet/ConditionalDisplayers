@@ -13,6 +13,7 @@ This package offers a checkbox, a dropdown and a radio list datatype editors tha
 
 
 ### Versions
+- **Umbraco 16 and 17**: Use Conditional Displayers version 16
 - **Less than Umbraco 16**: Use Conditional Displayers version 3
 
 ## Icon
