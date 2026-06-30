@@ -21,7 +21,7 @@ npm run build
 ```
 
 ## Test site
-There's included a TestWebV13 project that you can use to test Conditianl Displayers. 
+There's included a TestWebV17 project that you can use to test Conditianl Displayers. 
 
 You can reference the RCL above or use it to install any old version of the package.
 

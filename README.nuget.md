@@ -17,7 +17,6 @@ Run this from your Package Manager Console in Visual Studio:
 
 
 ### Versions
-- **Umbraco 16 and 17**: Use Conditional Displayers version 16
 - **Less than Umbraco 16**: Use Conditional Displayers version 3
 
 ## Icon

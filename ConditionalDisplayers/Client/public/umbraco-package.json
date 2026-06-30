@@ -1,7 +1,7 @@
 {
 	"id": "Our.Umbraco.ConditionalDisplayers",
 	"name": "Conditional Displayers",
-	"version": "15.0.0",	
+	"version": "17.0.0",	
 	"extensions": [
 		{
 			"name": "ConditionalDisplayers Bundle",
