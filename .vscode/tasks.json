@@ -36,6 +36,18 @@
                 "${workspaceFolder}/ConditionalDisplayers.sln"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-client",
+            "command": "npm",
+            "type": "process",
+            "args": [
+                "run",
+                "build"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/ConditionalDisplayers/Client"
+            },
         }
     ]
 }
