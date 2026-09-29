@@ -31,13 +31,29 @@ export const toggleElements = (aliases: string, isShow: boolean, hostElement: HT
                 : el) ?? el;
 
             if (isShow) {
+                const wasHidden = target.style.display === 'none';
                 target.style.removeProperty('display');
+                if (wasHidden) {
+                    refreshAutoHeightTextareas(target);
+                }
             } else {
                 target.style.display = 'none';
             }
             // TODO: update css to animate?
         });
     }
+}
+
+/**
+ * uui-textarea measures its auto height when connected. If that happens while hidden (display: none)
+ * it collapses to ~2px and never recovers, so re-measure once the element is visible again.
+ */
+const refreshAutoHeightTextareas = (container: HTMLElement) => {
+    requestAnimationFrame(() => {
+        deepQuerySelectAll('uui-textarea[auto-height]', container, false).forEach((textarea) => {
+            (textarea as HTMLElement & { autoUpdateHeight?: () => void }).autoUpdateHeight?.();
+        });
+    });
 }
 
 const elSelectors = (aliasList: string[]): string => {
