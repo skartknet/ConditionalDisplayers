@@ -29,11 +29,11 @@ Test site: `TestWebV17` references the RCL via `ProjectReference`, installs unat
 
 **Two halves:**
 - `ConditionalDisplayers/Client/` (TypeScript + Lit + Vite): all the actual UI and show/hide behaviour. `@umbraco*` imports are externals, provided by the backoffice at runtime.
-- `ConditionalDisplayers/*.cs`: only a value converter (`ConditionalCheckboxConverter`, maps `Our.Umbraco.CdCheckbox` to bool via `YesNoValueConverter`) and package migrations.
+- `ConditionalDisplayers/*.cs`: the visibility rules API (`Rules/`) and package migrations. There is no value converter: migrated checkboxes use core `Umbraco.TrueFalse`.
 
 **Client load chain:** `public/umbraco-package.json` registers a `bundle` pointing at `client.js` → `src/index.ts` exports a `backofficeEntryPoint` → `backoffice-entrypoint.ts` registers the manifests from `propertyeditors/manifest.ts`.
 
-**Editor aliases are a contract.** `Our.Umbraco.CdCheckbox` (schema `Umbraco.TrueFalse`), `Our.Umbraco.CdRadio` and `Our.Umbraco.CdDropdownFlexible` (schema `Umbraco.Plain.String`) appear in the client manifest, the C# converter, the migrations and saved data types in existing sites. Renaming any of them breaks installs. `Our.Umbraco.CdMultivalues` is an internal settings UI (the prevalue list editor for radio/dropdown, `components/cdMultivalues.ts`).
+**Editor aliases are a contract.** `Our.Umbraco.CdCheckbox` (schema `Umbraco.TrueFalse`), `Our.Umbraco.CdRadio` and `Our.Umbraco.CdDropdownFlexible` (schema `Umbraco.Plain.String`) appear in the client manifest, the migrations and saved data types in existing sites. Renaming any of them breaks installs. `Our.Umbraco.CdMultivalues` is an internal settings UI (the prevalue list editor for radio/dropdown, `components/cdMultivalues.ts`).
 
 **Settings definitions** live in `manifest.ts` as `cd*PropertyInfo` objects; editors read config via `config.getValueByAlias(cd*PropertyInfo.x.alias)`, so add a setting there first.
 

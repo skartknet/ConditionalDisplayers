@@ -277,3 +277,4 @@ build/*.zip
 tests/e2e/.auth/
 test-results/
 playwright-report/
+.playwright-mcp/
