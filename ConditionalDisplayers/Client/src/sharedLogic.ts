@@ -1,84 +1,13 @@
-export const toggleElements = (aliases: string, isShow: boolean, hostElement: HTMLElement) => {
-    if (!aliases) {
-        return;
-    }
-
-    //Elements to hide
-    const aliasList = aliases.split(',');
-
-    if (aliasList && aliasList.length > 0) {
-        const cssSelector = elSelectors(aliasList);
-        const elements = deepQuerySelectAll(cssSelector, hostElement, false);
-        elements.forEach((el) => {
-            const tagName = el.tagName.toLowerCase();
-
-            //hiding tabs - we hide the buttons that makes the tab
-            if (tagName === 'uui-tab') {
-                const button = el.shadowRoot?.querySelector('#button') as HTMLElement | null;
-                if (!button) {
-                    return;
-                }
-                if (isShow) {
-                    button.style.removeProperty('display');
-                } else {
-                    button.style.display = 'none';
-                }
-                return;
-            }
-            //Hiding property groups
-            const target = (tagName === 'umb-block-workspace-view-edit-properties'
-                ? (el.closest('uui-box') as HTMLElement | null)
-                : el) ?? el;
-
-            if (isShow) {
-                const wasHidden = target.style.display === 'none';
-                target.style.removeProperty('display');
-                if (wasHidden) {
-                    refreshAutoHeightTextareas(target);
-                }
-            } else {
-                target.style.display = 'none';
-            }
-            // TODO: update css to animate?
-        });
-    }
-}
-
 /**
  * uui-textarea measures its auto height when connected. If that happens while hidden (display: none)
  * it collapses to ~2px and never recovers, so re-measure once the element is visible again.
  */
-const refreshAutoHeightTextareas = (container: HTMLElement) => {
+export const refreshAutoHeightTextareas = (container: HTMLElement) => {
     requestAnimationFrame(() => {
         deepQuerySelectAll('uui-textarea[auto-height]', container, false).forEach((textarea) => {
             (textarea as HTMLElement & { autoUpdateHeight?: () => void }).autoUpdateHeight?.();
         });
     });
-}
-
-const elSelectors = (aliasList: string[]): string => {
-    let cssSelector = "";
-
-    for (let i = 0; i < aliasList.length; i++) {
-        if (cssSelector !== "") {
-            cssSelector += ",";
-        }
-        const alias = aliasList[i].trim();
-        //Alias starting with group for groups
-        if (alias.startsWith("group:")) {
-            const groupAlias = alias.substring(6);
-            cssSelector += `umb-block-workspace-view-edit-properties[data-mark="property-group:${groupAlias}"]`;
-        //Alias starting with tab for tabs
-        } else if (alias.startsWith("tab:")) {
-            const tabAlias = alias.substring(4);
-            cssSelector += `uui-tab[data-mark="content-tab:tab/${tabAlias}"]`;
-        //Default alias for other properties
-        } else {
-            const propAlias = alias.startsWith("property:") ? alias.substring(9) : alias;
-            cssSelector += `umb-property[data-mark="property:${propAlias}"]`;
-        }
-    }
-    return cssSelector;
 }
 
 /**

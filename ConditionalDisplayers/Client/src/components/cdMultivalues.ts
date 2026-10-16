@@ -7,8 +7,6 @@ import { UmbLitElement } from "@umbraco-cms/backoffice/lit-element";
 export type CdMultiValueModelDto = {
     value: string,
     key: string,
-    show: string,
-    hide: string,
 }
 export type CdMultiValueModel = CdMultiValueModelDto & {
     sortOrder: number,
@@ -32,7 +30,7 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
     private set items(value: Array<CdMultiValueModel>) {
         this._items = value;
 
-        const dtoItems: Array<CdMultiValueModelDto> = this._items.map(x => ({ value: x.value, key: x.key, show: x.show, hide: x.hide }));
+        const dtoItems: Array<CdMultiValueModelDto> = this._items.map(x => ({ value: x.value, key: x.key }));
         this.value = dtoItems;
     }
 
@@ -88,7 +86,7 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
     #onLiveItemInput(event: InputEvent) {
         const rowEl = (event.target as HTMLElement).closest('#liveItemRow') as HTMLElement;
         const itemValue = this.getItemValueFromRow(rowEl);
-        this.liveItem = { value: itemValue.value, key: itemValue.key, show: itemValue.show, hide: itemValue.hide };
+        this.liveItem = { value: itemValue.value, key: itemValue.key };
     }
     #onAdd() {
         // TODO: validate
@@ -110,9 +108,7 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
     private getEmptyItem(): CdMultiValueModelDto {
         return {
             value: "",
-            key: "",
-            show: "",
-            hide: ""
+            key: ""
         };
     }
     private getItemValueFromRow(el: HTMLElement): CdMultiValueModel {
@@ -141,15 +137,11 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
             <uui-table>                
                 <uui-table-column></uui-table-column>
                 <uui-table-column></uui-table-column>
-                <uui-table-column></uui-table-column>
-                <uui-table-column></uui-table-column>
                 <uui-table-column style="width: 10%;"></uui-table-column>
 
                 <uui-table-head>
                     <uui-table-head-cell>Text</uui-table-head-cell>
                     <uui-table-head-cell>Key</uui-table-head-cell>
-                    <uui-table-head-cell>Show when selected</uui-table-head-cell>
-                    <uui-table-head-cell>Hide when selected</uui-table-head-cell>
                     <uui-table-head-cell></uui-table-head-cell>
                 </uui-table-head>
                 <uui-table-row id="liveItemRow" @input=${this.#onLiveItemInput}>
@@ -158,12 +150,6 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
                     </uui-table-cell>
                     <uui-table-cell>
                         <uui-input name="key" type="text" style="width: 100%;" .value=${this.liveItem.key}></uui-input>
-                    </uui-table-cell>
-                    <uui-table-cell>
-                        <uui-input name="show" type="text"  style="width: 100%;" placeholder="Properties' aliases" .value=${this.liveItem.show}></uui-input>
-                    </uui-table-cell>
-                    <uui-table-cell>
-                        <uui-input name="hide" type="text"  style="width: 100%;" placeholder="Properties' aliases" .value=${this.liveItem.hide}></uui-input>
                     </uui-table-cell>
                     <uui-table-cell>
                         <uui-button label="Add" @click=${this.#onAdd} compact="compact" look="secondary" title="Add new item"><uui-icon name="icon-badge-add"></uui-icon> Add</uui-button>
@@ -176,12 +162,6 @@ export class CdMultivaluesElement extends UmbLitElement implements UmbPropertyEd
                     </uui-table-cell>
                       <uui-table-cell>
                         <uui-input name="key" type="text" style="width: 100%;" .value=${x.key} ></uui-input>
-                    </uui-table-cell>
-                    <uui-table-cell>
-                        <uui-input name="show" type="text" style="width: 100%;" placeholder="Properties' aliases" .value=${x.show}></uui-input>
-                    </uui-table-cell>
-                    <uui-table-cell>
-                        <uui-input name="hide" type="text" style="width: 100%;" placeholder="Properties' aliases" .value=${x.hide}></uui-input>
                     </uui-table-cell>
                     <uui-table-cell>
                         <uui-button label="Remove" @click=${this.#onRemove} compact="compact" look="secondary" color="danger" title="Remove item"><uui-icon name="icon-trash"></uui-icon> Remove</uui-button>

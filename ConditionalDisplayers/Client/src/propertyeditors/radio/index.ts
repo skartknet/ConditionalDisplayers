@@ -4,7 +4,9 @@ import { UmbChangeEvent } from "@umbraco-cms/backoffice/event";
 import { cdRadioPropertyInfo } from "../manifest";
 import { tagPrefix } from "../../constants";
 import { UUIBooleanInputEvent } from "@umbraco-cms/backoffice/external/uui";
-import { CdElement } from "../../abstractions/CdElement";
+import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
+import { LitElement, PropertyValues } from "lit";
+import style from "../../cd.css";
 import { CdMultiValueModelDto } from "../../components/cdMultivalues";
 
 type LabelPositions = "Top" | "Bottom" | "Left" | "Right";
@@ -12,7 +14,9 @@ type LabelPositions = "Top" | "Bottom" | "Left" | "Right";
 export const elementName = `${tagPrefix}-radio`;
 
 @customElement(elementName)
-export class CdRadioElement extends CdElement {
+export class CdRadioElement extends UmbElementMixin(LitElement) {
+    static override styles = style;
+
     @property({ type: String, attribute: false })
     public value?: string;
 
@@ -48,17 +52,14 @@ export class CdRadioElement extends CdElement {
             throw new Error("value not set");
         }
         this.#__selectedValue = newValue;
-        this.selectedItem = this.availableValues.find(x => x.key === newValue);
         this.value = newValue;
     }
 
-    private selectedItem?: CdMultiValueModelDto;
-
-    protected override bootstrap() {
-        this.runDisplayLogic();
+    protected override firstUpdated(_changedProperties: PropertyValues): void {
+        this.initDefaults();
     }
 
-    protected override initDefaults() {
+    private initDefaults() {
         if (this.value) {
             this.selectedValue = this.value;
         } else {
@@ -69,12 +70,6 @@ export class CdRadioElement extends CdElement {
                     return this.availableValues[0].key;
                 })();
             this.dispatchEvent(new UmbChangeEvent());
-        }
-    }
-
-    protected override runDisplayLogic() {
-        if (this.selectedItem) {
-            this.displayProps(this.selectedItem.show, this.selectedItem.hide);
         }
     }
 
@@ -98,7 +93,6 @@ export class CdRadioElement extends CdElement {
         const value = event.target.value;
         this.selectedValue = value;
         this.dispatchEvent(new UmbChangeEvent());
-        this.runDisplayLogic();
     }
 
     render() {

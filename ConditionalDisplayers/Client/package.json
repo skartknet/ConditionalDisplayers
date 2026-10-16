@@ -7,7 +7,8 @@
 		"dev": "vite",
 		"build": "tsc && vite build",
 		"preview": "vite preview",
-		"watch": "vite build --watch"
+		"watch": "vite build --watch",
+		"test": "vitest run"
 	},
 	"dependencies": {
 		"lit": "^3.2.1",
@@ -17,6 +18,7 @@
 		"@types/node": "^24.1.0",
 		"@umbraco-cms/backoffice": "^16.1.0",
 		"@umbraco-ui/uui": "^1.12.2",
-		"vite": "^6.3.5"
+		"vite": "^6.3.5",
+		"vitest": "^5.0.4"
 	}
 }

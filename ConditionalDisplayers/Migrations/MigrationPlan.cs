@@ -14,6 +14,7 @@ internal sealed class MigrationPlan() : PackageMigrationPlan("ConditionalDisplay
             .To<RegisterUmbracoPackageEntry>(RegisterUmbracoPackageEntry.State)            
             .To<MigrateSingleDataType>(MigrateSingleDataType.State)            
             .To<MigrateDataTypes>(MigrateDataTypes.State)
-            .To<AddRuleTable>(AddRuleTable.State);
+            .To<AddRuleTable>(AddRuleTable.State)
+            .To<ConvertLegacyConfig>(ConvertLegacyConfig.State);
     }
 }

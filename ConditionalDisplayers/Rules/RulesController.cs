@@ -14,7 +14,7 @@ namespace ConditionalDisplayers.Rules;
 [ApiVersion("1.0")]
 [VersionedApiBackOfficeRoute("conditionaldisplayers/rules")]
 [MapToApi(ApiName)]
-internal sealed class RulesController(
+public sealed class RulesController(
     RulesStore store,
     IAuthorizationService authorizationService,
     IContentTypeService contentTypeService,

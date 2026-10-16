@@ -10,18 +10,6 @@ export const cdCheckboxPropertyInfo = {
         alias: "default",
         propertyEditorUiAlias: "Umb.PropertyEditorUi.Toggle"
     },
-    showIfChecked: {
-        label: "Show if checked",
-        description: "Aliases of the properties to show when the checkbox is checked.<br />*Multiple aliases must be comma separated.*",
-        alias: "showIfChecked",
-        propertyEditorUiAlias: "Umb.PropertyEditorUi.TextBox"
-    },
-    showIfUnchecked: {
-        label: "Show if unchecked",
-        description: "Aliases of the properties to show when the checkbox is unchecked.<br />*Multiple aliases must be comma separated.*",
-        alias: "showIfUnchecked",
-        propertyEditorUiAlias: "Umb.PropertyEditorUi.TextBox"
-    },
     showLabels: {
         label: "Show toggle labels",
         description: "Show labels next to toggle button.",
@@ -45,7 +33,7 @@ export const cdCheckboxPropertyInfo = {
 export const cdRadioPropertyInfo = {
     items: {
         label: "Add prevalue",
-        description: "Add, remove or sort values for the conditional list.<br />*Multiple aliases must be comma separated.*",
+        description: "Add, remove or sort the items in the list.",
         alias: "items",
         propertyEditorUiAlias: "Our.Umbraco.CdMultivalues",
     },
@@ -84,7 +72,7 @@ export const cdRadioPropertyInfo = {
 export const cdDropdownFlexiblePropertyInfo = {
     items: {
         label: "Add prevalue",
-        description: "Add, remove or sort values for the conditional list.<br />*Multiple aliases must be comma separated.*",
+        description: "Add, remove or sort the items in the list.",
         alias: "items",
         propertyEditorUiAlias: "Our.Umbraco.CdMultivalues",
     },

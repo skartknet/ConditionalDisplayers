@@ -1,9 +1,9 @@
 using System.Text.Json;
-using Umbraco.Cms.Core.Scoping;
+using Umbraco.Cms.Infrastructure.Scoping;
 
 namespace ConditionalDisplayers.Rules;
 
-internal sealed class RulesStore(IScopeProvider scopeProvider)
+public sealed class RulesStore(IScopeProvider scopeProvider)
 {
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
 

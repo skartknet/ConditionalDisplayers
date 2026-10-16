@@ -4,13 +4,17 @@ import { UmbChangeEvent } from "@umbraco-cms/backoffice/event";
 import { cdDropdownFlexiblePropertyInfo } from "../manifest";
 import { tagPrefix } from "../../constants";
 import { UUISelectEvent } from "@umbraco-cms/backoffice/external/uui";
-import { CdElement } from "../../abstractions/CdElement";
+import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
+import { LitElement, PropertyValues } from "lit";
+import style from "../../cd.css";
 import { CdMultiValueModelDto } from "../../components/cdMultivalues";
 
 export const elementName = `${tagPrefix}-dropdown`;
 
 @customElement(elementName)
-export class CdDropDownFlexibleElement extends CdElement {
+export class CdDropDownFlexibleElement extends UmbElementMixin(LitElement) {
+    static override styles = style;
+
     @property({ type: String, attribute: false })
     public value?: string;
 
@@ -40,20 +44,15 @@ export class CdDropDownFlexibleElement extends CdElement {
             throw new Error("value not set");
         }
         this.#__selectedValue = newValue;
-        const selectedItem = this.availableValues.find(x => x.key === newValue);
-        if(selectedItem) {
-            this.selectedItem = selectedItem;
-        }
         this.value = newValue;
     }
 
-    private selectedItem?: CdMultiValueModelDto;
-
-    protected override bootstrap() {
-        this.runDisplayLogic();
+    protected override firstUpdated(_changedProperties: PropertyValues): void {
+        this.initDefaults();
+        this.buildOptions();
     }
 
-    protected override initDefaults() {
+    private initDefaults() {
         if (this.value) {
             this.selectedValue = this.value;
         } else {
@@ -67,7 +66,7 @@ export class CdDropDownFlexibleElement extends CdElement {
         }
     }
 
-    protected override runDisplayLogic() {
+    private buildOptions() {
         this.viewModelSelectOptions = this.availableValues.map((item) => {
             return <Option>{
                 name: item.value,
@@ -75,10 +74,6 @@ export class CdDropDownFlexibleElement extends CdElement {
                 selected: item.key === this.selectedValue
             };
         });
-
-        if (this.selectedItem) {
-            this.displayProps(this.selectedItem.show, this.selectedItem.hide);
-        }
     }
 
     private assignValuesFromConfig(config: UmbPropertyEditorConfigCollection) {
@@ -98,7 +93,7 @@ export class CdDropDownFlexibleElement extends CdElement {
         const value = event.target.value as string;
         this.selectedValue = value;
         this.dispatchEvent(new UmbChangeEvent());
-        this.runDisplayLogic();
+        this.buildOptions();
     }
 
     render() {

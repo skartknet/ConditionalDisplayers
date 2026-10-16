@@ -4,20 +4,19 @@ import { UmbChangeEvent } from "@umbraco-cms/backoffice/event";
 import { cdCheckboxPropertyInfo } from "../manifest";
 import { tagPrefix } from "../../constants";
 import { UUIBooleanInputEvent } from "@umbraco-cms/backoffice/external/uui";
-import { CdElement } from "../../abstractions/CdElement";
+import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
+import { LitElement, PropertyValues } from "lit";
 
 export const elementName = `${tagPrefix}-checkbox`;
 
 @customElement(elementName)
-export class CdCheckboxElement extends CdElement {
+export class CdCheckboxElement extends UmbElementMixin(LitElement) {
     @property({ type: Boolean, attribute: true })
     public value?: boolean;
 
     @property({ attribute: false })
     public set config(config: UmbPropertyEditorConfigCollection) {
         this.configDefaultValue = config.getValueByAlias(cdCheckboxPropertyInfo.default.alias);
-        this.configShowIfChecked = config.getValueByAlias(cdCheckboxPropertyInfo.showIfChecked.alias);
-        this.configShowIfUnchecked = config.getValueByAlias(cdCheckboxPropertyInfo.showIfUnchecked.alias);
         this.configIsShowLabels = config.getValueByAlias(cdCheckboxPropertyInfo.showLabels.alias);
         this.configLabelOn = config.getValueByAlias(cdCheckboxPropertyInfo.labelOn.alias);
         this.configLabelOff = config.getValueByAlias(cdCheckboxPropertyInfo.labelOff.alias);
@@ -25,12 +24,6 @@ export class CdCheckboxElement extends CdElement {
 
     @state()
     private configDefaultValue?: boolean;
-
-    @state()
-    private configShowIfChecked?: string;
-
-    @state()
-    private configShowIfUnchecked?: string;
 
     @state()
     private configIsShowLabels?: boolean;
@@ -52,11 +45,11 @@ export class CdCheckboxElement extends CdElement {
         this.value = newValue;
     }
 
-    protected override bootstrap() {
-        this.runDisplayLogic();
+    protected override firstUpdated(_changedProperties: PropertyValues): void {
+        this.initDefaults();
     }
 
-    protected override initDefaults() {
+    private initDefaults() {
         // Only treat as "no saved value" when truly empty/undefined/null
         const hasSaved = this.value !== undefined && this.value !== null;
 
@@ -80,19 +73,10 @@ export class CdCheckboxElement extends CdElement {
         }
     }
 
-    protected override runDisplayLogic() {
-        if (this.toggleValue) {
-            this.displayProps(this.configShowIfChecked!, this.configShowIfUnchecked!);
-        } else {
-            this.displayProps(this.configShowIfUnchecked!, this.configShowIfChecked!);
-        }
-    }
-
     #onChange(event: UUIBooleanInputEvent) {
         event.stopPropagation();
         this.toggleValue = event.target.checked;
         this.dispatchEvent(new UmbChangeEvent());
-        this.runDisplayLogic();
     }
 
     render() {

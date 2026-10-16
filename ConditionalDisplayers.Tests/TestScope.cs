@@ -1,6 +1,6 @@
 using ConditionalDisplayers.Rules;
 using NSubstitute;
-using Umbraco.Cms.Core.Scoping;
+using Umbraco.Cms.Infrastructure.Scoping;
 using Umbraco.Cms.Infrastructure.Persistence;
 
 namespace ConditionalDisplayers.Tests;
