@@ -1,3 +1,5 @@
+> **Previous versions.** This page documents the controller editors used before version 17. For the current visibility rules, see the [main guide](../README.md).
+
 # Hiding and Showing Tabs and Groups
 
 With Conditional Displayers you can also show and hide an entire Tab or a Property Group.
