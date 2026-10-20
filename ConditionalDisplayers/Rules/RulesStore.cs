@@ -44,6 +44,25 @@ public sealed class RulesStore(IScopeProvider scopeProvider)
         scope.Complete();
     }
 
+    /// <summary>Content types that have at least one rule.</summary>
+    public IReadOnlyList<Guid> GetContentTypeKeys()
+    {
+        using var scope = scopeProvider.CreateScope(autoComplete: true);
+        return scope.Database.Fetch<Guid>($"SELECT DISTINCT ContentTypeKey FROM {RuleDto.TableName}");
+    }
+
+    /// <summary>Makes the stored rules for a type exactly <paramref name="rows"/>, deleting any others (used by sync and deploy imports).</summary>
+    public void Replace(Guid contentTypeKey, IReadOnlyCollection<RuleRow> rows)
+    {
+        var keep = rows.Select(r => r.PropertyTypeKey).ToHashSet();
+        var stale = Get([contentTypeKey])
+            .Where(r => !keep.Contains(r.PropertyTypeKey))
+            .Select(r => new RuleUpdate { PropertyTypeKey = r.PropertyTypeKey, Rules = null });
+        Save(contentTypeKey, rows
+            .Select(r => new RuleUpdate { PropertyTypeKey = r.PropertyTypeKey, Rules = r.Rules })
+            .Concat(stale));
+    }
+
     /// <summary>Deletes rows owned by the type whose property is no longer on it (all rows if it is gone).</summary>
     public void Prune(Guid contentTypeKey, IReadOnlyCollection<Guid> livePropertyKeys)
     {

@@ -8,6 +8,8 @@ on:
 env:
   CLIENT_PROJECT: ConditionalDisplayers\Client
   PLUGIN_PROJECT: ConditionalDisplayers\ConditionalDisplayers.csproj  
+  USYNC_PROJECT: ConditionalDisplayers.uSync\ConditionalDisplayers.uSync.csproj
+  DEPLOY_PROJECT: ConditionalDisplayers.Deploy\ConditionalDisplayers.Deploy.csproj
   OUTPUT_PATH: .\build-out\
 jobs:
   publish-nuget:
@@ -27,7 +29,7 @@ jobs:
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '9.x'
+        dotnet-version: '10.x'
 
     - name: Setup Node
       uses: actions/setup-node@v4
@@ -65,8 +67,14 @@ jobs:
     - name: Build
       run: dotnet build ${{ env.PLUGIN_PROJECT }} --configuration Release
         
-    - name: Create the package
-      run: dotnet pack ${{ env.PLUGIN_PROJECT }} --no-build --no-restore --configuration Release -o ${{ env.OUTPUT_PATH }}
+    - name: Create the packages
+      run: |
+        dotnet pack ${{ env.PLUGIN_PROJECT }} --no-build --no-restore --configuration Release -o ${{ env.OUTPUT_PATH }}
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        foreach ($project in '${{ env.USYNC_PROJECT }}', '${{ env.DEPLOY_PROJECT }}') {
+          dotnet pack $project --configuration Release -p:Version=${{ steps.package_version.outputs.version }} -o ${{ env.OUTPUT_PATH }}
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        }
 
     - name: Publish to NuGet      
       run: dotnet nuget push "${{ env.OUTPUT_PATH }}*.nupkg" --skip-duplicate --api-key "$env:apiKey" -s https://api.nuget.org/v3/index.json

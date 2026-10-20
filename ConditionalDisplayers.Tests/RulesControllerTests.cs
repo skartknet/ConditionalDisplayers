@@ -2,6 +2,7 @@ using ConditionalDisplayers.Rules;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
+using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Web.Common.Authorization;
@@ -15,6 +16,7 @@ public class RulesControllerTests
     private readonly IContentTypeService _docTypes = Substitute.For<IContentTypeService>();
     private readonly IMediaTypeService _mediaTypes = Substitute.For<IMediaTypeService>();
     private readonly IMemberTypeService _memberTypes = Substitute.For<IMemberTypeService>();
+    private readonly IEventAggregator _events = Substitute.For<IEventAggregator>();
     private readonly RulesController _controller;
 
     public RulesControllerTests()
@@ -23,7 +25,7 @@ public class RulesControllerTests
         _docTypes.Get(Arg.Any<Guid>()).Returns((IContentType?)null);
         _mediaTypes.Get(Arg.Any<Guid>()).Returns((IMediaType?)null);
         _memberTypes.Get(Arg.Any<Guid>()).Returns((IMemberType?)null);
-        _controller = new RulesController(_scope.Store, _auth, _docTypes, _mediaTypes, _memberTypes);
+        _controller = new RulesController(_scope.Store, _auth, _docTypes, _mediaTypes, _memberTypes, _events);
     }
 
     private void Authorise(bool allowed) =>
@@ -72,6 +74,7 @@ public class RulesControllerTests
         Assert.IsType<OkResult>(result);
         AssertAuthorisedWith(AuthorizationPolicies.TreeAccessDocumentTypes);
         _scope.Db.Received(1).Insert(Arg.Is<RuleDto>(d => d.PropertyTypeKey == prop && d.ContentTypeKey == type.Key));
+        await _events.Received(1).PublishAsync(Arg.Is<RulesSavedNotification>(n => n.ContentTypeKey == type.Key));
     }
 
     [Fact]

@@ -21,8 +21,8 @@ Run this from your Package Manager Console in Visual Studio:
 
 | Package version | Umbraco | What it offers |
 |---|---|---|
-| 17 | 16 and 17 | Visibility rules on any property |
-| 16 | 16 and 17 | Checkbox, radio and dropdown editors that show or hide other properties ([documentation](https://github.com/skartknet/ConditionalDisplayers/blob/master/Documentation/Previous%20versions/README.md)) |
+| 17 | 17 | Visibility rules on any property |
+| 16 | 16 and 17 | Checkbox, radio and dropdown editors that show or hide other properties |
 | 3 | Less than 16 | The same editors, for older backoffices |
 
 ### Upgrading from version 16 or earlier

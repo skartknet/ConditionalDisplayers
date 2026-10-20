@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>ConditionalDisplayers.USync</RootNamespace>
+    <AssemblyName>Our.Umbraco.ConditionalDisplayers.uSync</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Product>Conditional Displayers uSync</Product>
+    <PackageId>Our.Umbraco.ConditionalDisplayers.uSync</PackageId>
+    <Title>ConditionalDisplayers uSync</Title>
+    <Description>uSync handler that exports and imports Conditional Displayers visibility rules.</Description>
+    <PackageTags>umbraco usync conditional displayers</PackageTags>
+    <Version>17.0.0-beta1</Version>
+    <Authors>Mario Lopez</Authors>
+    <PackageProjectUrl>https://github.com/skartknet/ConditionalDisplayers</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/skartknet/ConditionalDisplayers</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="uSync.BackOffice" Version="[17.0.0,)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ConditionalDisplayers\ConditionalDisplayers.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="ConditionalDisplayers.Tests" />
+  </ItemGroup>
+</Project>

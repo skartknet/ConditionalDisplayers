@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-`Our.Umbraco.ConditionalDisplayers`: an Umbraco backoffice package (NuGet) providing property editors (checkbox, radio, dropdown) that show/hide other properties, groups and tabs on the same document/block. Targets Umbraco 16 (`net9.0`) and 17 (`net10.0`) from one RCL. Umbraco < 16 uses package v3 (not in this branch).
+`Our.Umbraco.ConditionalDisplayers`: an Umbraco backoffice package (NuGet) providing property editors (checkbox, radio, dropdown) that show/hide other properties, groups and tabs on the same document/block. Targets Umbraco 17 (`net10.0`). Older Umbraco versions use earlier package versions (not in this branch).
 
 ## Commands
 

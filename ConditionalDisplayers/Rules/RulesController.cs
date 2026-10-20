@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Umbraco.Cms.Api.Common.Attributes;
 using Umbraco.Cms.Api.Management.Controllers;
 using Umbraco.Cms.Api.Management.Routing;
+using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Web.Common.Authorization;
@@ -19,7 +20,8 @@ public sealed class RulesController(
     IAuthorizationService authorizationService,
     IContentTypeService contentTypeService,
     IMediaTypeService mediaTypeService,
-    IMemberTypeService memberTypeService) : ManagementApiControllerBase
+    IMemberTypeService memberTypeService,
+    IEventAggregator eventAggregator) : ManagementApiControllerBase
 {
     public const string ApiName = "conditionaldisplayers";
 
@@ -64,6 +66,7 @@ public sealed class RulesController(
         }
 
         store.Save(contentTypeKey, updates);
+        await eventAggregator.PublishAsync(new RulesSavedNotification(contentTypeKey));
         return Ok();
     }
 }

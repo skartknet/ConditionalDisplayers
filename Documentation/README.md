@@ -2,7 +2,7 @@
 
 Conditional Displayers lets editors see only the properties that matter. You set **visibility rules** on any property of a document, media, member or element type, and the backoffice shows or hides that property as the editor fills in the others.
 
-This guide covers version 17 and later, for Umbraco 16 and 17. Looking for the old checkbox, radio and dropdown editors? See [Previous versions](Previous%20versions/README.md).
+This guide covers version 17 and later, for Umbraco 17.
 
 ## How it works
 
