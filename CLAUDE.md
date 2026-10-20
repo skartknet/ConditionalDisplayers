@@ -49,6 +49,8 @@ Test site: `TestWebV17` references the RCL via `ProjectReference`, installs unat
 - When re-showing, `uui-textarea[auto-height]` must be re-measured (`refreshAutoHeightTextareas`) or it stays collapsed at ~2px.
 
 **Migrations** (`Migrations/MigrationPlan.cs`, `PackageMigrationPlan`): register the package entry, then fix data types migrated from the AngularJS-era package (setting correct `EditorAlias` for each `EditorUiAlias`). Add new steps by appending `.To<NewStep>(NewStep.State)`; never reorder or rename existing state strings.
+- `MigrateDataTypes` is registered for two states (`LegacyState` and `State`). Both shipped in 16.x as separate classes, so sites can sit at either, and the plan needs both. It restores `EditorUiAlias` from Umbraco's `migrateDataEditorSplitCollectionData` key-value entry, then sets `EditorAlias`. Idempotent.
+- Data types are updated through `DataTypeDto` rather than `IDataTypeService`: the legacy rows have editor aliases that no longer resolve, and the service would raise notifications and cache refreshes mid-upgrade. Keep new steps on the DTO route.
 
 ## Versioning and release
 

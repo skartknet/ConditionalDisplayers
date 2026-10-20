@@ -66,7 +66,7 @@ public class LegacyConfigConverterTests
     [Fact]
     public void List_items_become_one_any_of_condition_per_target()
     {
-        var (rules, _) = Run(LegacyKind.List, """
+        var (rules, _) = Run(LegacyKind.Dropdown, """
             {"items":[
               {"key":"x","show":"a","hide":"b"},
               {"key":"y","show":"a,b","hide":""},
@@ -94,15 +94,29 @@ public class LegacyConfigConverterTests
     }
 
     [Fact]
-    public void StripConfig_removes_old_keys_and_keeps_the_rest()
+    public void List_rules_use_the_label_not_the_key()
     {
-        var list = JsonNode.Parse("""{"default":"x","items":[{"key":"x","value":"X","show":"a","hide":"b"}]}""")!.AsObject();
-        Assert.True(LegacyConfigConverter.StripConfig(LegacyKind.List, list));
-        Assert.Equal("""{"default":"x","items":[{"key":"x","value":"X"}]}""", list.ToJsonString());
+        var (rules, _) = Run(LegacyKind.Radio, """{"items":[{"key":"x","value":"Show X","show":"a"}]}""");
 
+        Assert.Equal(["Show X"], Assert.Single(rules[A].Show).Value!.Value.EnumerateArray().Select(e => e.GetString()));
+    }
+
+    [Fact]
+    public void StripConfig_removes_old_checkbox_keys_and_keeps_the_rest()
+    {
         var box = JsonNode.Parse("""{"showIfChecked":"a","labelOn":"Yes"}""")!.AsObject();
-        Assert.True(LegacyConfigConverter.StripConfig(LegacyKind.Checkbox, box));
+        Assert.True(LegacyConfigConverter.StripConfig(box));
         Assert.Equal("""{"labelOn":"Yes"}""", box.ToJsonString());
-        Assert.False(LegacyConfigConverter.StripConfig(LegacyKind.Checkbox, box));
+        Assert.False(LegacyConfigConverter.StripConfig(box));
+    }
+
+    [Fact]
+    public void Core_config_keeps_the_labels_and_maps_keys_to_them()
+    {
+        var old = JsonNode.Parse("""{"default":"x","items":[{"key":"x","value":"Show X","show":"a"},{"key":"y","value":"Show Y"}]}""")!.AsObject();
+
+        Assert.Equal("""{"items":["Show X","Show Y"]}""", LegacyConfigConverter.CoreConfig(LegacyKind.Radio, old).ToJsonString());
+        Assert.Equal("""{"items":["Show X","Show Y"],"multiple":false}""", LegacyConfigConverter.CoreConfig(LegacyKind.Dropdown, old).ToJsonString());
+        Assert.Equal("Show Y", LegacyConfigConverter.KeyToLabel(old)["y"]);
     }
 }

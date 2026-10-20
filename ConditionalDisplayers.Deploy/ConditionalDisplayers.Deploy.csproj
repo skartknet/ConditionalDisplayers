@@ -12,7 +12,7 @@
     <PackageId>Our.Umbraco.ConditionalDisplayers.Deploy</PackageId>
     <Title>ConditionalDisplayers Deploy</Title>
     <Description>Umbraco Deploy connector that transfers Conditional Displayers visibility rules between environments.</Description>
-    <PackageTags>umbraco deploy conditional displayers umbraco-marketplace</PackageTags>
+    <PackageTags>umbraco deploy conditional displayers</PackageTags>
     <Version>17.0.0-beta1</Version>
     <Authors>Mario Lopez</Authors>
     <PackageProjectUrl>https://github.com/skartknet/ConditionalDisplayers</PackageProjectUrl>

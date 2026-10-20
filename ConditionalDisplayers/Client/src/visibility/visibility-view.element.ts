@@ -64,8 +64,8 @@ export class CdVisibilityViewElement extends UmbLitElement {
         this.consumeContext(UMB_PROPERTY_TYPE_WORKSPACE_CONTEXT, (ctx) => {
             this.observe(ctx?.data, (data) => {
                 this._mandatory = !!data?.validation?.mandatory;
-                if (data?.id && data.id !== this.#propertyKey) {
-                    this.#propertyKey = data.id;
+                if (data?.unique && data.unique !== this.#propertyKey) {
+                    this.#propertyKey = data.unique;
                     this.#load();
                 }
             }, 'cdPropertyData');

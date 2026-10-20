@@ -145,7 +145,7 @@ A row with both groups empty is deleted, not stored.
   - If the target comes from a composition, the rule is stored on the composition-owned property, and the source key is the CD property in *this* doc type. Other doc types using the composition will see a condition whose source doesn't exist for them; see 'missing sources' below.
   - Targets that can't be resolved are logged and skipped.
 - **CdCheckbox swap:** `MigrateDataTypes` already set `EditorAlias = Umbraco.TrueFalse`, so only `EditorUiAlias` changes to `Umb.PropertyEditorUi.Toggle`. Core toggle config keys are `default`, `showLabels`, `labelOn` and `labelOff`, the same as ours (`property-editors/toggle/manifests.js`), so the only config change is removing `showIfChecked`/`showIfUnchecked`.
-- Strip the per-item `show`/`hide` from remaining CD radio and dropdown configs.
+- **CdRadio and CdDropdownFlexible swap:** become core `Umbraco.RadioButtonList` / `Umb.PropertyEditorUi.RadioButtonList` and `Umbraco.DropDown.Flexible` / `Umb.PropertyEditorUi.Dropdown`. Config becomes `{ items: [label…] }` (plus `multiple: false` for the dropdown); `default`, `labelsPos`, `alignHrz` and `asBtn` are dropped. Core stores the label, not the old item key, so stored values in `umbracoPropertyData` and the rules' `anyOf` values are rewritten key to label (dropdown values become a JSON array). Values inside Block List/Grid JSON are not rewritten.
 - Update `DataTypeDto` rows directly, the same way `MigrateDataTypes` does.
 - Log a summary of what was converted, expanded and skipped.
 - **Delete** `ConditionalCheckboxConverter` once no `CdCheckbox` data types can exist. Keep the `CdCheckbox` alias registered as a hidden, deprecated UI for one major in case the migration is skipped or fails, then remove it.

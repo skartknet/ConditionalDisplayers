@@ -12,7 +12,8 @@ namespace ConditionalDisplayers.Migrations.Upgrade;
 
 /// <summary>
 /// One way: turns the show/hide config on CD data types into visibility rules on the target properties,
-/// swaps CdCheckbox for the core Toggle and strips the old config keys.
+/// swaps CdCheckbox, CdRadio and CdDropdownFlexible for the core Toggle, Radio button list and Dropdown
+/// (same items), and rewrites stored radio/dropdown values from the old item key to the item label.
 /// </summary>
 internal sealed class ConvertLegacyConfig(
     IMigrationContext context,
@@ -23,7 +24,6 @@ internal sealed class ConvertLegacyConfig(
 {
     public const string State = "{conditionaldisplayers-convert-legacy-config}";
 
-    private const string ToggleUiAlias = "Umb.PropertyEditorUi.Toggle";
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
 
     protected override Task MigrateAsync()
@@ -42,6 +42,7 @@ internal sealed class ConvertLegacyConfig(
 
         var configs = dataTypes.ToDictionary(d => d.NodeDto.UniqueId, d => ParseConfig(d.Configuration));
         var kinds = dataTypes.ToDictionary(d => d.NodeDto.UniqueId, d => LegacyConfigConverter.KindOf(d.EditorUiAlias)!.Value);
+        var labels = dataTypes.ToDictionary(d => d.NodeDto.UniqueId, d => LegacyConfigConverter.KeyToLabel(configs[d.NodeDto.UniqueId]));
 
         IContentTypeComposition[] types =
         [
@@ -78,20 +79,46 @@ internal sealed class ConvertLegacyConfig(
             written++;
         }
 
+        var rewritten = 0;
+        foreach (var property in types.SelectMany(t => t.PropertyTypes).DistinctBy(p => p.Key)
+                     .Where(p => kinds.TryGetValue(p.DataTypeKey, out var k) && k != LegacyKind.Checkbox))
+            rewritten += RewriteValues(property.Id, labels[property.DataTypeKey], kinds[property.DataTypeKey] == LegacyKind.Dropdown);
+
         foreach (var dto in dataTypes)
         {
             var config = configs[dto.NodeDto.UniqueId];
             var kind = kinds[dto.NodeDto.UniqueId];
-            var changed = LegacyConfigConverter.StripConfig(kind, config);
-            if (kind == LegacyKind.Checkbox) { dto.EditorUiAlias = ToggleUiAlias; changed = true; }
-            if (!changed) continue;
+            if (kind == LegacyKind.Checkbox) LegacyConfigConverter.StripConfig(config);
+            else config = LegacyConfigConverter.CoreConfig(kind, config);
+            (dto.EditorAlias, dto.EditorUiAlias) = LegacyConfigConverter.CoreEditor(kind);
             dto.Configuration = config.ToJsonString();
             Database.Update(dto);
         }
 
-        logger.LogInformation("Converted legacy Conditional Displayers config: {sources} source properties, {written} target properties with rules, {skipped} aliases skipped, {dataTypes} data types updated.",
-            sources, written, skipped, dataTypes.Count);
+        logger.LogInformation("Converted legacy Conditional Displayers config: {sources} source properties, {written} target properties with rules, {skipped} aliases skipped, {dataTypes} data types updated, {rewritten} stored values rewritten.",
+            sources, written, skipped, dataTypes.Count, rewritten);
         return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Core radio stores the label as a plain string, core dropdown a JSON array of labels; the old editors stored the item key.
+    /// A value that isn't a known key is kept as is. Covers every version and culture of the property.
+    /// </summary>
+    private int RewriteValues(int propertyTypeId, Dictionary<string, string> keyToLabel, bool asArray)
+    {
+        // PropertyDataDto is internal to Umbraco, so this goes through plain SQL.
+        var rows = Database.Fetch<ValueRow>("SELECT id, varcharValue, textValue FROM umbracoPropertyData WHERE propertyTypeId = @0", propertyTypeId);
+        var count = 0;
+        foreach (var row in rows)
+        {
+            var old = row.VarcharValue ?? row.TextValue;
+            if (string.IsNullOrEmpty(old)) continue;
+            var label = keyToLabel.GetValueOrDefault(old, old);
+            Database.Execute("UPDATE umbracoPropertyData SET varcharValue = @0, textValue = NULL WHERE id = @1",
+                asArray ? JsonSerializer.Serialize(new[] { label }) : label, row.Id);
+            count++;
+        }
+        return count;
     }
 
     private static JsonObject ParseConfig(string? json)
@@ -125,4 +152,6 @@ internal sealed class ConvertLegacyConfig(
             return properties.Where(p => Same(p.Alias, alias)).Select(p => p.Key).ToHashSet();
         };
     }
+
+    private sealed record ValueRow(int Id, string? VarcharValue, string? TextValue);
 }

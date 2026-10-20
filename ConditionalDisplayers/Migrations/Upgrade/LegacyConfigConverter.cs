@@ -4,7 +4,7 @@ using ConditionalDisplayers.Rules;
 
 namespace ConditionalDisplayers.Migrations.Upgrade;
 
-internal enum LegacyKind { Checkbox, List }
+internal enum LegacyKind { Checkbox, Radio, Dropdown }
 
 /// <summary>Turns the old show/hide data type config into visibility rules on the target properties.</summary>
 internal static class LegacyConfigConverter
@@ -16,8 +16,17 @@ internal static class LegacyConfigConverter
     public static LegacyKind? KindOf(string? editorUiAlias) => editorUiAlias switch
     {
         CheckboxAlias => LegacyKind.Checkbox,
-        RadioAlias or DropdownAlias => LegacyKind.List,
+        RadioAlias => LegacyKind.Radio,
+        DropdownAlias => LegacyKind.Dropdown,
         _ => null,
+    };
+
+    /// <summary>The core editor (schema, UI) that replaces each legacy editor.</summary>
+    public static (string Schema, string Ui) CoreEditor(LegacyKind kind) => kind switch
+    {
+        LegacyKind.Checkbox => ("Umbraco.TrueFalse", "Umb.PropertyEditorUi.Toggle"),
+        LegacyKind.Radio => ("Umbraco.RadioButtonList", "Umb.PropertyEditorUi.RadioButtonList"),
+        _ => ("Umbraco.DropDown.Flexible", "Umb.PropertyEditorUi.Dropdown"),
     };
 
     /// <summary>
@@ -44,38 +53,48 @@ internal static class LegacyConfigConverter
             return;
         }
 
-        // target -> keys of the items that show it / hide it
+        // target -> labels of the items that show it / hide it (core editors store the label, not the old key)
         var shown = new Dictionary<Guid, List<string>>();
         var hidden = new Dictionary<Guid, List<string>>();
-        foreach (var item in config["items"]?.AsArray().OfType<JsonObject>() ?? [])
+        foreach (var item in Items(config))
         {
-            var key = item["key"]?.GetValue<string>();
-            if (string.IsNullOrEmpty(key)) continue;
-            foreach (var t in Targets(item["show"], resolve, skipped)) Bucket(shown, t).Add(key);
-            foreach (var t in Targets(item["hide"], resolve, skipped)) Bucket(hidden, t).Add(key);
+            var label = Label(item);
+            if (string.IsNullOrEmpty(label)) continue;
+            foreach (var t in Targets(item["show"], resolve, skipped)) Bucket(shown, t).Add(label);
+            foreach (var t in Targets(item["hide"], resolve, skipped)) Bucket(hidden, t).Add(label);
         }
         foreach (var (t, keys) in shown) Add(rules, t, show: true, AnyOf(sourceKey, keys));
         foreach (var (t, keys) in hidden) Add(rules, t, show: false, AnyOf(sourceKey, keys));
     }
 
-    /// <summary>Removes the keys the new model has no use for. Returns false when nothing changed.</summary>
-    public static bool StripConfig(LegacyKind kind, JsonObject config)
+    /// <summary>Removes the checkbox keys the new model has no use for. Returns false when nothing changed.</summary>
+    public static bool StripConfig(JsonObject config) => config.Remove("showIfChecked") | config.Remove("showIfUnchecked");
+
+    /// <summary>
+    /// Config for the core radio or dropdown: one string per item, using the old label. Legacy `default`,
+    /// `labelsPos`, `alignHrz` and `asBtn` have no core equivalent and are dropped.
+    /// </summary>
+    public static JsonObject CoreConfig(LegacyKind kind, JsonObject config)
     {
-        var changed = false;
-        if (kind == LegacyKind.Checkbox)
-        {
-            changed |= config.Remove("showIfChecked");
-            changed |= config.Remove("showIfUnchecked");
-        }
-        else
-        {
-            foreach (var item in config["items"]?.AsArray().OfType<JsonObject>() ?? [])
-            {
-                changed |= item.Remove("show");
-                changed |= item.Remove("hide");
-            }
-        }
-        return changed;
+        var labels = Items(config).Select(Label).Where(l => !string.IsNullOrEmpty(l)).Distinct().Select(l => (JsonNode?)JsonValue.Create(l));
+        var core = new JsonObject { ["items"] = new JsonArray(labels.ToArray()) };
+        if (kind == LegacyKind.Dropdown) core["multiple"] = false;
+        return core;
+    }
+
+    /// <summary>Old stored key to new stored value (the label), for rewriting existing content.</summary>
+    public static Dictionary<string, string> KeyToLabel(JsonObject config) => Items(config)
+        .Select(i => (Key: i["key"]?.GetValue<string>(), Label: Label(i)))
+        .Where(x => !string.IsNullOrEmpty(x.Key) && !string.IsNullOrEmpty(x.Label))
+        .DistinctBy(x => x.Key)
+        .ToDictionary(x => x.Key!, x => x.Label!);
+
+    private static IEnumerable<JsonObject> Items(JsonObject config) => config["items"]?.AsArray().OfType<JsonObject>() ?? [];
+
+    private static string? Label(JsonObject item)
+    {
+        var value = item["value"]?.GetValue<string>();
+        return string.IsNullOrWhiteSpace(value) ? item["key"]?.GetValue<string>() : value;
     }
 
     private static IEnumerable<Guid> Targets(JsonNode? list, Func<string, IReadOnlyCollection<Guid>> resolve, Action<string> skipped)

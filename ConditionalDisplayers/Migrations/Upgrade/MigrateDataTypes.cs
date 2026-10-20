@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Serialization;
 using Umbraco.Cms.Core.Services;
@@ -7,44 +8,63 @@ using Umbraco.Extensions;
 
 namespace ConditionalDisplayers.Migrations.Upgrade;
 
-internal sealed class MigrateDataTypes(IMigrationContext context, ILogger<MigrateDataTypes> logger) : AsyncMigrationBase(context)
+/// <summary>
+/// Sets the right EditorAlias (and EditorUiAlias, for data types Umbraco's editor split rewrote) on the CD data types.
+/// Registered for two states in <see cref="MigrationPlan"/>: both shipped in 16.x as separate steps, so sites can sit at either.
+/// Safe to run twice, rows already correct are skipped.
+/// </summary>
+internal sealed class MigrateDataTypes(IMigrationContext context, IKeyValueService keyValueService, IJsonSerializer jsonSerializer, ILogger<MigrateDataTypes> logger) : AsyncMigrationBase(context)
 {
     public const string State = "{conditionaldisplayers-migrate-datatypes}";
+    public const string LegacyState = "{conditionaldisplayers-migrate-cdcheckbox-datatype}";
 
-
-    private string cdCheckboxAlias = "Our.Umbraco.CdCheckbox";
-    private string cdDropdownAlias = "Our.Umbraco.CdDropdownFlexible";
-    private string cdRadioAlias = "Our.Umbraco.CdRadio";
-
-
-    protected override async Task MigrateAsync()
+    private static readonly Dictionary<string, string> EditorAliases = new()
     {
+        [LegacyConfigConverter.CheckboxAlias] = "Umbraco.TrueFalse",
+        [LegacyConfigConverter.RadioAlias] = "Umbraco.Plain.String",
+        [LegacyConfigConverter.DropdownAlias] = "Umbraco.Plain.String",
+    };
 
-        await MigrateDataType(cdCheckboxAlias, "Umbraco.TrueFalse");
-        await MigrateDataType(cdDropdownAlias, "Umbraco.Plain.String");
-        await MigrateDataType(cdRadioAlias, "Umbraco.Plain.String");
-    }
-
-    private async Task MigrateDataType(string editorUiAlias, string editorAlias)
+    protected override Task MigrateAsync()
     {
-        var sql = this.Sql()
-           .Select<DataTypeDto>()
-           .AndSelect<NodeDto>()
-           .From<DataTypeDto>()
-           .InnerJoin<NodeDto>()
-           .On<DataTypeDto, NodeDto>(left => left.NodeId, right => right.NodeId)
-           .Where<DataTypeDto>(x => x.EditorUiAlias == editorUiAlias);
+        var restored = RestoredUiAliases();
 
-
-        var dataTypeDtos = await Database.FetchAsync<DataTypeDto>(sql);
-
-        foreach (var dataTypeDto in dataTypeDtos)
+        foreach (var dto in Database.Fetch<DataTypeDto>(Sql().Select<DataTypeDto>().From<DataTypeDto>()))
         {
-            logger.LogInformation("Updating EditorUiAlias {editorUiAlias} and EditorAlias {editorAlias}", editorUiAlias, editorAlias);            
-            dataTypeDto.EditorAlias = editorAlias;
-            _ = Database.Update(dataTypeDto);
+            var uiAlias = restored.GetValueOrDefault(dto.NodeId) ?? dto.EditorUiAlias;
+            if (uiAlias is null || !EditorAliases.TryGetValue(uiAlias, out var editorAlias)) continue;
+            if (dto.EditorUiAlias == uiAlias && dto.EditorAlias == editorAlias) continue;
+
+            logger.LogInformation("Updating DataTypeId {id} to EditorUiAlias {editorUiAlias} and EditorAlias {editorAlias}", dto.NodeId, uiAlias, editorAlias);
+            dto.EditorUiAlias = uiAlias;
+            dto.EditorAlias = editorAlias;
+            _ = Database.Update(dto);
         }
 
+        return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Umbraco's data editor split (v14+) overwrites the legacy editors' aliases, but saves the old values first, e.g.:
+    ///   {"DataTypeId":1086,"EditorUiAlias":"Our.Umbraco.CdCheckbox","EditorAlias":"Umbraco.Plain.String"}
+    /// </summary>
+    private Dictionary<int, string> RestoredUiAliases()
+    {
+        var json = keyValueService.GetValue("migrateDataEditorSplitCollectionData");
+        if (json.IsNullOrWhiteSpace()) return [];
+
+        return (jsonSerializer.Deserialize<DataTypeEditorAliasMigrationData[]>(json) ?? [])
+            .Where(d => d.EditorUiAlias is not null)
+            .DistinctBy(d => d.DataTypeId)
+            .ToDictionary(d => d.DataTypeId, d => d.EditorUiAlias!);
+    }
+
+    private sealed class DataTypeEditorAliasMigrationData
+    {
+        [JsonPropertyName("DataTypeId")]
+        public int DataTypeId { get; set; }
+
+        [JsonPropertyName("EditorUiAlias")]
+        public string? EditorUiAlias { get; init; }
+    }
 }
