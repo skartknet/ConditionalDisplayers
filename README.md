@@ -30,7 +30,7 @@ Run this from your Package Manager Console in Visual Studio:
 Version 17 includes a one-way migration that turns the settings of your existing Conditional Displayers data types into visibility rules. If you use uSync, export it after the first start, or the next import will write the old settings back. The guide explains what changes.
 
 ## Icon
-<a target="_blank" href="https://icons8.com/icon/63snXzoESd3s/fire-hydrant">Fire Hydrant</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+<a target="_blank" href="https://icons8.com/icon/74NRJjZyt5EM/eye">Eye</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
 
 ## AI Disclaimer
 Yes, this package has been done with the help of Claude. A human has been reviewing the code and drinking coffee on its behalf.
