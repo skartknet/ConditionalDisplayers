@@ -14,7 +14,7 @@ using uSync.Core;
 
 namespace ConditionalDisplayers.USync;
 
-[SyncHandler("ConditionalDisplayersRulesHandler", "Conditional Displayers", "ConditionalDisplayers", 1270,
+[SyncHandler("ConditionalDisplayersRulesHandler", "Conditional Displayers Rules", "ConditionalDisplayers", 1270,
     Icon = "icon-eye", EntityType = EntityTypeName, IsTwoPass = false)]
 public sealed class RuleSetHandler(
     ILogger<SyncHandlerRoot<RuleSetEntity, RuleSetEntity>> logger,
