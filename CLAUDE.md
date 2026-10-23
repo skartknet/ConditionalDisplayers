@@ -58,4 +58,4 @@ Test site: `TestWebV17` references the RCL via `ProjectReference`, installs unat
 - Version lives in `ConditionalDisplayers.csproj` `<Version>` (used by CI). `Client/package.json` and `Client/public/umbraco-package.json` also carry a version; keep them in step when bumping.
 - Pushing to a `release/**` branch triggers `.github/workflows/release.yml`: builds client, packs, pushes to NuGet and tags `v<version>` (versions with a `-suffix` are marked pre-release). PRs run `build.yml`.
 - PRs target `master`.
-- NuGet readme is `README.nuget.md`; marketplace content is `umbraco-marketplace*.{json,md}`; user docs are in `Documentation/`.
+- NuGet readmes are the root `README.md` (main package) and `README.md` in `ConditionalDisplayers.uSync/` and `ConditionalDisplayers.Deploy/`; marketplace content is `umbraco-marketplace*.{json,md}`; user docs are in `Documentation/`.

@@ -34,3 +34,14 @@ Version 17 includes a one-way migration that turns the settings of your existing
 
 ## AI Disclaimer
 Yes, this package has been done with the help of Claude. A human has been reviewing the code and drinking coffee on its behalf.
+
+# Special Ackowledgement
+The intelectual author of the new approach to the properties visibility (since v17), instead or relying in additional property editor, is [Richard Ockerby](https://www.linkedin.com/in/richard-ockerby/).
+
+He was planning to release a new package with this approach. but I suggested that improving Conditional Displayers would keep the package alive and would keep its user base.
+
+I stole his idea with his permission and developed this new version of Conditional Displayers.
+
+Thanks Richard, H5YR!
+
+-- Mario

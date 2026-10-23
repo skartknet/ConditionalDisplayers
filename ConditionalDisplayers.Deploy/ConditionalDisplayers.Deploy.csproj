@@ -19,7 +19,12 @@
     <RepositoryUrl>https://github.com/skartknet/ConditionalDisplayers</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <IsPackable>true</IsPackable>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Umbraco.Deploy.Infrastructure" Version="[17.0.0,)" />

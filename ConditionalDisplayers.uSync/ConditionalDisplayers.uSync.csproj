@@ -20,7 +20,12 @@
     <RepositoryUrl>https://github.com/skartknet/ConditionalDisplayers</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <IsPackable>true</IsPackable>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="uSync.BackOffice" Version="[17.0.0,)" />
