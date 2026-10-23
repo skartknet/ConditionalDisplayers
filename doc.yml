@@ -1,0 +1,94 @@
+- generic [ref=f3e5]:
+  - generic [ref=f3e7]:
+    - button "View Umbraco CMS system information and version number" [ref=f3e10] [cursor=pointer]
+    - tablist [ref=f3e16]:
+      - generic:
+        - tab "Content" [ref=f3e18] [cursor=pointer]
+        - tab "Media" [ref=f3e21] [cursor=pointer]
+        - tab "Settings" [ref=f3e24] [cursor=pointer]
+        - tab "Packages" [ref=f3e27] [cursor=pointer]
+        - tab "Users" [ref=f3e30] [cursor=pointer]
+        - tab "Members" [ref=f3e33] [cursor=pointer]
+        - tab "Translation" [ref=f3e36] [cursor=pointer]
+    - generic [ref=f3e39]:
+      - button "search" [ref=f3e42] [cursor=pointer]
+      - button "Help" [ref=f3e50] [cursor=pointer]
+      - button "User profile for Administrator (A)" [ref=f3e58] [cursor=pointer]:
+        - generic [ref=f3e59]: A
+  - generic [ref=f3e67]:
+    - generic [ref=f3e71]:
+      - generic [ref=f3e72]:
+        - heading "Content" [level=3] [ref=f3e73]
+        - generic [ref=f3e75]:
+          - generic:
+            - button "View actions for 'Content'" [ref=f3e79] [cursor=pointer]
+            - generic "Create item for Content" [ref=f3e86] [cursor=pointer]:
+              - button "Create item for Content" [ref=f3e87]
+      - generic [ref=f3e93]:
+        - generic [ref=f3e95]:
+          - menu [ref=f3e98]:
+            - menuitem "menuitem" [ref=f3e99]:
+              - link "Test Page" [ref=f3e101] [cursor=pointer]:
+                - /url: section/content/workspace/document/edit/e811fcaf-77cf-444c-9727-e2e6b99d8c05
+              - generic [ref=f3e112]:
+                - generic:
+                  - button "View actions for 'Test Page'" [ref=f3e116] [cursor=pointer]
+                  - generic "Create item for Test Page" [ref=f3e123] [cursor=pointer]:
+                    - button "Create item for Test Page" [ref=f3e124]
+          - menu [ref=f3e132]:
+            - menuitem "menuitem" [ref=f3e133]:
+              - link "paged" [ref=f3e135] [cursor=pointer]:
+                - /url: section/content/workspace/document/edit/b751e29a-3df2-4722-a747-d9648746273f
+              - generic [ref=f3e146]:
+                - generic:
+                  - button "View actions for 'paged'" [ref=f3e150] [cursor=pointer]
+                  - generic "Create item for paged" [ref=f3e157] [cursor=pointer]:
+                    - button "Create item for paged" [ref=f3e158]
+        - menu [ref=f3e168]:
+          - menuitem "menuitem" [ref=f3e169]:
+            - link "Recycle Bin" [ref=f3e171] [cursor=pointer]:
+              - /url: section/content/workspace/document-recycle-bin-root/edit/null
+            - generic "Reload children" [ref=f3e182] [cursor=pointer]:
+              - button "Reload children" [ref=f3e183]
+    - main [ref=f3e193]:
+      - generic [ref=f3e203]:
+        - generic [ref=f3e207]:
+          - generic [ref=f3e208]:
+            - textbox "Enter a name..." [ref=f3e220]: paged
+            - button "Actions" [ref=f3e226] [cursor=pointer]
+            - tablist [ref=f3e236]:
+              - generic:
+                - tab "Content" [ref=f3e238] [cursor=pointer]
+                - tab "Info" [ref=f3e247] [cursor=pointer]
+          - generic [ref=f3e264]:
+            - generic [ref=f3e268]:
+              - generic "textA" [ref=f3e270]: TextA
+              - textbox "Field for TextA" [ref=f3e277]:
+                - /placeholder: ""
+                - text: no email
+            - generic [ref=f3e281]:
+              - generic "togleA" [ref=f3e283]: TogleA
+              - generic [ref=f3e289] [cursor=pointer]:
+                - switch "Toggle for TogleA"
+            - generic [ref=f3e301]:
+              - generic "conditionalA" [ref=f3e303]
+              - textbox "Field for conditionalA" [ref=f3e310]:
+                - /placeholder: ""
+                - text: asdd
+        - generic [ref=f3e312]:
+          - navigation "breadcrumb" [ref=f3e314]:
+            - generic [ref=f3e317]:
+              - generic:
+                - generic:
+                  - generic [ref=f3e318]:
+                    - link "Content" [ref=f3e319] [cursor=pointer]:
+                      - /url: section/content
+                    - generic [ref=f3e320]: /
+                  - generic [ref=f3e321]: paged
+          - generic [ref=f3e323]:
+            - button "Save and preview" [ref=f3e326] [cursor=pointer]
+            - button "Save" [ref=f3e330] [cursor=pointer]
+            - generic [ref=f3e333]:
+              - generic:
+                - button "Save and publish" [ref=f3e335] [cursor=pointer]
+                - button "View more options" [ref=f3e339] [cursor=pointer]

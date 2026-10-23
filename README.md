@@ -31,3 +31,6 @@ Version 17 includes a one-way migration that turns the settings of your existing
 
 ## Icon
 <a target="_blank" href="https://icons8.com/icon/63snXzoESd3s/fire-hydrant">Fire Hydrant</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+
+## AI Disclaimer
+Yes, this package has been done with the help of Claude. A human has been reviewing the code and drinking coffee on its behalf.

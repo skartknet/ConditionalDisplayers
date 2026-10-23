@@ -11,10 +11,10 @@ internal sealed class MigrationPlan() : PackageMigrationPlan("ConditionalDisplay
     protected override void DefinePlan()
     {
         From(InitialState)
-            .To<RegisterUmbracoPackageEntry>(RegisterUmbracoPackageEntry.State)            
-            .To<MigrateDataTypes>(MigrateDataTypes.LegacyState)
+            .To<RegisterUmbracoPackageEntry>(RegisterUmbracoPackageEntry.State)                        
             .To<MigrateDataTypes>(MigrateDataTypes.State)
             .To<AddRuleTable>(AddRuleTable.State)
-            .To<ConvertLegacyConfig>(ConvertLegacyConfig.State);
+            .To<ConvertLegacyConfig>(ConvertLegacyConfig.State)
+            .To<MigrateDataTypesToV17>(MigrateDataTypesToV17.State);
     }
 }
