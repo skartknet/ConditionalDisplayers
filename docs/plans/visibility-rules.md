@@ -2,7 +2,7 @@
 
 Replace the 'controller editor' model (CD checkbox, radio and dropdown editors that show or hide other properties) with visibility rules configured on each property in the 'Edit property' modal.
 
-Target release: `17.0.0-beta1`, then `17.0.0`. Still supports Umbraco 16 (`net9.0`) and 17 (`net10.0`). The major bump signals a breaking, one-way migration, not an Umbraco version. Update the README compatibility table to say so.
+Target release: `17.0.0-beta1`, then `17.0.0`. Supports Umbraco 17 (`net10.0`) only. The major bump signals a breaking, one-way migration, not an Umbraco version. Update the README compatibility table to say so.
 
 ## Decisions
 
@@ -106,7 +106,7 @@ A row with both groups empty is deleted, not stored.
 
 ### Project setup
 
-- Add `Umbraco.Cms.Api.Management` package references (`[16,)` for `net9.0`, `[17,)` for `net10.0`), mirroring the existing `Umbraco.Cms.Infrastructure` pair. `ManagementApiControllerBase` and `VersionedApiBackOfficeRoute` live there; the project only references Infrastructure today.
+- Add `Umbraco.Cms.Api.Management` package reference (`[17,)`), alongside the existing `Umbraco.Cms.Infrastructure` one. `ManagementApiControllerBase` and `VersionedApiBackOfficeRoute` live there; the project only references Infrastructure today.
 - Add a composer (there isn't one yet; the migration plan is auto-discovered) to register the notification handlers and the Swagger document.
 
 ### Table
@@ -223,7 +223,7 @@ Sites using uSync have the old CD data type config (and `Our.Umbraco.CdCheckbox`
 2. **Umbraco Deploy connector**: same, for Deploy users.
 3. **Shared C# rule evaluator**, a port of the TS evaluator kept in step with shared test vectors. It enables:
    - Server-side validation skipping, so 'mandatory when visible' can replace the Mandatory restriction.
-   - An `IsVisible("alias")` helper for Razor, and optionally stripping hidden properties from Delivery API output.
+   - An `IsPropertyVisible("alias")` helper for Razor, and optionally stripping hidden properties from Delivery API output. **Done** (`Rules/RuleEvaluator.cs`, `VisibilityService.cs`, `StripHiddenBuilders.cs`). Server-side validation skipping is still open.
 4. **Block settings referencing block content** ('layout = X shows field Y').
 5. **Explicit tab and group rules**, if auto-hide proves not to be enough.
 6. **Content picker 'is specific node'** and other editor-specific operators, on request.

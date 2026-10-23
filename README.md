@@ -30,15 +30,15 @@ Run this from your Package Manager Console in Visual Studio:
 Version 17 includes a one-way migration that turns the settings of your existing Conditional Displayers data types into visibility rules. If you use uSync, export it after the first start, or the next import will write the old settings back. The guide explains what changes.
 
 ## Icon
-<a target="_blank" href="https://icons8.com/icon/74NRJjZyt5EM/eye">Eye</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+[Eye icon](https://icons8.com/icon/74NRJjZyt5EM/eye) by [Icons8](https://icons8.com)
 
 ## AI Disclaimer
 Yes, this package has been done with the help of Claude. A human has been reviewing the code and drinking coffee on its behalf.
 
 # Special Ackowledgement
-The intelectual author of the new approach to the properties visibility (since v17), instead or relying in additional property editor, is [Richard Ockerby](https://www.linkedin.com/in/richard-ockerby/).
+The intelectual author of the new approach to the properties visibility (since v17), instead or relying in additional property editors, is [Richard Ockerby](https://www.linkedin.com/in/richard-ockerby/).
 
-He was planning to release a new package with this approach. but I suggested that improving Conditional Displayers would keep the package alive and would keep its user base.
+He was planning to release a new package with this approach but I suggested that improving Conditional Displayers would keep the package alive and would keep its user base.
 
 I stole his idea with his permission and developed this new version of Conditional Displayers.
 

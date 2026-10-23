@@ -7,11 +7,23 @@ public sealed class RulesStore(IScopeProvider scopeProvider)
 {
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
 
-    public IReadOnlyList<RuleRow> Get(IReadOnlyCollection<Guid> contentTypeKeys)
+    private long _version;
+
+    /// <summary>Bumped on every write through this store, so in-process caches can tell when they are stale.</summary>
+    public long Version => Interlocked.Read(ref _version);
+
+    public IReadOnlyList<RuleRow> Get(IReadOnlyCollection<Guid> contentTypeKeys) =>
+        Fetch("ContentTypeKey", contentTypeKeys);
+
+    /// <summary>Rows for the given property types, wherever the owning content type sits in a composition.</summary>
+    public IReadOnlyList<RuleRow> GetForProperties(IReadOnlyCollection<Guid> propertyTypeKeys) =>
+        Fetch("PropertyTypeKey", propertyTypeKeys);
+
+    private IReadOnlyList<RuleRow> Fetch(string column, IReadOnlyCollection<Guid> keys)
     {
-        if (contentTypeKeys.Count == 0) return [];
+        if (keys.Count == 0) return [];
         using var scope = scopeProvider.CreateScope(autoComplete: true);
-        var dtos = scope.Database.Fetch<RuleDto>("WHERE ContentTypeKey IN (@0)", contentTypeKeys.ToArray());
+        var dtos = scope.Database.Fetch<RuleDto>($"WHERE {column} IN (@0)", keys.ToArray());
         return dtos.Select(d => new RuleRow
         {
             PropertyTypeKey = d.PropertyTypeKey,
@@ -42,6 +54,7 @@ public sealed class RulesStore(IScopeProvider scopeProvider)
             if (exists) scope.Database.Update(dto); else scope.Database.Insert(dto);
         }
         scope.Complete();
+        Interlocked.Increment(ref _version);
     }
 
     /// <summary>Content types that have at least one rule.</summary>
@@ -78,5 +91,6 @@ public sealed class RulesStore(IScopeProvider scopeProvider)
                 contentTypeKey, livePropertyKeys.ToArray());
         }
         scope.Complete();
+        Interlocked.Increment(ref _version);
     }
 }

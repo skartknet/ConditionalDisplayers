@@ -29,7 +29,7 @@ Test site: `TestWebV17` references the RCL via `ProjectReference`, installs unat
 
 **Two halves:**
 - `ConditionalDisplayers/Client/` (TypeScript + Lit + Vite): all the actual UI and show/hide behaviour. `@umbraco*` imports are externals, provided by the backoffice at runtime.
-- `ConditionalDisplayers/*.cs`: the visibility rules API (`Rules/`) and package migrations. There is no value converter: migrated checkboxes use core `Umbraco.TrueFalse`.
+- `ConditionalDisplayers/*.cs`: the visibility rules API (`Rules/`) and package migrations. `Rules/RuleEvaluator.cs` is a C# port of `Client/src/rules/evaluate.ts`; keep them in step (`RuleEvaluatorTests` carries the same vectors as `rules.test.ts`). `VisibilityService` backs the Razor `IsPropertyVisible(alias)` extension (`Extensions/VisibilityExtensions.cs`) and, when `ConditionalDisplayers:DeliveryApi:StripHiddenProperties` is true, the Delivery API builder decorators in `StripHiddenBuilders.cs`. There is no value converter: migrated checkboxes use core `Umbraco.TrueFalse`.
 
 **Client load chain:** `public/umbraco-package.json` registers a `bundle` pointing at `client.js` → `src/index.ts` exports a `backofficeEntryPoint` → `backoffice-entrypoint.ts` registers the manifests from `propertyeditors/manifest.ts`.
 

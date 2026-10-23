@@ -98,9 +98,8 @@ Rules only see properties from the same element. Content properties can use othe
 ## Things to know
 
 - **Mandatory properties ignore rules.** A required property can't be hidden, because it would block saving with no way to fix it. If you tick Mandatory, the Visibility tab shows a notice and goes read-only. Your rules are kept, and apply again if you untick Mandatory.
-- **Hidden values still save and publish.** Hiding a property only changes what the editor sees. Whatever value it holds stays in the content.
+- **Hidden values still save and publish.** Hiding a property only changes what the editor sees. Whatever value it holds stays in the content. To respect the rules on your site or in the Delivery API, see [Getting values in templates](#getting-values-in-templates).
 - **Deleted sources are dropped.** If a source property is deleted, its conditions are flagged in the Visibility tab and ignored. If that leaves a Show group empty, the property is visible. The same applies when a property comes from a composition and the source doesn't exist on another document type that uses it.
-- **Rules live in the database, not in uSync.** uSync files don't carry visibility rules yet. If you move content types between environments with uSync, set the rules again on the target, or copy the `ConditionalDisplayersRule` table.
 - **Rules are removed with the property.** Delete a property or content type and its rules go too.
 
 ## Upgrading from version 3
@@ -122,7 +121,55 @@ Content type aliases of the Conditional Displayers editors are unchanged, so exi
 
 ## Getting values in templates
 
-Nothing changes. The Conditional Displayers radio and dropdown are normal property editors, and the checkbox is now Umbraco's own true/false, so read them as you would any property (strongly typed models, `Model.Value()` and so on).
+Reading values doesn't change. The Conditional Displayers radio and dropdown are normal property editors, and the checkbox is now Umbraco's own true/false, so read them as you would any property (strongly typed models, `Model.Value()` and so on).
+
+Rules only hide properties in the backoffice. Your site still renders whatever is stored. If you want the front end to respect the rules too, you have two options.
+
+### Check a property with `IsPropertyVisible`
+
+`IsPropertyVisible` runs the same rules the backoffice does, against the published values of the same item. Add `@using Umbraco.ConditionalDisplayers.Extensions` to your view (or `_ViewImports.cshtml`) first.
+
+```cshtml
+@if (Model.IsPropertyVisible("promoBanner"))
+{
+    <partial name="PromoBanner" model="Model.Value<string>("promoBanner")" />
+}
+```
+
+It works on content, media, members and block elements, so inside a block list use `block.Content.IsPropertyVisible("alias")` or `block.Settings.IsPropertyVisible("alias")`.
+
+- It returns `true` when the property has no rules, so it's safe to call on any property.
+- Hidden source properties still count, the same as in the backoffice.
+- Rules on Mandatory properties are ignored, and conditions on a source the item doesn't have are dropped, the same as in the backoffice.
+- To get everything hidden on an item in one go, inject `VisibilityService` and call `GetHiddenAliases(content)`.
+- Rules are cached per content type. Changes show up straight away on the server that saved them, and within five minutes on other servers in a load-balanced setup.
+
+### Strip hidden properties from the Delivery API
+
+This is off by default, so turning the package on doesn't change your API output. To switch it on, add this to `appsettings.json` and restart:
+
+```json
+{
+  "ConditionalDisplayers": {
+    "DeliveryApi": {
+      "StripHiddenProperties": true
+    }
+  }
+}
+```
+
+Hidden properties are then left out of `properties` for content, media and block elements, including items the API expands (block lists, pickers and so on). The Management API and the stored content aren't touched.
+
+- A hidden property is missing from the response, not empty. If your front end uses generated types, treat these properties as optional.
+- This tidies the output. It isn't a security boundary, because the value is still stored and still reachable by any code that reads it.
+- It uses the same rules as `IsPropertyVisible`, so a property is stripped only when `IsPropertyVisible` would return `false` for that item.
+
+## Additional packages
+
+If you use **uSync**, you can export your Conditional Displayers rules by installing [this package](https://www.nuget.org/packages/Our.Umbraco.ConditionalDisplayers.uSync).
+
+If you use **Umbraco Deploy**, you'll need to install [this one](https://www.nuget.org/packages/Our.Umbraco.ConditionalDisplayers.Deploy).
+
 
 ## Contributing
 
