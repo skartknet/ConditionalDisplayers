@@ -2,7 +2,7 @@
 
 Replace the 'controller editor' model (CD checkbox, radio and dropdown editors that show or hide other properties) with visibility rules configured on each property in the 'Edit property' modal.
 
-Target release: `17.0.0-beta1`, then `17.0.0`. Supports Umbraco 17 (`net10.0`) only. The major bump signals a breaking, one-way migration, not an Umbraco version. Update the README compatibility table to say so.
+Target release: `17.0.0-beta2`, then `17.0.0`. Supports Umbraco 17 (`net10.0`) only. The major bump signals a breaking, one-way migration, not an Umbraco version. Update the README compatibility table to say so.
 
 ## Decisions
 
@@ -20,7 +20,7 @@ Target release: `17.0.0-beta1`, then `17.0.0`. Supports Umbraco 17 (`net10.0`) o
 | 13/14 | Existing editors | `CdCheckbox` data types are swapped to core `Umbraco.TrueFalse` (identical value). `CdRadio` and `CdDropdownFlexible` stay as plain key/label list editors with all show/hide logic and settings removed. Aliases unchanged. No content value rewrites. |
 | 15 | Tabs and groups | Migration expands `tab:`/`group:` targets into rules on every property in that container. Runtime auto-hides a group when all its properties are hidden, and a tab when all its contents are hidden. No explicit container rules. |
 | 16 | Hidden values | Untouched. Saved and published as normal. Documented. |
-| 17 | Release | `17.0.0-beta1` first. |
+| 17 | Release | `17.0.0-beta2` first. |
 | 18 | Hidden sources | Conditions read values regardless of the source's visibility. Rules never depend on other rules, so there are no cycles and evaluation is a single flat pass. |
 
 ### Operators
