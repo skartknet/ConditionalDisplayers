@@ -1,23 +1,24 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
-    <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
     <EnableDefaultContentItems>true</EnableDefaultContentItems>
+    <!-- Umbraco 18 OpenAPI source generator: needed in class libraries that reference Microsoft.AspNetCore.OpenApi -->
+    <InterceptorsNamespaces>$(InterceptorsNamespaces);Microsoft.AspNetCore.OpenApi.Generated</InterceptorsNamespaces>
   </PropertyGroup>
 
   <PropertyGroup>
     <Product>Conditional Displayers</Product>
     <PackageId>Our.Umbraco.ConditionalDisplayers</PackageId>
     <Title>ConditionalDisplayers</Title>
-    <Description>Collection of property editors that allow the conditional display of other
-      properties in the same document type.</Description>
+    <Description>Package that allows to control visibility of properties based in the values of other properties in the same document, member of media type.</Description>
     <PackageTags>umbraco property editor backoffice condition display umbraco-marketplace</PackageTags>
     <AssemblyName>Our.Umbraco.ConditionalDisplayers</AssemblyName>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Version>16.8.0</Version>
+    <Version>18.0.0-beta1</Version>
     <Authors>Mario Lopez</Authors>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReleaseNotes></PackageReleaseNotes>
@@ -29,12 +30,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-	  <PackageReference Include="Umbraco.Cms.Infrastructure" Version="[16,)" Condition="'$(TargetFramework)' == 'net9.0'" />
-	  <PackageReference Include="Umbraco.Cms.Infrastructure" Version="[17,)" Condition="'$(TargetFramework)' == 'net10.0'" />
+	  <PackageReference Include="Umbraco.Cms.Infrastructure" Version="[18.0.0,19.0.0)" />
+	  <PackageReference Include="Umbraco.Cms.Api.Management" Version="[18.0.0,19.0.0)" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\README.nuget.md">
+    <None Include="..\README.md">
       <Pack>True</Pack>
       <PackagePath>\README.md</PackagePath>
     </None>
@@ -43,6 +44,12 @@
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="ConditionalDisplayers.Tests" />
+		<InternalsVisibleTo Include="Our.Umbraco.ConditionalDisplayers.uSync" />
+		<InternalsVisibleTo Include="Our.Umbraco.ConditionalDisplayers.Deploy" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<!-- Don't include the Client folder as part of packaging nuget build -->

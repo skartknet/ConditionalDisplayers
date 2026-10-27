@@ -1,13 +1,14 @@
 {
 	"name": "client",
 	"private": true,
-	"version": "16.9.0",
+	"version": "18.0.0-beta1",
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
 		"build": "tsc && vite build",
 		"preview": "vite preview",
-		"watch": "vite build --watch"
+		"watch": "vite build --watch",
+		"test": "vitest run"
 	},
 	"dependencies": {
 		"lit": "^3.2.1",
@@ -15,8 +16,9 @@
 	},
 	"devDependencies": {
 		"@types/node": "^24.1.0",
-		"@umbraco-cms/backoffice": "^16.1.0",
-		"@umbraco-ui/uui": "^1.12.2",
-		"vite": "^6.3.5"
+		"@umbraco-cms/backoffice": "^18.0.0",
+		"@umbraco-ui/uui": "^2.0.2",
+		"vite": "^6.3.5",
+		"vitest": "^5.0.4"
 	}
 }

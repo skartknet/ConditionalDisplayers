@@ -270,3 +270,11 @@ build/*.zip
 
 **/App_Plugins
 .DS_Store
+# Playwright CLI output (may contain credentials)
+.playwright-cli/
+
+# Playwright
+tests/e2e/.auth/
+test-results/
+playwright-report/
+.playwright-mcp/

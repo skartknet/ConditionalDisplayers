@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>ConditionalDisplayers.Deploy</RootNamespace>
+    <AssemblyName>Our.Umbraco.ConditionalDisplayers.Deploy</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Product>Conditional Displayers Deploy</Product>
+    <PackageId>Our.Umbraco.ConditionalDisplayers.Deploy</PackageId>
+    <Title>ConditionalDisplayers Deploy</Title>
+    <Description>Umbraco Deploy connector that transfers Conditional Displayers visibility rules between environments.</Description>
+    <PackageTags>umbraco deploy conditional displayers</PackageTags>
+    <Version>18.0.0-beta1</Version>
+    <Authors>Mario Lopez</Authors>
+    <PackageProjectUrl>https://github.com/skartknet/ConditionalDisplayers</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/skartknet/ConditionalDisplayers</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IsPackable>true</IsPackable>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Umbraco.Deploy.Infrastructure" Version="[18.0.0,19.0.0)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ConditionalDisplayers\ConditionalDisplayers.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="ConditionalDisplayers.Tests" />
+  </ItemGroup>
+</Project>

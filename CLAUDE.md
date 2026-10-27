@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-`Our.Umbraco.ConditionalDisplayers`: an Umbraco backoffice package (NuGet) providing property editors (checkbox, radio, dropdown) that show/hide other properties, groups and tabs on the same document/block. Targets Umbraco 16 (`net9.0`) and 17 (`net10.0`) from one RCL. Umbraco < 16 uses package v3 (not in this branch).
+`Our.Umbraco.ConditionalDisplayers`: an Umbraco backoffice package (NuGet) providing property editors (checkbox, radio, dropdown) that show/hide other properties, groups and tabs on the same document/block. Targets Umbraco 18 and its minor versions (`net10.0`). Older Umbraco versions use earlier package versions (not in this branch).
 
 ## Commands
 
-There are no tests and no linter. "Verification" = `tsc` passing in the client build, then manual testing in `TestWebV17`.
+There are no tests and no linter. "Verification" = `tsc` passing in the client build, then manual testing in `TestWebV18`.
 
 ```sh
 # Client (must be built before the .NET build/pack, output is not committed)
@@ -19,21 +19,21 @@ npm run watch      # rebuild on change while the test site runs
 
 # .NET
 dotnet build ConditionalDisplayers.sln
-dotnet run --project TestWebV17          # test site, unattended install
+dotnet run --project TestWebV18          # test site, unattended install
 dotnet pack ConditionalDisplayers/ConditionalDisplayers.csproj -c Release
 ```
 
-Test site: `TestWebV17` references the RCL via `ProjectReference`, installs unattended (credentials in `TestWebV17/appsettings.json`), and uSync files under `TestWebV17/uSync/v17` recreate the CD data types, a doctype using them all, and a test page.
+Test site: `TestWebV18` references the RCL via `ProjectReference`, installs unattended (credentials in `TestWebV18/appsettings.json`), and uSync files under `TestWebV18/uSync/v17` recreate the CD data types, a doctype using them all, and a test page.
 
 ## Architecture
 
 **Two halves:**
 - `ConditionalDisplayers/Client/` (TypeScript + Lit + Vite): all the actual UI and show/hide behaviour. `@umbraco*` imports are externals, provided by the backoffice at runtime.
-- `ConditionalDisplayers/*.cs`: only a value converter (`ConditionalCheckboxConverter`, maps `Our.Umbraco.CdCheckbox` to bool via `YesNoValueConverter`) and package migrations.
+- `ConditionalDisplayers/*.cs`: the visibility rules API (`Rules/`) and package migrations. `Rules/RuleEvaluator.cs` is a C# port of `Client/src/rules/evaluate.ts`; keep them in step (`RuleEvaluatorTests` carries the same vectors as `rules.test.ts`). `VisibilityService` backs the Razor `IsPropertyVisible(alias)` extension (`Extensions/VisibilityExtensions.cs`) and, when `ConditionalDisplayers:DeliveryApi:StripHiddenProperties` is true, the Delivery API builder decorators in `StripHiddenBuilders.cs`. The rules API has its own OpenAPI document, registered with `AddBackOfficeOpenApiDocument` in `Composition/RulesComposer.cs` (Umbraco 18 uses Microsoft.AspNetCore.OpenApi, not Swashbuckle; spec at `/umbraco/openapi/conditionaldisplayers.json`). There is no value converter: migrated checkboxes use core `Umbraco.TrueFalse`.
 
 **Client load chain:** `public/umbraco-package.json` registers a `bundle` pointing at `client.js` → `src/index.ts` exports a `backofficeEntryPoint` → `backoffice-entrypoint.ts` registers the manifests from `propertyeditors/manifest.ts`.
 
-**Editor aliases are a contract.** `Our.Umbraco.CdCheckbox` (schema `Umbraco.TrueFalse`), `Our.Umbraco.CdRadio` and `Our.Umbraco.CdDropdownFlexible` (schema `Umbraco.Plain.String`) appear in the client manifest, the C# converter, the migrations and saved data types in existing sites. Renaming any of them breaks installs. `Our.Umbraco.CdMultivalues` is an internal settings UI (the prevalue list editor for radio/dropdown, `components/cdMultivalues.ts`).
+**Editor aliases are a contract.** `Our.Umbraco.CdCheckbox` (schema `Umbraco.TrueFalse`), `Our.Umbraco.CdRadio` and `Our.Umbraco.CdDropdownFlexible` (schema `Umbraco.Plain.String`) appear in the client manifest, the migrations and saved data types in existing sites. Renaming any of them breaks installs. `Our.Umbraco.CdMultivalues` is an internal settings UI (the prevalue list editor for radio/dropdown, `components/cdMultivalues.ts`).
 
 **Settings definitions** live in `manifest.ts` as `cd*PropertyInfo` objects; editors read config via `config.getValueByAlias(cd*PropertyInfo.x.alias)`, so add a setting there first.
 
@@ -48,11 +48,14 @@ Test site: `TestWebV17` references the RCL via `ProjectReference`, installs unat
 - Hidden properties still validate (documented limitation).
 - When re-showing, `uui-textarea[auto-height]` must be re-measured (`refreshAutoHeightTextareas`) or it stays collapsed at ~2px.
 
-**Migrations** (`Migrations/MigrationPlan.cs`, `PackageMigrationPlan`): register the package entry, then fix data types migrated from the AngularJS-era package (setting correct `EditorAlias` for each `EditorUiAlias`). Add new steps by appending `.To<NewStep>(NewStep.State)`; never reorder or rename existing state strings.
+**Migrations** (`Migrations/MigrationPlan.cs`, `PackageMigrationPlan`): register the package entry, then one upgrade step, `MigrateDataTypes` (state `{conditionaldisplayers-v17}`), that does everything for the v17 move. Add new steps by appending `.To<NewStep>(NewStep.State)`; never reorder or rename existing state strings.
+- `MigrateDataTypes` creates the rule table (if missing), restores `EditorUiAlias` from Umbraco's `migrateDataEditorSplitCollectionData` key-value entry, sets `EditorAlias`, then calls `ConvertLegacyConfig.Run(Database)`. The first steps are idempotent.
+- `ConvertLegacyConfig` is a plain class, not a migration. It is one way: it turns the legacy show/hide config into visibility rules, swaps the CD editors for the core Toggle, Radio button list and Dropdown, and rewrites stored radio/dropdown values from item key to label. It selects by the legacy `EditorUiAlias`, so it must run after the alias fix.
+- Data types are updated through `DataTypeDto` rather than `IDataTypeService`: the legacy rows have editor aliases that no longer resolve, and the service would raise notifications and cache refreshes mid-upgrade. Keep new steps on the DTO route.
 
 ## Versioning and release
 
 - Version lives in `ConditionalDisplayers.csproj` `<Version>` (used by CI). `Client/package.json` and `Client/public/umbraco-package.json` also carry a version; keep them in step when bumping.
 - Pushing to a `release/**` branch triggers `.github/workflows/release.yml`: builds client, packs, pushes to NuGet and tags `v<version>` (versions with a `-suffix` are marked pre-release). PRs run `build.yml`.
 - PRs target `master`.
-- NuGet readme is `README.nuget.md`; marketplace content is `umbraco-marketplace*.{json,md}`; user docs are in `Documentation/`.
+- NuGet readmes are the root `README.md` (main package) and `README.md` in `ConditionalDisplayers.uSync/` and `ConditionalDisplayers.Deploy/`; marketplace content is `umbraco-marketplace*.{json,md}`; user docs are in `Documentation/`.
