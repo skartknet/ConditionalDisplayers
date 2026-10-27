@@ -21,6 +21,7 @@ Run this from your Package Manager Console in Visual Studio:
 
 | Package version | Umbraco | What it offers |
 |---|---|---|
+| 18 | 18 and its minor versions | Visibility rules on any property |
 | 17 | 17 | Visibility rules on any property |
 | 16 | 16 and 17 | Checkbox, radio and dropdown editors that show or hide other properties |
 | 3 | Less than 16 | The same editors, for older backoffices |

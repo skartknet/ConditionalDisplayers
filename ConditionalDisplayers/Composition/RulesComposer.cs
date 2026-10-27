@@ -1,12 +1,10 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Swashbuckle.AspNetCore.SwaggerGen;
+using Umbraco.Cms.Api.Common.OpenApi;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DeliveryApi;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Notifications;
-using Microsoft.OpenApi;
 using ConditionalDisplayers.Services;
 using ConditionalDisplayers.Rules;
 using ConditionalDisplayers.DeliveryAPI;
@@ -19,7 +17,7 @@ internal sealed class RulesComposer : IComposer
     {
         builder.Services.AddSingleton<RulesStore>();
         builder.Services.AddSingleton<VisibilityService>();
-        builder.Services.ConfigureOptions<SwaggerConfig>();
+        builder.AddBackOfficeOpenApiDocument(RulesController.ApiName, doc => doc.WithTitle("Conditional Displayers API"));
 
         if (builder.Config.GetValue<bool>("ConditionalDisplayers:DeliveryApi:StripHiddenProperties"))
         {
@@ -52,15 +50,5 @@ internal sealed class RulesComposer : IComposer
                 ?? ActivatorUtilities.CreateInstance(sp, original.ImplementationType!));
             return wrap(inner, sp.GetRequiredService<VisibilityService>());
         }, original.Lifetime));
-    }
-
-    private sealed class SwaggerConfig : IConfigureOptions<SwaggerGenOptions>
-    {
-        public void Configure(SwaggerGenOptions options) =>
-            options.SwaggerDoc(RulesController.ApiName, new OpenApiInfo
-            {
-                Title = "Conditional Displayers API",
-                Version = "Latest",
-            });
     }
 }

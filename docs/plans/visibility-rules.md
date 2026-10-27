@@ -116,7 +116,7 @@ A row with both groups empty is deleted, not stored.
 
 ### Management API
 
-`RulesController : ManagementApiControllerBase`, `[VersionedApiBackOfficeRoute("conditionaldisplayers/rules")]`, `[MapToApi("conditionaldisplayers")]` with its own Swagger doc so it stays out of Umbraco's `management` document. Both 16.5.1 and 17.7.1 still use Swashbuckle, and `MapToApi` exists in both.
+`RulesController : ManagementApiControllerBase`, `[VersionedApiBackOfficeRoute("conditionaldisplayers/rules")]`, `[MapToApi("conditionaldisplayers")]` with its own Swagger doc so it stays out of Umbraco's `management` document. (Superseded: Umbraco 18 uses Microsoft.AspNetCore.OpenApi, see `AddBackOfficeOpenApiDocument` in `RulesComposer`.) Both 16.5.1 and 17.7.1 still use Swashbuckle, and `MapToApi` exists in both.
 
 - `GET ?contentTypeKey=a&contentTypeKey=b`: returns rows for those owner keys.
   - The client already has the owner plus all composition keys from `structure.contentTypeUniques`, so the server doesn't need to resolve compositions or know whether a key is a document, media or member type.

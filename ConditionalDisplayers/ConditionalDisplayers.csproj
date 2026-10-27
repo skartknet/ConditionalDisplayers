@@ -6,6 +6,8 @@
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
     <EnableDefaultContentItems>true</EnableDefaultContentItems>
+    <!-- Umbraco 18 OpenAPI source generator: needed in class libraries that reference Microsoft.AspNetCore.OpenApi -->
+    <InterceptorsNamespaces>$(InterceptorsNamespaces);Microsoft.AspNetCore.OpenApi.Generated</InterceptorsNamespaces>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -16,7 +18,7 @@
     <PackageTags>umbraco property editor backoffice condition display umbraco-marketplace</PackageTags>
     <AssemblyName>Our.Umbraco.ConditionalDisplayers</AssemblyName>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Version>17.0.0-beta1</Version>
+    <Version>18.0.0-beta1</Version>
     <Authors>Mario Lopez</Authors>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReleaseNotes></PackageReleaseNotes>
@@ -28,8 +30,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-	  <PackageReference Include="Umbraco.Cms.Infrastructure" Version="[17,)" />
-	  <PackageReference Include="Umbraco.Cms.Api.Management" Version="[17,)" />
+	  <PackageReference Include="Umbraco.Cms.Infrastructure" Version="[18.0.0,19.0.0)" />
+	  <PackageReference Include="Umbraco.Cms.Api.Management" Version="[18.0.0,19.0.0)" />
   </ItemGroup>
 
   <ItemGroup>

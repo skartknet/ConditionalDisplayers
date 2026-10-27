@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-`Our.Umbraco.ConditionalDisplayers`: an Umbraco backoffice package (NuGet) providing property editors (checkbox, radio, dropdown) that show/hide other properties, groups and tabs on the same document/block. Targets Umbraco 17 (`net10.0`). Older Umbraco versions use earlier package versions (not in this branch).
+`Our.Umbraco.ConditionalDisplayers`: an Umbraco backoffice package (NuGet) providing property editors (checkbox, radio, dropdown) that show/hide other properties, groups and tabs on the same document/block. Targets Umbraco 18 and its minor versions (`net10.0`). Older Umbraco versions use earlier package versions (not in this branch).
 
 ## Commands
 
-There are no tests and no linter. "Verification" = `tsc` passing in the client build, then manual testing in `TestWebV17`.
+There are no tests and no linter. "Verification" = `tsc` passing in the client build, then manual testing in `TestWebV18`.
 
 ```sh
 # Client (must be built before the .NET build/pack, output is not committed)
@@ -19,17 +19,17 @@ npm run watch      # rebuild on change while the test site runs
 
 # .NET
 dotnet build ConditionalDisplayers.sln
-dotnet run --project TestWebV17          # test site, unattended install
+dotnet run --project TestWebV18          # test site, unattended install
 dotnet pack ConditionalDisplayers/ConditionalDisplayers.csproj -c Release
 ```
 
-Test site: `TestWebV17` references the RCL via `ProjectReference`, installs unattended (credentials in `TestWebV17/appsettings.json`), and uSync files under `TestWebV17/uSync/v17` recreate the CD data types, a doctype using them all, and a test page.
+Test site: `TestWebV18` references the RCL via `ProjectReference`, installs unattended (credentials in `TestWebV18/appsettings.json`), and uSync files under `TestWebV18/uSync/v17` recreate the CD data types, a doctype using them all, and a test page.
 
 ## Architecture
 
 **Two halves:**
 - `ConditionalDisplayers/Client/` (TypeScript + Lit + Vite): all the actual UI and show/hide behaviour. `@umbraco*` imports are externals, provided by the backoffice at runtime.
-- `ConditionalDisplayers/*.cs`: the visibility rules API (`Rules/`) and package migrations. `Rules/RuleEvaluator.cs` is a C# port of `Client/src/rules/evaluate.ts`; keep them in step (`RuleEvaluatorTests` carries the same vectors as `rules.test.ts`). `VisibilityService` backs the Razor `IsPropertyVisible(alias)` extension (`Extensions/VisibilityExtensions.cs`) and, when `ConditionalDisplayers:DeliveryApi:StripHiddenProperties` is true, the Delivery API builder decorators in `StripHiddenBuilders.cs`. There is no value converter: migrated checkboxes use core `Umbraco.TrueFalse`.
+- `ConditionalDisplayers/*.cs`: the visibility rules API (`Rules/`) and package migrations. `Rules/RuleEvaluator.cs` is a C# port of `Client/src/rules/evaluate.ts`; keep them in step (`RuleEvaluatorTests` carries the same vectors as `rules.test.ts`). `VisibilityService` backs the Razor `IsPropertyVisible(alias)` extension (`Extensions/VisibilityExtensions.cs`) and, when `ConditionalDisplayers:DeliveryApi:StripHiddenProperties` is true, the Delivery API builder decorators in `StripHiddenBuilders.cs`. The rules API has its own OpenAPI document, registered with `AddBackOfficeOpenApiDocument` in `Composition/RulesComposer.cs` (Umbraco 18 uses Microsoft.AspNetCore.OpenApi, not Swashbuckle; spec at `/umbraco/openapi/conditionaldisplayers.json`). There is no value converter: migrated checkboxes use core `Umbraco.TrueFalse`.
 
 **Client load chain:** `public/umbraco-package.json` registers a `bundle` pointing at `client.js` → `src/index.ts` exports a `backofficeEntryPoint` → `backoffice-entrypoint.ts` registers the manifests from `propertyeditors/manifest.ts`.
 
