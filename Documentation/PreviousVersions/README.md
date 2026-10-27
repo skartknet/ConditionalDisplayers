@@ -31,7 +31,7 @@ You'll have to create a list of options that the dropdown will display. In addit
 There's also a radio list datatype with the name '[Conditional] Radio List Displayer'. The configuration of this editor is the same as the previous ones
 
 ## Tabs and Groups
-The previous documentation talks about *property names* to configure the editors, but you can also configure them to show or hide tabs and groups. [Jump to the extended documentation.](tabs-and-groups)
+The previous documentation talks about *property names* to configure the editors, but you can also configure them to show or hide tabs and groups. [Jump to the extended documentation.](tabs-and-groups.md)
 
 
 ## Getting the values on the templates

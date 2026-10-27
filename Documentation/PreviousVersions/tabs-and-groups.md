@@ -1,5 +1,8 @@
 # Hiding and Showing Tabs and Groups
 
+> [!NOTE]
+> For versions 15+ read [this](./tabs-and-groups-umbraco15+.md) instead.
+
 With Conditional Displayers you can also show and hide an entire Tab, a Tab's Content Group and Group Panels.
 
 Unlike properties, we're not exposed to any aliases for any of these elements, but as our code uses the data attribute 'data-element', we were able to get this working.
