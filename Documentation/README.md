@@ -1,6 +1,6 @@
 # Conditional Displayers guide
 
-| :memo:        | Since v17, this pacakge follow a completely different approach to handle the visibility of properties. Documentation for older version can be found [here](./PreviousVersions/README.md).|
+| :memo:        | Since v17, this package follows a completely different approach to handle the visibility of properties. Documentation for older version can be found [here](./PreviousVersions/README.md).|
 |---------------|:---------------------------------------------|
 
 Conditional Displayers lets editors see only the properties that matter. You set **visibility rules** on any property of a document, media, member or element type, and the backoffice shows or hides that property as the editor fills in the others.
