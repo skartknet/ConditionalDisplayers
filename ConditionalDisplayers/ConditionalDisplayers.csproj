@@ -28,8 +28,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-	  <PackageReference Include="Umbraco.Cms.Infrastructure" Version="[17,)" />
-	  <PackageReference Include="Umbraco.Cms.Api.Management" Version="[17,)" />
+	  <PackageReference Include="Umbraco.Cms.Infrastructure" Version="[17.0.0,18.0.0)" />
+	  <PackageReference Include="Umbraco.Cms.Api.Management" Version="[17.0.0,18.0.0)" />
   </ItemGroup>
 
   <ItemGroup>

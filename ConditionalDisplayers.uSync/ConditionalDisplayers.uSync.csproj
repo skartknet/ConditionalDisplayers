@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="uSync.BackOffice" Version="[17.0.0,)" />
+    <PackageReference Include="uSync.BackOffice" Version="[17.0.0,18.0.0)" />
   </ItemGroup>
 
   <ItemGroup>
