@@ -23,7 +23,7 @@ dotnet run --project TestWebV18          # test site, unattended install
 dotnet pack ConditionalDisplayers/ConditionalDisplayers.csproj -c Release
 ```
 
-Test site: `TestWebV18` references the RCL via `ProjectReference`, installs unattended (credentials in `TestWebV18/appsettings.json`), and uSync files under `TestWebV18/uSync/v17` recreate the CD data types, a doctype using them all, and a test page.
+Test site: `TestWebV18` references the RCL via `ProjectReference`, installs unattended (credentials in `TestWebV18/appsettings.json`), and uSync files under `TestWebV18/uSync/v18` recreate the CD data types, a doctype using them all, and a test page.
 
 ## Architecture
 

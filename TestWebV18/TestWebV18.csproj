@@ -43,6 +43,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ConditionalDisplayers\ConditionalDisplayers.csproj" />
+    <ProjectReference Include="..\ConditionalDisplayers.uSync\ConditionalDisplayers.uSync.csproj" />
+
   </ItemGroup>
 
   <ItemGroup>

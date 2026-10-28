@@ -5,7 +5,7 @@
 
 Conditional Displayers lets editors see only the properties that matter. You set **visibility rules** on any property of a document, media, member or element type, and the backoffice shows or hides that property as the editor fills in the others.
 
-This guide covers version 17 and later, for Umbraco 17.
+**This guide covers version 17 and later.**
 
 ## How it works
 
@@ -173,35 +173,3 @@ If you use **uSync**, you can export your Conditional Displayers rules by instal
 
 If you use **Umbraco Deploy**, you'll need to install [this one](https://www.nuget.org/packages/Our.Umbraco.ConditionalDisplayers.Deploy).
 
-
-## Contributing
-
-Conditional Displayers is open to anyone who wants to contribute. If you have ideas, feedback or issues, let us know.
-
-- [Issues](https://github.com/skartknet/ConditionalDisplayers/issues)
-- [Discussions](https://github.com/skartknet/ConditionalDisplayers/discussions)
-
-To contribute code, fork the repository, clone it and create a branch from `master`. When you're done, push the branch and open a pull request back to `master`.
-
-### Working locally
-
-The solution contains the `ConditionalDisplayers` project (the package itself), the `ConditionalDisplayers.Tests` unit tests and a `TestWebV17` site for manual testing.
-
-```sh
-# Client (build before the .NET build)
-cd ConditionalDisplayers/Client
-npm ci
-npm run build
-
-# Test site
-dotnet run --project TestWebV17
-
-# Unit tests, then browser tests against the running test site
-dotnet test ConditionalDisplayers.Tests
-npm run e2e
-```
-
-Sign in to the test site's backoffice with:
-
-**Username**: `admin@admin.com`\
-**Password**: `Password123`

@@ -6,9 +6,9 @@ Adds uSync support for [Conditional Displayers](https://www.nuget.org/packages/O
 
 This package is an add-on, not a standalone package. It needs:
 
-- **Our.Umbraco.ConditionalDisplayers** 17 or later, which provides the rules this package syncs. Without it, there is nothing to sync.
-- **uSync** 17 or later.
-- Umbraco 17.
+- **Our.Umbraco.ConditionalDisplayers** 18, which provides the rules this package syncs. Without it, there is nothing to sync.
+- **uSync** 18.
+- **Umbraco** 18.
 
 ## Installation
 

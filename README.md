@@ -30,6 +30,39 @@ Run this from your Package Manager Console in Visual Studio:
 
 Version 17 includes a one-way migration that turns the settings of your existing Conditional Displayers data types into visibility rules. If you use uSync, export it after the first start, or the next import will write the old settings back. The guide explains what changes.
 
+
+## Contributing
+
+Conditional Displayers is open to anyone who wants to contribute. If you have ideas, feedback or issues, let us know.
+
+- [Issues](https://github.com/skartknet/ConditionalDisplayers/issues)
+- [Discussions](https://github.com/skartknet/ConditionalDisplayers/discussions)
+
+To contribute code, fork the repository, clone it and create a branch from `master`. When you're done, push the branch and open a pull request back to `master`.
+
+### Working locally
+
+The solution contains the `ConditionalDisplayers` project (the package itself), the `ConditionalDisplayers.Tests` unit tests and a `TestWebV18` site for manual testing.
+
+```sh
+# Client (build before the .NET build)
+cd ConditionalDisplayers/Client
+npm ci
+npm run build
+
+# Test site
+dotnet run --project TestWebV18
+
+# Unit tests, then browser tests against the running test site
+dotnet test ConditionalDisplayers.Tests
+npm run e2e
+```
+
+Sign in to the test site's backoffice with:
+
+**Username**: `admin@admin.com`\
+**Password**: `Password123`
+
 ## Icon
 [Eye icon](https://icons8.com/icon/74NRJjZyt5EM/eye) by [Icons8](https://icons8.com)
 

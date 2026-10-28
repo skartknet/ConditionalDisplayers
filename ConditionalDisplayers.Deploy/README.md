@@ -6,9 +6,9 @@ Adds Umbraco Deploy support for [Conditional Displayers](https://www.nuget.org/p
 
 This package is an add-on, not a standalone package. It needs:
 
-- **Our.Umbraco.ConditionalDisplayers** 17 or later, which provides the rules this package transfers. Without it, there is nothing to deploy.
-- **Umbraco Deploy** 17 or later (a licensed product).
-- Umbraco 17.
+- **Our.Umbraco.ConditionalDisplayers** 18, which provides the rules this package transfers. Without it, there is nothing to deploy.
+- **Umbraco Deploy** 18.
+- **Umbraco** 18.
 
 ## Installation
 

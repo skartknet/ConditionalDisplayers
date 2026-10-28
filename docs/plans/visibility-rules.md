@@ -66,7 +66,7 @@ Verified by reading `@umbraco-cms/backoffice` 16.1.0 (installed in `Client/node_
 | `MigrateDataTypes` already sets `CdCheckbox` `EditorAlias` to `Umbraco.TrueFalse`. | No value or schema change for the swap. |
 | The project only references `Umbraco.Cms.Infrastructure` and has no composer. | Add `Umbraco.Cms.Api.Management` references and a composer. |
 | Policies `TreeAccessDocumentTypes`, `TreeAccessMediaTypes`, `TreeAccessMemberTypes` and `TreeAccessDocumentsOrMediaOrMembersOrContentTypes` exist in 16.5.1 and 17.7.1. | Read: broad policy. Write: per-kind check. |
-| Swashbuckle and `MapToApi` are present in both versions. | Own Swagger doc for the endpoints. |
+| `MapToApi` is present in all versions. Umbraco 18 replaces Swashbuckle with Microsoft.AspNetCore.OpenApi. | Own OpenAPI document for the endpoints. |
 | Old editors resolve targets by alias, with `property:`, `group:` and `tab:` prefixes (`sharedLogic.ts:66`); the checkbox shows one list and hides the other. | Defines the migration mapping exactly. |
 | Shared compositions mean a migrated rule's source can be absent on another doc type. | Missing sources are dropped before evaluation. |
 | uSync files hold the pre-migration data type config. | Export uSync after upgrading, or the next import reverts the data types. |
@@ -107,7 +107,7 @@ A row with both groups empty is deleted, not stored.
 ### Project setup
 
 - Add `Umbraco.Cms.Api.Management` package reference (`[17,)`), alongside the existing `Umbraco.Cms.Infrastructure` one. `ManagementApiControllerBase` and `VersionedApiBackOfficeRoute` live there; the project only references Infrastructure today.
-- Add a composer (there isn't one yet; the migration plan is auto-discovered) to register the notification handlers and the Swagger document.
+- Add a composer (there isn't one yet; the migration plan is auto-discovered) to register the notification handlers and the OpenAPI document.
 
 ### Table
 
@@ -116,7 +116,7 @@ A row with both groups empty is deleted, not stored.
 
 ### Management API
 
-`RulesController : ManagementApiControllerBase`, `[VersionedApiBackOfficeRoute("conditionaldisplayers/rules")]`, `[MapToApi("conditionaldisplayers")]` with its own Swagger doc so it stays out of Umbraco's `management` document. (Superseded: Umbraco 18 uses Microsoft.AspNetCore.OpenApi, see `AddBackOfficeOpenApiDocument` in `RulesComposer`.) Both 16.5.1 and 17.7.1 still use Swashbuckle, and `MapToApi` exists in both.
+`RulesController : ManagementApiControllerBase`, `[VersionedApiBackOfficeRoute("conditionaldisplayers/rules")]`, `[MapToApi("conditionaldisplayers")]` with its own OpenAPI document so it stays out of Umbraco's `management` document. The document is registered with `AddBackOfficeOpenApiDocument` in `RulesComposer`.
 
 - `GET ?contentTypeKey=a&contentTypeKey=b`: returns rows for those owner keys.
   - The client already has the owner plus all composition keys from `structure.contentTypeUniques`, so the server doesn't need to resolve compositions or know whether a key is a document, media or member type.
