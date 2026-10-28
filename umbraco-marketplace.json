@@ -14,7 +14,7 @@
     "conditional",
     "property"
   ],
-  "Description": "Umbraco package that offers a collection of editors that allow to hide or display other properties in the same Document Type.",
+  "Description": "Umbraco package that shows or hides properties in the backoffice based on the values of other properties on the same content type.",
   "AuthorDetails": {
     "Name": "Mario Lopez",
     "ImageUrl": "https://github.com/skartknet.png",
@@ -22,7 +22,7 @@
   },
   "DocumentationUrl": "https://github.com/skartknet/ConditionalDisplayers/blob/2b3ba08a08bd30c7c7bbfcbb967369b960af6a6c/Documentation/README.md",
   "Screenshots": [
-    "https://github.com/skartknet/ConditionalDisplayers/raw/main/Documentation/Screenshots/screenshot1.png",
-    "https://github.com/skartknet/ConditionalDisplayers/raw/main/Documentation/Screenshots/screenshot2.png"
+    "https://raw.githubusercontent.com/skartknet/ConditionalDisplayers/refs/heads/main/Documentation/Assets/03-visibility-empty.png",
+    "https://raw.githubusercontent.com/skartknet/ConditionalDisplayers/refs/heads/main/Documentation/Assets/04-visibility-rules.png"
   ]
 }
