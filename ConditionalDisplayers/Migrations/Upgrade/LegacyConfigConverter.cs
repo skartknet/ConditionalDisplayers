@@ -121,12 +121,76 @@ internal static class LegacyConfigConverter
         Value = JsonSerializer.SerializeToElement(keys.Distinct()),
     };
 
-    /// <summary>Appends with OR, so a target driven by several sources shows or hides when any of them says so.</summary>
+    /// <summary>
+    /// Appends with OR, so a target driven by several sources shows or hides when any of them says so.
+    /// A source on a composition is converted once per type that uses it, so a repeat of the same condition is dropped.
+    /// </summary>
     private static void Add(Dictionary<Guid, RuleSet> rules, Guid target, bool show, Condition condition)
     {
         if (!rules.TryGetValue(target, out var set)) rules[target] = set = new RuleSet();
         var list = show ? set.Show : set.Hide;
+        if (list.Any(c => c.PropertyKey == condition.PropertyKey && c.Operator == condition.Operator
+            && c.Value?.GetRawText() == condition.Value?.GetRawText())) return;
         condition.Connector = list.Count == 0 ? null : "or";
         list.Add(condition);
+    }
+
+    /// <summary>The stored value the core editor expects in place of a legacy one: the item label, as a JSON array for the dropdown.</summary>
+    public static string NewValue(string old, Dictionary<string, string> keyToLabel, bool asArray)
+    {
+        var label = keyToLabel.GetValueOrDefault(old, old);
+        return asArray ? JsonSerializer.Serialize(new[] { label }) : label;
+    }
+
+    /// <summary>
+    /// Rewrites legacy radio/dropdown values held inside block editor data (block list, grid, single block, rich text
+    /// blocks), which live in the owning property's JSON rather than in rows of their own. <paramref name="rewrites"/>
+    /// maps an element type key and property alias to the item key to label map and whether the value is a dropdown.
+    /// Nested block editors, stored as JSON strings, are walked too. Returns the number of values changed.
+    /// </summary>
+    public static int RewriteBlockValues(JsonNode? node, IReadOnlyDictionary<(Guid ElementTypeKey, string Alias), (Dictionary<string, string> KeyToLabel, bool AsArray)> rewrites)
+    {
+        switch (node)
+        {
+            case JsonObject obj:
+                var count = 0;
+                if (obj["contentTypeKey"] is JsonValue typeValue && typeValue.TryGetValue<string>(out var typeText)
+                    && Guid.TryParse(typeText, out var typeKey) && obj["values"] is JsonArray values)
+                {
+                    foreach (var value in values.OfType<JsonObject>())
+                    {
+                        if (value["alias"]?.GetValue<string>() is not { } alias
+                            || !rewrites.TryGetValue((typeKey, alias), out var rewrite)
+                            || value["value"] is not JsonValue stored || !stored.TryGetValue<string>(out var old)
+                            || string.IsNullOrEmpty(old)) continue;
+                        var updated = NewValue(old, rewrite.KeyToLabel, rewrite.AsArray);
+                        if (updated == old) continue;
+                        value["value"] = updated;
+                        count++;
+                    }
+                }
+                foreach (var (_, child) in obj.ToList()) count += RewriteNested(child, rewrites);
+                return count;
+            case JsonArray array:
+                var total = 0;
+                foreach (var child in array.ToList()) total += RewriteNested(child, rewrites);
+                return total;
+            default:
+                return 0;
+        }
+    }
+
+    /// <summary>Recurses into a child node, or into a nested block editor value held as a JSON string.</summary>
+    private static int RewriteNested(JsonNode? child, IReadOnlyDictionary<(Guid, string), (Dictionary<string, string>, bool)> rewrites)
+    {
+        if (child is not JsonValue text || !text.TryGetValue<string>(out var json)) return RewriteBlockValues(child, rewrites);
+        if (!json.StartsWith('{') || !json.Contains("\"contentTypeKey\"", StringComparison.Ordinal)) return 0;
+
+        JsonNode? nested;
+        try { nested = JsonNode.Parse(json); }
+        catch (JsonException) { return 0; }
+        var count = RewriteBlockValues(nested, rewrites);
+        if (count > 0) text.ReplaceWith(nested!.ToJsonString());
+        return count;
     }
 }
