@@ -119,4 +119,73 @@ public class LegacyConfigConverterTests
         Assert.Equal("""{"items":["Show X","Show Y"],"multiple":false}""", LegacyConfigConverter.CoreConfig(LegacyKind.Dropdown, old).ToJsonString());
         Assert.Equal("Show Y", LegacyConfigConverter.KeyToLabel(old)["y"]);
     }
+
+    [Fact]
+    public void A_composition_source_converted_on_each_type_adds_its_condition_once()
+    {
+        var rules = new Dictionary<Guid, RuleSet>();
+        var config = JsonNode.Parse("""{"showIfChecked":"a"}""")!.AsObject();
+        LegacyConfigConverter.Convert(Source, LegacyKind.Checkbox, config, Resolve, rules, _ => { });
+        LegacyConfigConverter.Convert(Source, LegacyKind.Checkbox, config, Resolve, rules, _ => { });
+
+        Assert.Equal([Source], rules[A].Show.Select(c => c.PropertyKey));
+        Assert.Equal([Source], rules[A].Hide.Select(c => c.PropertyKey));
+    }
+
+    private static readonly Guid Element = Guid.NewGuid();
+
+    private static readonly Dictionary<(Guid, string), (Dictionary<string, string>, bool)> Rewrites = new()
+    {
+        [(Element, "kind")] = (new Dictionary<string, string> { ["x"] = "Show X" }, true),
+        [(Element, "choice")] = (new Dictionary<string, string> { ["x"] = "Show X" }, false),
+    };
+
+    private static string Block(Guid type, string alias, string value) =>
+        $$"""{"contentTypeKey":"{{type}}","key":"{{Guid.NewGuid()}}","values":[{"editorAlias":"Umbraco.Plain.String","alias":"{{alias}}","value":"{{value}}"}]}""";
+
+    [Fact]
+    public void Block_values_are_rewritten_from_key_to_label()
+    {
+        var json = JsonNode.Parse($$"""{"layout":{},"contentData":[{{Block(Element, "kind", "x")}},{{Block(Element, "choice", "x")}}],"settingsData":[]}""");
+
+        Assert.Equal(2, LegacyConfigConverter.RewriteBlockValues(json, Rewrites));
+        Assert.Equal("""["Show X"]""", json!["contentData"]![0]!["values"]![0]!["value"]!.GetValue<string>());
+        Assert.Equal("Show X", json["contentData"]![1]!["values"]![0]!["value"]!.GetValue<string>());
+    }
+
+    [Fact]
+    public void Block_values_of_other_types_and_aliases_are_left_alone()
+    {
+        var json = JsonNode.Parse($$"""{"contentData":[{{Block(Guid.NewGuid(), "kind", "x")}},{{Block(Element, "title", "x")}}]}""");
+        var before = json!.ToJsonString();
+
+        Assert.Equal(0, LegacyConfigConverter.RewriteBlockValues(json, Rewrites));
+        Assert.Equal(before, json.ToJsonString());
+    }
+
+    [Fact]
+    public void Nested_block_editor_values_held_as_strings_are_rewritten()
+    {
+        var inner = $$"""{"contentData":[{{Block(Element, "choice", "x")}}]}""";
+        var outer = new JsonObject
+        {
+            ["contentData"] = new JsonArray(new JsonObject
+            {
+                ["contentTypeKey"] = Guid.NewGuid().ToString(),
+                ["values"] = new JsonArray(new JsonObject { ["alias"] = "blocks", ["value"] = inner }),
+            }),
+        };
+
+        Assert.Equal(1, LegacyConfigConverter.RewriteBlockValues(outer, Rewrites));
+        var nested = JsonNode.Parse(outer["contentData"]![0]!["values"]![0]!["value"]!.GetValue<string>());
+        Assert.Equal("Show X", nested!["contentData"]![0]!["values"]![0]!["value"]!.GetValue<string>());
+    }
+
+    [Fact]
+    public void Rich_text_blocks_are_rewritten()
+    {
+        var json = JsonNode.Parse($$$"""{"markup":"<p></p>","blocks":{"contentData":[{{{Block(Element, "choice", "x")}}}]}}""");
+
+        Assert.Equal(1, LegacyConfigConverter.RewriteBlockValues(json, Rewrites));
+    }
 }
