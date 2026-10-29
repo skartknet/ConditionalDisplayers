@@ -1,6 +1,8 @@
 {
   "$schema": "https://marketplace.umbraco.com/umbraco-marketplace-schema.json",
+  "AddOnPackagesRequiredForUmbracoCloud": [],
   "Category": "Editor Tools",
+  "LookingForContributors": true,
   "LicenseTypes": [
     "Free"
   ],

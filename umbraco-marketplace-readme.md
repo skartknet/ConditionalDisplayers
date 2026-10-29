@@ -1,7 +1,5 @@
 # Conditional Displayers
 
-Umbraco package that shows or hides properties in the backoffice based on the values of other properties on the same content type.
-
 Open any property in a document, media, member or element type and use its new **Visibility** tab to add rules, such as 'show this property when Offer type is any of Discount' or 'hide it when Title is empty'. Rules support AND and OR, work with blocks and variants, and groups and tabs hide themselves when everything in them is hidden.
 
 [Read the guide](./Documentation/README.md)
