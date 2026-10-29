@@ -53,22 +53,35 @@ internal sealed class ConvertLegacyConfig(
         // A target from a composition belongs to the composition, so rules are stored under the owner.
         var owners = types.SelectMany(t => t.PropertyTypes.Select(p => (p.Key, Owner: t.Key))).DistinctBy(x => x.Key).ToDictionary(x => x.Key, x => x.Owner);
 
+        // A source on a composition is converted on every type that uses it, since its targets are often properties of
+        // those types rather than of the composition. An alias counts as skipped only if no such type resolves it.
         var rules = new Dictionary<Guid, RuleSet>();
-        var skipped = 0;
-        var sources = 0;
+        var resolved = new HashSet<(Guid Source, string Alias)>();
+        var unresolved = new Dictionary<(Guid Source, string Alias), (string Property, string Type)>();
+        var sources = new HashSet<Guid>();
         foreach (var type in types)
         {
             var resolve = Resolver(type);
-            foreach (var property in type.PropertyTypes.Where(p => kinds.ContainsKey(p.DataTypeKey)))
+            foreach (var property in type.CompositionPropertyTypes.Where(p => kinds.ContainsKey(p.DataTypeKey)))
             {
-                sources++;
-                LegacyConfigConverter.Convert(property.Key, kinds[property.DataTypeKey], configs[property.DataTypeKey], resolve, rules,
+                sources.Add(property.Key);
+                LegacyConfigConverter.Convert(property.Key, kinds[property.DataTypeKey], configs[property.DataTypeKey],
                     alias =>
                     {
-                        skipped++;
-                        logger.LogWarning("Skipped '{alias}' from '{property}' on '{type}': no matching property, group or tab.", alias, property.Alias, type.Alias);
-                    });
+                        var keys = resolve(alias);
+                        if (keys.Count > 0) resolved.Add((property.Key, alias));
+                        return keys;
+                    },
+                    rules,
+                    alias => unresolved.TryAdd((property.Key, StripPropertyPrefix(alias)), (property.Alias, type.Alias)));
             }
+        }
+
+        var skipped = 0;
+        foreach (var ((source, alias), (property, type)) in unresolved.Where(x => !resolved.Contains(x.Key)))
+        {
+            skipped++;
+            logger.LogWarning("Skipped '{alias}' from '{property}' on '{type}': no matching property, group or tab.", alias, property, type);
         }
 
         var written = 0;
@@ -84,6 +97,14 @@ internal sealed class ConvertLegacyConfig(
                      .Where(p => kinds.TryGetValue(p.DataTypeKey, out var k) && k != LegacyKind.Checkbox))
             rewritten += RewriteValues(property.Id, labels[property.DataTypeKey], kinds[property.DataTypeKey] == LegacyKind.Dropdown);
 
+        var blockRewrites = types
+            .SelectMany(t => t.CompositionPropertyTypes
+                .Where(p => kinds.TryGetValue(p.DataTypeKey, out var k) && k != LegacyKind.Checkbox)
+                .Select(p => (Key: (t.Key, p.Alias), Rewrite: (labels[p.DataTypeKey], kinds[p.DataTypeKey] == LegacyKind.Dropdown))))
+            .DistinctBy(x => x.Key)
+            .ToDictionary(x => x.Key, x => x.Rewrite);
+        if (blockRewrites.Count > 0) rewritten += RewriteBlockValues(blockRewrites);
+
         foreach (var dto in dataTypes)
         {
             var config = configs[dto.NodeDto.UniqueId];
@@ -96,7 +117,7 @@ internal sealed class ConvertLegacyConfig(
         }
 
         logger.LogInformation("Converted legacy Conditional Displayers config: {sources} source properties, {written} target properties with rules, {skipped} aliases skipped, {dataTypes} data types updated, {rewritten} stored values rewritten.",
-            sources, written, skipped, dataTypes.Count, rewritten);
+            sources.Count, written, skipped, dataTypes.Count, rewritten);
         return Task.CompletedTask;
     }
 
@@ -113,13 +134,37 @@ internal sealed class ConvertLegacyConfig(
         {
             var old = row.VarcharValue ?? row.TextValue;
             if (string.IsNullOrEmpty(old)) continue;
-            var label = keyToLabel.GetValueOrDefault(old, old);
             Database.Execute("UPDATE umbracoPropertyData SET varcharValue = @0, textValue = NULL WHERE id = @1",
-                asArray ? JsonSerializer.Serialize(new[] { label }) : label, row.Id);
+                LegacyConfigConverter.NewValue(old, keyToLabel, asArray), row.Id);
             count++;
         }
         return count;
     }
+
+    /// <summary>
+    /// Values of radio/dropdown properties on element types sit inside the JSON of the block editor that holds the
+    /// block, in every version and culture of every item. Rows that can't hold a block are filtered out by text.
+    /// </summary>
+    private int RewriteBlockValues(IReadOnlyDictionary<(Guid, string), (Dictionary<string, string>, bool)> rewrites)
+    {
+        var rows = Database.Fetch<BlockRow>("SELECT id, textValue FROM umbracoPropertyData WHERE textValue LIKE @0", "%contentTypeKey%");
+        var count = 0;
+        foreach (var row in rows)
+        {
+            JsonNode? json;
+            try { json = JsonNode.Parse(row.TextValue!); }
+            catch (JsonException) { continue; }
+
+            var changed = LegacyConfigConverter.RewriteBlockValues(json, rewrites);
+            if (changed == 0) continue;
+            Database.Execute("UPDATE umbracoPropertyData SET textValue = @0 WHERE id = @1", json!.ToJsonString(), row.Id);
+            count += changed;
+        }
+        return count;
+    }
+
+    private static string StripPropertyPrefix(string alias) =>
+        alias.StartsWith("property:", StringComparison.OrdinalIgnoreCase) ? alias["property:".Length..] : alias;
 
     private static JsonObject ParseConfig(string? json)
     {
@@ -154,4 +199,6 @@ internal sealed class ConvertLegacyConfig(
     }
 
     private sealed record ValueRow(int Id, string? VarcharValue, string? TextValue);
+
+    private sealed record BlockRow(int Id, string? TextValue);
 }
